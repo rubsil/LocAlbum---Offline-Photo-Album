@@ -1,7 +1,7 @@
 # 📸 LocAlbum - Offline Photo Album
 
 <p align="center">
-  <img src="assets/logo.png" alt="LocAlbum Logo" width="200"/>
+  <img src="https://private-user-images.githubusercontent.com/128933310/505020578-99cc7cbe-3f84-44bd-a2a3-862c731b5308.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NjEyNjI0NjcsIm5iZiI6MTc2MTI2MjE2NywicGF0aCI6Ii8xMjg5MzMzMTAvNTA1MDIwNTc4LTk5Y2M3Y2JlLTNmODQtNDRiZC1hMmEzLTg2MmM3MzFiNTMwOC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUxMDIzJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MTAyM1QyMzI5MjdaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT02NDE5MTU0NjI5OWMyZjVjYjM1M2UzNTMwNTM2NDc4MjAxMzQzOWUxYTdlNTA3YjBmYjY0MTNhODM2MmM4Y2RmJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.FbQWgMQAG4oxwzUL8YGtaJPZoAjFLapCM443Zq01_V0" alt="LocAlbum Logo" width="200"/>
 </p>
 
 **🇵🇹 LocAlbum** é uma aplicação leve e totalmente offline que transforma as tuas pastas de fotos num álbum moderno e interativo — com visualização por **anos e meses**, **slideshow automático**, e **temas personalizáveis**.  
