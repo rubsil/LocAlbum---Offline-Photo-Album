@@ -1,9 +1,6 @@
 # 📸 LocAlbum - Offline Photo Album
 
 **LocAlbum** é uma aplicação leve e totalmente offline que transforma as tuas pastas de fotos em um álbum moderno e interativo, com visualização por anos, meses e slideshow automático — tudo a partir do teu disco local.
-# 📸 LocAlbum - Offline Photo Album
-
-# 📸 LocAlbum - Offline Photo Album
 
 <p align="center">
   <img src="assets/logo.png" alt="LocAlbum Logo" width="200"/>
