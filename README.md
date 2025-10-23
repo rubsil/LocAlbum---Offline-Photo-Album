@@ -1,25 +1,25 @@
-# 📸 LocAlbum - Offline Photo Album
+# 📸 LOCAlbum - Offline Photo Album
 
 <p align="center">
   <img src="https://private-user-images.githubusercontent.com/128933310/505020578-99cc7cbe-3f84-44bd-a2a3-862c731b5308.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NjEyNjI0NjcsIm5iZiI6MTc2MTI2MjE2NywicGF0aCI6Ii8xMjg5MzMzMTAvNTA1MDIwNTc4LTk5Y2M3Y2JlLTNmODQtNDRiZC1hMmEzLTg2MmM3MzFiNTMwOC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUxMDIzJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MTAyM1QyMzI5MjdaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT02NDE5MTU0NjI5OWMyZjVjYjM1M2UzNTMwNTM2NDc4MjAxMzQzOWUxYTdlNTA3YjBmYjY0MTNhODM2MmM4Y2RmJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.FbQWgMQAG4oxwzUL8YGtaJPZoAjFLapCM443Zq01_V0" alt="LocAlbum Logo" width="200"/>
 </p>
 
-**🇵🇹 LocAlbum** é uma aplicação leve e totalmente offline que transforma as tuas pastas de fotos num álbum moderno e interativo — com visualização por **anos e meses**, **slideshow automático**, e **temas personalizáveis**.  
+**🇵🇹 LOCAlbum** é uma aplicação leve e totalmente offline que transforma as tuas pastas de fotos num álbum moderno e interativo — com visualização por **anos e meses**, **slideshow automático**, e **temas personalizáveis**.  
 Funciona **sem internet**, diretamente a partir do teu disco local ou pen drive.
 
-**🇬🇧 LocAlbum** is a lightweight and fully offline app that turns your photo folders into a modern and interactive album — with **year/month navigation**, **automatic slideshow**, and **customizable themes**.  
+**🇬🇧 LOCAlbum** is a lightweight and fully offline app that turns your photo folders into a modern and interactive album — with **year/month navigation**, **automatic slideshow**, and **customizable themes**.  
 It works **completely offline**, directly from your local drive or USB stick.
 
 ---
 
 ## 💡 Pensado para pais e memórias de infância / Designed for childhood memories
 
-> 🇵🇹 **LocAlbum** foi desenvolvido especialmente para pais que desejam guardar as memórias dos filhos desde o nascimento.  
+> 🇵🇹 **LOCAlbum** foi desenvolvido especialmente para pais que desejam guardar as memórias dos filhos desde o nascimento.  
 > Durante a configuração inicial, podes inserir a **data de nascimento** — o álbum mostrará automaticamente a **idade exata do bebé/criança** à data de cada foto.  
 >  
 > (Funcionalidade opcional — se deixares o campo vazio, o álbum funcionará normalmente para qualquer outro tipo de recordação.)
 
-> 🇬🇧 **LocAlbum** was designed especially for parents who want to preserve their child's memories from birth.  
+> 🇬🇧 **LOCAlbum** was designed especially for parents who want to preserve their child's memories from birth.  
 > During setup, you can enter the **birthdate** — the album will automatically display the **exact age of the baby/child** at the date of each photo.  
 >  
 > (This feature is optional — if you leave it blank, the album works perfectly for any other kind of memories.)
@@ -57,7 +57,7 @@ It works **completely offline**, directly from your local drive or USB stick.
 
 ### 🇵🇹 Passos
 
-1. 📦 **Descarrega o projeto** e extrai para uma pasta à tua escolha.  
+1. 📦 **Descarrega o projeto** e extrai para um disco ou pen vazio.  
 2. 🖼️ Coloca as tuas fotos e vídeos dentro da pasta `Album/Fotos/` seguindo a estrutura `Ano/Mês`.  
 3. ▶️ Executa o ficheiro `atualizar_album.bat` pela primeira vez.  
    - Serás guiado por uma configuração rápida (idioma, nome do álbum, data opcional).  
