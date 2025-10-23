@@ -1,7 +1,5 @@
 # 📸 LocAlbum - Offline Photo Album
 
-**LocAlbum** é uma aplicação leve e totalmente offline que transforma as tuas pastas de fotos em um álbum moderno e interativo, com visualização por anos, meses e slideshow automático — tudo a partir do teu disco local.
-
 <p align="center">
   <img src="assets/logo.png" alt="LocAlbum Logo" width="200"/>
 </p>
@@ -31,7 +29,7 @@ It works **completely offline**, directly from your local drive or USB stick.
 ## ✨ Highlights / Destaques
 
 | 🇬🇧 **Highlights** | 🇵🇹 **Destaques** |
-|-------------------|------------------|
+|--------------------|-------------------|
 | 🗂️ Automatic organization by **year and month** | 🗂️ Organização automática por **ano e mês** |
 | 🖼️ Support for **photos and videos** | 🖼️ Suporte para **fotos e vídeos** |
 | 🌙 Themes: Dark, Sky and Pink | 🌙 Temas: Escuro, Azul Céu e Rosa |
@@ -53,7 +51,7 @@ It works **completely offline**, directly from your local drive or USB stick.
 
 
 
---------------------------
+---
 
 ## 🚀 Como usar / How to use
 
@@ -81,10 +79,10 @@ It works **completely offline**, directly from your local drive or USB stick.
 
 ## ⚙️ Atualizações / Updating the album
 
-- Sempre que adicionares novas fotos ou pastas, **executa novamente o `atualizar_album.bat`**.  
-- O programa atualizará automaticamente o HTML sem perder as tuas configurações.  
+🇵🇹 Sempre que adicionares novas fotos ou pastas, **executa novamente o `atualizar_album.bat`**.  
+O programa atualizará automaticamente o HTML sem perder as tuas configurações.  
 
-Every time you add new photos or folders, just **run `atualizar_album.bat` again**.  
+🇬🇧 Every time you add new photos or folders, just **run `atualizar_album.bat` again**.  
 The app will refresh the HTML automatically, keeping all your settings intact.
 
 ---
@@ -124,9 +122,10 @@ If this project was useful to you, consider supporting its development.
 ## 🧑‍💻 Autor / Author
 
 **Desenvolvido por Rúben Silva**  
-📧 [GitHub Profile](https://github.com/)  
+📧 [GitHub Profile](https://github.com/rubsil)  
 📸 Projeto: *LocAlbum - Offline Photo Album*  
-💡 “Because your memories deserve a place — even without internet.”
+
+💡 *Because your memories deserve a place — even without internet.*
 
 ---
 
@@ -140,5 +139,3 @@ Distributed under the **MIT License** — free to use, with author attribution.
 <p align="center">
   <img src="assets/screenshot_dark.png" width="700" alt="Dark mode preview"/>
 </p>
-
----
