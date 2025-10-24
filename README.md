@@ -116,6 +116,7 @@ The app will refresh the HTML automatically, keeping all your settings intact.
 
 - 📁 A **pasta principal** é aquela onde estão todos os ficheiros do LocAlbum — por exemplo:
 
+```
 X:
 └── Album
 ├── Fotos
@@ -124,6 +125,7 @@ X:
 ├── template.html
 ├── config.ini
 └── (ficheiros gerados automaticamente))
+```
 
 Podes **renomear esta pasta principal** (ex.: `LocAlbum`, `Memorias`, `FamiliaMartim`, etc.) —  
 o programa continuará a funcionar sem problema.
