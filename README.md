@@ -119,7 +119,11 @@ The app will refresh the HTML automatically, keeping all your settings intact.
 X:
 └── Album
 ├── Fotos
-├── gerar_album.ps1 ├── update_album.bat ├── template.html ├── config.ini └── (ficheiros gerados automaticamente)
+├── gerar_album.ps1
+├── update_album.bat
+├── template.html
+├── config.ini
+└── (ficheiros gerados automaticamente))
 
 Podes **renomear esta pasta principal** (ex.: `LocAlbum`, `Memorias`, `FamiliaMartim`, etc.) —  
 o programa continuará a funcionar sem problema.
