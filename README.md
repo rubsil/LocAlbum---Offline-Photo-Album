@@ -102,11 +102,11 @@ It works **completely offline**, directly from your local drive or USB stick.
 
 ## ⚙️ Atualizações / Updating the album
 
-🇵🇹 Sempre que adicionares novas fotos ou pastas, **executa novamente o `atualizar_album.bat`**.  
-O programa atualizará automaticamente o HTML sem perder as tuas configurações.  
+🇵🇹 Sempre que adicionares novas fotos ou pastas de meses ou anos, **executa novamente o `atualizar_album.bat`**.  
+O programa atualizará automaticamente o Ver album.HTML sem perder as tuas configurações.  
 
-🇬🇧 Every time you add new photos or folders, just **run `atualizar_album.bat` again**.  
-The app will refresh the HTML automatically, keeping all your settings intact.
+🇬🇧 Every time you add new photos or folders of months or years, just **run `atualizar_album.bat` again**.  
+The app will refresh the View album.HTML automatically, keeping all your settings intact.
 
 ---
 
@@ -118,7 +118,7 @@ The app will refresh the HTML automatically, keeping all your settings intact.
 
 ```
 X:
-└── Album
+└── Album (pasta principal)
       ├── Fotos
       ├── gerar_album.ps1
       ├── update_album.bat
@@ -132,7 +132,7 @@ Podes **renomear esta pasta principal** (ex.: `LOCAlbum`, `Memorias`, `FamiliaMa
 o programa continuará a funcionar sem problema.
 
 - 🚫 **Não alteres os seguintes nomes**, pois são obrigatórios para o funcionamento correto:
-- `Fotos/` → onde colocas as tuas fotos (organizadas por ano e mês)
+- `Fotos/` → onde colocas as tuas fotos (organizadas por pastas de anos e meses)
 - `template.html`
 - `config.ini`
 - `gerar_album.ps1`
@@ -156,7 +156,7 @@ bastando abrir o ficheiro `Ver album.html` (ou `View album.html`).
 - 📁 The **main folder** is the one containing all LocAlbum files — for example:
 ```
 X:
-└── Album
+└── Album (main folder)
       ├── Fotos
       ├── gerar_album.ps1
       ├── update_album.bat
@@ -169,12 +169,12 @@ You can **rename this main folder** (e.g., `LocAlbum`, `Memories`, `FamilyAlbum`
 the program will continue to work normally.
 
 - 🚫 **Do not rename or move** the following items — they are required:
-- `Fotos/` → where you place your photos (organized by year and month)
+- `Fotos/` → where you place your photos (organized by folders of years and months)
 - `template.html`
 - `config.ini`
 - `gerar_album.ps1`
 
-- ⚙️ The `update_album.bat` file **can be renamed** (e.g., “Update Album.bat”) safely.
+- ⚙️ The `update_album.bat` file **can be renamed** (e.g., “Generate Album.bat”) safely.
 
 - ⚙️ The `config.ini` file is generated automatically and should remain hidden.
 
