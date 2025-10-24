@@ -61,7 +61,7 @@ It works **completely offline**, directly from your local drive or USB stick.
    _(ex.: `C:\Album\` ou `E:\Album\`)_.  
    > ⚠️ **Importante:** o projeto deve estar diretamente na raiz, **não dentro de subpastas**.
 
-2. 🖼️ **Coloca as tuas fotos e vídeos** dentro da pasta `Fotos/`, organizados por **Ano/Mês**  
+2. 🖼️ **Coloca as tuas fotos e vídeos** dentro da pasta `Fotos/`, organizadas por pastas **Ano/Mês**  
    _(ex.: `2024/Janeiro/`)_.
 
 3. ▶️ **Executa o ficheiro** `update_album.bat` **pela primeira vez.**  
