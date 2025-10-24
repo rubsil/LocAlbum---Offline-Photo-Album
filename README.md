@@ -125,9 +125,10 @@ X:
       ├── template.html
       ├── config.ini
       └── (ficheiros gerados automaticamente))
+└──Ver album.html (aparece depois de correr o update_album.bat)
 ```
 
-Podes **renomear esta pasta principal** (ex.: `LocAlbum`, `Memorias`, `FamiliaMartim`, etc.) —  
+Podes **renomear esta pasta principal** (ex.: `LOCAlbum`, `Memorias`, `FamiliaMartim`, etc.) —  
 o programa continuará a funcionar sem problema.
 
 - 🚫 **Não alteres os seguintes nomes**, pois são obrigatórios para o funcionamento correto:
@@ -153,12 +154,17 @@ bastando abrir o ficheiro `Ver album.html` (ou `View album.html`).
 ### 🇬🇧 **English**
 
 - 📁 The **main folder** is the one containing all LocAlbum files — for example:
-
+```
 X:
 └── Album
-├── Fotos
-├── gerar_album.ps1 ├── update_album.bat ├── template.html ├── config.ini └── (auto-generated files)
-
+      ├── Fotos
+      ├── gerar_album.ps1
+      ├── update_album.bat
+      ├── template.html
+      ├── config.ini
+      └── (ficheiros gerados automaticamente))
+└──View album.html (appears after run update_album.bat)
+```
 You can **rename this main folder** (e.g., `LocAlbum`, `Memories`, `FamilyAlbum`, etc.) —  
 the program will continue to work normally.
 
