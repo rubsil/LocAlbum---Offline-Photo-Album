@@ -1,11 +1,11 @@
 # 📸 LOCAlbum - Offline Photo Album
 
 <p align="center">
-  <img src="[https://private-user-images.githubusercontent.com/128933310/505020578-99cc7cbe-3f84-44bd-a2a3-862c731b5308.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NjEyNjI0NjcsIm5iZiI6MTc2MTI2MjE2NywicGF0aCI6Ii8xMjg5MzMzMTAvNTA1MDIwNTc4LTk5Y2M3Y2JlLTNmODQtNDRiZC1hMmEzLTg2MmM3MzFiNTMwOC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUxMDIzJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MTAyM1QyMzI5MjdaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT02NDE5MTU0NjI5OWMyZjVjYjM1M2UzNTMwNTM2NDc4MjAxMzQzOWUxYTdlNTA3YjBmYjY0MTNhODM2MmM4Y2RmJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.FbQWgMQAG4oxwzUL8YGtaJPZoAjFLapCM443Zq01_V0](https://gist.githubusercontent.com/rubsil/9c79541cd373e7ef554346a5faf155fa/raw/a694bd08bbed3622ec1e564eb29358f1db48b8e0/localbum.png)" alt="LocAlbum Logo" width="200"/>
+  <img src="https://gist.githubusercontent.com/rubsil/9c79541cd373e7ef554346a5faf155fa/raw/a694bd08bbed3622ec1e564eb29358f1db48b8e0/localbum.png" alt="LocAlbum Logo" width="200"/>
 </p>
 
 **🇵🇹 LOCAlbum** é uma aplicação leve e totalmente offline que transforma as tuas pastas de fotos num álbum moderno e interativo — com visualização por **anos e meses**, **slideshow automático**, e **temas personalizáveis**.  
-Funciona **sem internet**, diretamente a partir do teu disco local ou pen drive.
+Funciona **sem internet**, diretamente a partir do teu disco local ou pen USB.
 
 **🇬🇧 LOCAlbum** is a lightweight and fully offline app that turns your photo folders into a modern and interactive album — with **year/month navigation**, **automatic slideshow**, and **customizable themes**.  
 It works **completely offline**, directly from your local drive or USB stick.
@@ -36,7 +36,7 @@ It works **completely offline**, directly from your local drive or USB stick.
 | ⏱️ **Automatic slideshow** with adjustable speed | ⏱️ **Slideshow automático** com velocidade ajustável |
 | 👶 Optional **age display** based on birthdate | 👶 Cálculo de idade opcional (a partir da data de nascimento) |
 | 💾 Works **completely offline** — no internet needed | 💾 Funciona **totalmente offline** — nada é enviado para a internet |
-| 🔄 One-click update (`atualizar_album.bat`) | 🔄 Atualização rápida com 1 clique (`atualizar_album.bat`) |
+| 🔄 One-click update (`update_album.bat`) | 🔄 Atualização rápida com 1 clique (`update_album.bat`) |
 | 🌍 **Bilingual interface (PT/EN)** | 🌍 Interface **bilingue (PT/EN)** |
 
 ---
@@ -49,16 +49,14 @@ It works **completely offline**, directly from your local drive or USB stick.
 > ⚠️ **IMPORTANT:** Month folders should be created in Portuguese or English, without accents.  
 > (Example: `Janeiro` or `January`)
 
-
-
 ---
 
 ## 🚀 Como usar / How to use
 
-## 🇵🇹 **Passos**
+### 🇵🇹 **Passos**
 
 1. 📦 **Descarrega o projeto** e extrai-o **para a raiz de um disco ou pen USB**  
-   _(ex.: `C:\Album\` ou `E:\Album\`)_.  
+   _(ex.: `C:\Album\` ou `E:\Album\`)_  
    > ⚠️ **Importante:** o projeto deve estar diretamente na raiz, **não dentro de subpastas**.
 
 2. 🖼️ **Coloca as tuas fotos e vídeos** dentro da pasta `Fotos/`, organizadas por pastas **Ano/Mês**  
@@ -76,7 +74,7 @@ It works **completely offline**, directly from your local drive or USB stick.
 
 ---
 
-## 🇬🇧 **Steps**
+### 🇬🇧 **Steps**
 
 1. 📦 **Download the project** and extract it **to the root of a drive or USB stick**  
    _(e.g., `C:\Album\` or `E:\Album\`)_.  
@@ -98,15 +96,56 @@ It works **completely offline**, directly from your local drive or USB stick.
 ---
 
 💡 *Because your memories deserve a place — even without internet.*
+
 ---
 
 ## ⚙️ Atualizações / Updating the album
 
-🇵🇹 Sempre que adicionares novas fotos ou pastas de meses ou anos, **executa novamente o `atualizar_album.bat`**.  
-O programa atualizará automaticamente o Ver album.HTML sem perder as tuas configurações.  
+🇵🇹 Sempre que adicionares novas fotos ou pastas de meses ou anos, **executa novamente o `update_album.bat`**.  
+O programa atualizará automaticamente o `Ver album.html` sem perder as tuas configurações.  
 
-🇬🇧 Every time you add new photos or folders of months or years, just **run `atualizar_album.bat` again**.  
-The app will refresh the View album.HTML automatically, keeping all your settings intact.
+🇬🇧 Every time you add new photos or folders of months or years, just **run `update_album.bat` again**.  
+The app will refresh the `View album.html` automatically, keeping all your settings intact.
+
+---
+
+## 🧹 Repor o Álbum / Reset the Album
+
+🇵🇹  
+Se quiseres restaurar o LOCALBUM ao estado original (por exemplo, eliminar configurações antigas ou começar um novo álbum):  
+
+1. Vai à pasta **Album**.  
+2. Executa o ficheiro **`reset_album.bat`**.  
+3. Escolhe o idioma (Português ou English).  
+4. Quando o processo terminar, o script perguntará:  
+   > “Queres criar um novo álbum agora?”  
+   - Responde **Sim (s)** para recriar imediatamente o álbum.  
+   - Ou **Não (n)** se quiseres fazê-lo mais tarde.  
+
+O script apaga apenas os ficheiros de configuração (`config.ini`, `Album.ini`) e o ficheiro HTML gerado (`Ver album.html` / `View album.html`) —  
+⚠️ **As tuas fotos e vídeos não são apagados.**
+
+💡 Caso o antivírus apresente algum alerta, **podes ignorar com segurança** —  
+os ficheiros `.bat` são totalmente inofensivos e apenas automatizam tarefas locais.
+
+---
+
+🇬🇧  
+If you want to restore LOCALBUM to its original state (for example, to remove old settings or start a new album):  
+
+1. Go to the **Album** folder.  
+2. Run **`reset_album.bat`**.  
+3. Choose your language (Portuguese or English).  
+4. When the process ends, the script will ask:  
+   > “Do you want to rebuild the album now?”  
+   - Answer **Yes (y)** to rebuild immediately.  
+   - Or **No (n)** to do it manually later.  
+
+The script deletes only configuration files (`config.ini`, `Album.ini`) and the generated HTML (`View album.html` / `Ver album.html`).  
+⚠️ **Your photos and videos are never deleted.**
+
+💡 If your antivirus shows a warning, you can safely ignore it —  
+these `.bat` scripts are 100% safe and run only locally.
 
 ---
 
@@ -132,12 +171,12 @@ Podes **renomear esta pasta principal** (ex.: `LOCAlbum`, `Memorias`, `FamiliaMa
 o programa continuará a funcionar sem problema.
 
 - 🚫 **Não alteres os seguintes nomes**, pois são obrigatórios para o funcionamento correto:
-- `Fotos/` → onde colocas as tuas fotos (organizadas por pastas de anos e meses)
-- `template.html`
-- `config.ini`
-- `gerar_album.ps1`
+  - `Fotos/` → onde colocas as tuas fotos (organizadas por pastas de anos e meses)
+  - `template.html`
+  - `config.ini`
+  - `gerar_album.ps1`
 
-- ⚙️ O ficheiro `update_album.bat` **pode ser renomeado** (por exemplo, “Atualizar Álbum.bat”) sem afetar nada.
+- ⚙️ Os ficheiros `update_album.bat` e `reset_album.bat` **podem ser renomeados** se quiseres (ex.: “Atualizar Álbum.bat”, “Repor Álbum.bat”) sem afetar nada.
 
 - ⚙️ O ficheiro `config.ini` é criado automaticamente e deve permanecer oculto.
 
@@ -154,6 +193,7 @@ bastando abrir o ficheiro `Ver album.html` (ou `View album.html`).
 ### 🇬🇧 **English**
 
 - 📁 The **main folder** is the one containing all LocAlbum files — for example:
+
 ```
 X:
 └── Album (main folder)
@@ -165,16 +205,17 @@ X:
       └── (ficheiros gerados automaticamente))
 └──View album.html (appears after run update_album.bat)
 ```
+
 You can **rename this main folder** (e.g., `LocAlbum`, `Memories`, `FamilyAlbum`, etc.) —  
 the program will continue to work normally.
 
 - 🚫 **Do not rename or move** the following items — they are required:
-- `Fotos/` → where you place your photos (organized by folders of years and months)
-- `template.html`
-- `config.ini`
-- `gerar_album.ps1`
+  - `Fotos/` → where you place your photos (organized by folders of years and months)
+  - `template.html`
+  - `config.ini`
+  - `gerar_album.ps1`
 
-- ⚙️ The `update_album.bat` file **can be renamed** (e.g., “Generate Album.bat”) safely.
+- ⚙️ The files `update_album.bat` and `reset_album.bat` **can be renamed** safely if you prefer friendlier names.
 
 - ⚙️ The `config.ini` file is generated automatically and should remain hidden.
 
@@ -218,5 +259,3 @@ If this project was useful to you, consider supporting its development.
 
 Distribuído sob a **licença MIT** — uso livre, com crédito ao autor.  
 Distributed under the **MIT License** — free to use, with author attribution.
-
----
