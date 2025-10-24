@@ -82,7 +82,7 @@ It works **completely offline**, directly from your local drive or USB stick.
    _(e.g., `C:\Album\` or `E:\Album\`)_.  
    > ⚠️ **Important:** the project must be placed directly in the drive root, **not inside subfolders**.
 
-2. 🖼️ **Place your photos and videos** inside the `Fotos/` folder, organized by **Year/Month**  
+2. 🖼️ **Place your photos and videos** inside the `Fotos/` folder, organized by folders **Year/Month**  
    _(e.g., `2024/January/`)_.
 
 3. ▶️ **Run** the `update_album.bat` **for the first time.**  
