@@ -55,26 +55,49 @@ It works **completely offline**, directly from your local drive or USB stick.
 
 ## 🚀 Como usar / How to use
 
-### 🇵🇹 Passos
+## 🇵🇹 **Passos**
 
-1. 📦 **Descarrega o projeto** e extrai para um disco ou pen vazio.  
-2. 🖼️ Coloca as tuas fotos e vídeos dentro da pasta `Album/Fotos/` seguindo a estrutura `Ano/Mês`.  
-3. ▶️ Executa o ficheiro `atualizar_album.bat` pela primeira vez.  
-   - Serás guiado por uma configuração rápida (idioma, nome do álbum, data opcional).  
-4. 💾 O ficheiro `Ver album.html` será criado automaticamente ao lado da pasta `Album`.  
-5. 🌐 Abre o ficheiro `Ver album.html` em qualquer navegador (Chrome, Edge, Firefox, etc).  
-6. 🎨 Escolhe o teu tema favorito e guarda as preferências.
+1. 📦 **Descarrega o projeto** e extrai-o **para a raiz de um disco ou pen USB**  
+   _(ex.: `C:\Album\` ou `E:\Album\`)_.  
+   > ⚠️ **Importante:** o projeto deve estar diretamente na raiz, **não dentro de subpastas**.
 
-### 🇬🇧 Steps
+2. 🖼️ **Coloca as tuas fotos e vídeos** dentro da pasta `Fotos/`, organizados por **Ano/Mês**  
+   _(ex.: `2024/Janeiro/`)_.
 
-1. 📦 **Download the project** and extract it anywhere.  
-2. 🖼️ Place your photos and videos inside `Album/Fotos/` following the `Year/Month` structure.  
-3. ▶️ Run `atualizar_album.bat` for the first time.  
-   - You'll go through a short setup (language, album name, optional birthdate).  
-4. 💾 The `View album.html` file will be automatically generated next to the Album folder.  
-5. 🌐 Open `View album.html` in any browser (Chrome, Edge, Firefox, etc).  
-6. 🎨 Choose your favorite theme and save your preferences.
+3. ▶️ **Executa o ficheiro** `update_album.bat` **pela primeira vez.**  
+   - Serás guiado por uma configuração rápida *(idioma, nome do álbum, data opcional de nascimento)*.
 
+4. 💾 O ficheiro `Ver album.html` será criado automaticamente **ao lado da pasta `Album/`.**
+
+5. 🌐 **Abre o ficheiro** `Ver album.html` **num navegador**  
+   _(Chrome, Edge, Firefox, etc.)_.
+
+6. 🎨 **Escolhe o teu tema favorito** e guarda as tuas preferências.
+
+---
+
+## 🇬🇧 **Steps**
+
+1. 📦 **Download the project** and extract it **to the root of a drive or USB stick**  
+   _(e.g., `C:\Album\` or `E:\Album\`)_.  
+   > ⚠️ **Important:** the project must be placed directly in the drive root, **not inside subfolders**.
+
+2. 🖼️ **Place your photos and videos** inside the `Fotos/` folder, organized by **Year/Month**  
+   _(e.g., `2024/January/`)_.
+
+3. ▶️ **Run** the `update_album.bat` **for the first time.**  
+   - You’ll go through a short setup *(language, album name, optional birthdate)*.
+
+4. 💾 The file `View album.html` (or `Ver album.html`) will be automatically created **next to the `Album/` folder.**
+
+5. 🌐 **Open the file** `View album.html` **in your browser**  
+   _(Chrome, Edge, Firefox, etc.)_.
+
+6. 🎨 **Choose your preferred theme** and save your settings.
+
+---
+
+💡 *Because your memories deserve a place — even without internet.*
 ---
 
 ## ⚙️ Atualizações / Updating the album
