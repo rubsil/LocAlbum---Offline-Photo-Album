@@ -110,19 +110,69 @@ The app will refresh the HTML automatically, keeping all your settings intact.
 
 ---
 
-## 🧠 Dicas e cuidados / Tips & Notes
+## 🧠 Dicas e Cuidados / Tips & Notes
 
-🇵🇹  
-- Não alteres manualmente a estrutura ou os nomes das pastas dentro de `Fotos/`.  
-- O ficheiro `config.ini` é gerado automaticamente e deve permanecer oculto.  
-- O álbum funciona **sem internet**, mas o navegador deve permitir execução de ficheiros locais (`file://`).  
-- Podes copiar o projeto completo para uma pen ou disco externo — funciona em qualquer PC Windows.  
+### 🇵🇹 **Português**
 
-🇬🇧  
-- Do not manually rename or move folders inside `Fotos/`.  
-- The `config.ini` file is generated automatically and should stay hidden.  
-- Works **completely offline**, but your browser must allow local file access (`file://`).  
-- You can copy the whole project to a USB drive — it works anywhere on Windows.
+- 📁 A **pasta principal** é aquela onde estão todos os ficheiros do LocAlbum — por exemplo:
+
+X:
+└── Album
+├── Fotos
+├── gerar_album.ps1 ├── update_album.bat ├── template.html ├── config.ini └── (ficheiros gerados automaticamente)
+
+Podes **renomear esta pasta principal** (ex.: `LocAlbum`, `Memorias`, `FamiliaMartim`, etc.) —  
+o programa continuará a funcionar sem problema.
+
+- 🚫 **Não alteres os seguintes nomes**, pois são obrigatórios para o funcionamento correto:
+- `Fotos/` → onde colocas as tuas fotos (organizadas por ano e mês)
+- `template.html`
+- `config.ini`
+- `gerar_album.ps1`
+
+- ⚙️ O ficheiro `update_album.bat` **pode ser renomeado** (por exemplo, “Atualizar Álbum.bat”) sem afetar nada.
+
+- ⚙️ O ficheiro `config.ini` é criado automaticamente e deve permanecer oculto.
+
+- 🌐 O álbum funciona **totalmente offline**, mas o navegador deve permitir abrir ficheiros locais (`file://`).
+
+- 💾 Podes copiar o projeto completo (a pasta principal) para uma pen USB ou disco externo —  
+funciona em **qualquer PC Windows**.
+
+- 📺 Também pode ser aberto em **Smart TVs** (com navegador compatível) ou em **macOS/Linux**,  
+bastando abrir o ficheiro `Ver album.html` (ou `View album.html`).
+
+---
+
+### 🇬🇧 **English**
+
+- 📁 The **main folder** is the one containing all LocAlbum files — for example:
+
+X:
+└── Album
+├── Fotos
+├── gerar_album.ps1 ├── update_album.bat ├── template.html ├── config.ini └── (auto-generated files)
+
+You can **rename this main folder** (e.g., `LocAlbum`, `Memories`, `FamilyAlbum`, etc.) —  
+the program will continue to work normally.
+
+- 🚫 **Do not rename or move** the following items — they are required:
+- `Fotos/` → where you place your photos (organized by year and month)
+- `template.html`
+- `config.ini`
+- `gerar_album.ps1`
+
+- ⚙️ The `update_album.bat` file **can be renamed** (e.g., “Update Album.bat”) safely.
+
+- ⚙️ The `config.ini` file is generated automatically and should remain hidden.
+
+- 🌐 Works **completely offline**, but your browser must allow local file access (`file://`).
+
+- 💾 You can copy the whole project (the main folder) to a USB stick or external drive —  
+it works on **any Windows PC**.
+
+- 📺 Also compatible with **Smart TVs** (with supported browsers) and **macOS/Linux**,  
+simply open the `View album.html` (or `Ver album.html`) file.
 
 ---
 
