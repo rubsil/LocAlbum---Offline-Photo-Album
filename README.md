@@ -202,7 +202,7 @@ If this project was useful to you, consider supporting its development.
 
 **Desenvolvido por Rúben Silva**  
 📧 [GitHub Profile](https://github.com/rubsil)  
-📸 Projeto: *LocAlbum - Offline Photo Album*  
+📸 Projeto: *LOCAlbum - Offline Photo Album*  
 
 💡 *Because your memories deserve a place — even without internet.*
 
@@ -214,7 +214,3 @@ Distribuído sob a **licença MIT** — uso livre, com crédito ao autor.
 Distributed under the **MIT License** — free to use, with author attribution.
 
 ---
-
-<p align="center">
-  <img src="assets/screenshot_dark.png" width="700" alt="Dark mode preview"/>
-</p>
