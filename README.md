@@ -1,8 +1,9 @@
 # 📸 LOCAlbum - Offline Photo Album
 
 <p align="center">
-  <img src="[[https://gist.githubusercontent.com/rubsil/9c79541cd373e7ef554346a5faf155fa/raw/a694bd08bbed3622ec1e564eb29358f1db48b8e0/localbum.png]([https://i.imgur.com/NIZtRbw.png)](https://github.com/rubsil/LOCAlbum-Offline-Photo-Album/blob/main/LOCAlbum.png](https://i.imgur.com/NIZtRbw.png))" alt="LocAlbum Logo" width="200"/>
+  <img src="https://i.imgur.com/NIZtRbw.png" alt="LOCAlbum Logo" width="200"/>
 </p>
+
 
 **🇵🇹 LOCAlbum** é uma aplicação leve e totalmente offline que transforma as tuas pastas de fotos num álbum moderno e interativo — com visualização por **anos e meses**, **slideshow automático**, e **temas personalizáveis**.  
 Funciona **sem internet**, diretamente a partir do teu disco local ou pen USB.
