@@ -161,9 +161,9 @@ X:
       ├── Fotos
       ├── [_1_]_update_album.bat
       ├── [_2_]_reset_album.bat
-      ├── gerar_album.ps1
-      ├── template.html
-      ├── config.ini
+      ├── gerar_album.ps1 (oculto)
+      ├── template.html (oculto)
+      ├── config.ini (oculto)
       └── (ficheiros gerados automaticamente))
 └──Ver album.html (aparece depois de correr o [_1_]_update_album.bat)
 ```
@@ -201,10 +201,10 @@ X:
       ├── Fotos
       ├── [_1_]_update_album.bat
       ├── [_2_]_reset_album.bat
-      ├── gerar_album.ps1
-      ├── template.html
-      ├── config.ini
-      └── (ficheiros gerados automaticamente))
+      ├── gerar_album.ps1 (hidden)
+      ├── template.html (hidden)
+      ├── config.ini (hidden)
+      └── (automatically generated files)
 └──View album.html (appears after run [_1_]_update_album.bat)
 ```
 
