@@ -36,7 +36,7 @@ It works **completely offline**, directly from your local drive or USB stick.
 | ⏱️ **Automatic slideshow** with adjustable speed | ⏱️ **Slideshow automático** com velocidade ajustável |
 | 👶 Optional **age display** based on birthdate | 👶 Cálculo de idade opcional (a partir da data de nascimento) |
 | 💾 Works **completely offline** — no internet needed | 💾 Funciona **totalmente offline** — nada é enviado para a internet |
-| 🔄 One-click update (`update_album.bat`) | 🔄 Atualização rápida com 1 clique (`update_album.bat`) |
+| 🔄 One-click update (`[_1_]_update_album.bat`) | 🔄 Atualização rápida com 1 clique (`[_1_]_update_album.bat`) |
 | 🌍 **Bilingual interface (PT/EN)** | 🌍 Interface **bilingue (PT/EN)** |
 
 ---
@@ -62,7 +62,7 @@ It works **completely offline**, directly from your local drive or USB stick.
 2. 🖼️ **Coloca as tuas fotos e vídeos** dentro da pasta `Fotos/`, organizadas por pastas **Ano/Mês**  
    _(ex.: `2024/Janeiro/`)_.
 
-3. ▶️ **Executa o ficheiro** `update_album.bat` **pela primeira vez.**  
+3. ▶️ **Executa o ficheiro** `[_1_]_update_album.bat` **pela primeira vez.**  
    - Serás guiado por uma configuração rápida *(idioma, nome do álbum, data opcional de nascimento)*.
 
 4. 💾 O ficheiro `Ver album.html` será criado automaticamente **ao lado da pasta `Album/`.**
@@ -83,7 +83,7 @@ It works **completely offline**, directly from your local drive or USB stick.
 2. 🖼️ **Place your photos and videos** inside the `Fotos/` folder, organized by folders **Year/Month**  
    _(e.g., `2024/January/`)_.
 
-3. ▶️ **Run** the `update_album.bat` **for the first time.**  
+3. ▶️ **Run** the `[_1_]_update_album.bat` **for the first time.**  
    - You’ll go through a short setup *(language, album name, optional birthdate)*.
 
 4. 💾 The file `View album.html` (or `Ver album.html`) will be automatically created **next to the `Album/` folder.**
@@ -101,10 +101,10 @@ It works **completely offline**, directly from your local drive or USB stick.
 
 ## ⚙️ Atualizações / Updating the album
 
-🇵🇹 Sempre que adicionares novas fotos ou pastas de meses ou anos, **executa novamente o `update_album.bat`**.  
+🇵🇹 Sempre que adicionares novas fotos ou pastas de meses ou anos, **executa novamente o `[_1_]_update_album.bat`**.  
 O programa atualizará automaticamente o `Ver album.html` sem perder as tuas configurações.  
 
-🇬🇧 Every time you add new photos or folders of months or years, just **run `update_album.bat` again**.  
+🇬🇧 Every time you add new photos or folders of months or years, just **run `[_1_]_update_album.bat` again**.  
 The app will refresh the `View album.html` automatically, keeping all your settings intact.
 
 ---
@@ -115,7 +115,7 @@ The app will refresh the `View album.html` automatically, keeping all your setti
 Se quiseres restaurar o LOCALBUM ao estado original (por exemplo, eliminar configurações antigas ou começar um novo álbum):  
 
 1. Vai à pasta **Album**.  
-2. Executa o ficheiro **`reset_album.bat`**.  
+2. Executa o ficheiro **`[_2_]_reset_album.bat`**.  
 3. Escolhe o idioma (Português ou English).  
 4. Quando o processo terminar, o script perguntará:  
    > “Queres criar um novo álbum agora?”  
@@ -134,7 +134,7 @@ os ficheiros `.bat` são totalmente inofensivos e apenas automatizam tarefas loc
 If you want to restore LOCALBUM to its original state (for example, to remove old settings or start a new album):  
 
 1. Go to the **Album** folder.  
-2. Run **`reset_album.bat`**.  
+2. Run **`[_2_]_reset_album.bat`**.  
 3. Choose your language (Portuguese or English).  
 4. When the process ends, the script will ask:  
    > “Do you want to rebuild the album now?”  
@@ -159,12 +159,13 @@ these `.bat` scripts are 100% safe and run only locally.
 X:
 └── Album (pasta principal)
       ├── Fotos
+      ├── [_1_]_update_album.bat
+      ├── [_2_]_reset_album.bat
       ├── gerar_album.ps1
-      ├── update_album.bat
       ├── template.html
       ├── config.ini
       └── (ficheiros gerados automaticamente))
-└──Ver album.html (aparece depois de correr o update_album.bat)
+└──Ver album.html (aparece depois de correr o [_1_]_update_album.bat)
 ```
 
 Podes **renomear esta pasta principal** (ex.: `LOCAlbum`, `Memorias`, `FamiliaMartim`, etc.) —  
@@ -176,7 +177,7 @@ o programa continuará a funcionar sem problema.
   - `config.ini`
   - `gerar_album.ps1`
 
-- ⚙️ Os ficheiros `update_album.bat` e `reset_album.bat` **podem ser renomeados** se quiseres (ex.: “Atualizar Álbum.bat”, “Repor Álbum.bat”) sem afetar nada.
+- ⚙️ Os ficheiros `[_1_]_update_album.bat` e `[_2_]_reset_album.bat` **podem ser renomeados** se quiseres (ex.: “Atualizar Álbum.bat”, “Repor Álbum.bat”) sem afetar nada.
 
 - ⚙️ O ficheiro `config.ini` é criado automaticamente e deve permanecer oculto.
 
@@ -198,12 +199,13 @@ bastando abrir o ficheiro `Ver album.html` (ou `View album.html`).
 X:
 └── Album (main folder)
       ├── Fotos
+      ├── [_1_]_update_album.bat
+      ├── [_2_]_reset_album.bat
       ├── gerar_album.ps1
-      ├── update_album.bat
       ├── template.html
       ├── config.ini
       └── (ficheiros gerados automaticamente))
-└──View album.html (appears after run update_album.bat)
+└──View album.html (appears after run [_1_]_update_album.bat)
 ```
 
 You can **rename this main folder** (e.g., `LocAlbum`, `Memories`, `FamilyAlbum`, etc.) —  
@@ -215,7 +217,7 @@ the program will continue to work normally.
   - `config.ini`
   - `gerar_album.ps1`
 
-- ⚙️ The files `update_album.bat` and `reset_album.bat` **can be renamed** safely if you prefer friendlier names.
+- ⚙️ The files `[_1_]_update_album.bat` and `[_2_]_reset_album.bat` **can be renamed** safely if you prefer friendlier names.
 
 - ⚙️ The `config.ini` file is generated automatically and should remain hidden.
 
