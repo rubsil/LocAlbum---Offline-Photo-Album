@@ -56,7 +56,7 @@ It works **completely offline**, directly from your local drive or USB stick.
 
 ### 🇵🇹 **Passos**
 
-1. 📦 **Descarrega o projeto** e extrai-o **para a raiz de um disco ou pen USB**  
+1. 📦 **Descarrega o projeto** completo através do botão verde "Code → Download ZIP" no topo da página e extrai-o **para a raiz de um disco ou pen USB**  
    _(ex.: `C:\Album\` ou `E:\Album\`)_  
    > ⚠️ **Importante:** o projeto deve estar diretamente na raiz, **não dentro de subpastas**.
 
