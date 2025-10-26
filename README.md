@@ -77,7 +77,7 @@ It works **completely offline**, directly from your local drive or USB stick.
 
 ### 🇬🇧 **Steps**
 
-1. 📦 **Download the project** and extract it **to the root of a drive or USB stick**  
+1. 📦 **Download the project** using the green "Code → Download ZIP" button at the top of the page and extract it **to the root of a drive or USB stick**  
    _(e.g., `C:\Album\` or `E:\Album\`)_.  
    > ⚠️ **Important:** the project must be placed directly in the drive root, **not inside subfolders**.
 
