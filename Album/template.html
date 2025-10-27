@@ -509,7 +509,7 @@ function show(i){
 
   const a = ageStr(it.date);
   ageEl.style.display = a ? 'block':'none';
-  ageEl.textContent = a ? ((Lang==='pt')?'🍼 ':'🍼 ')+a : '';
+  ageEl.textContent = a ? ((Lang==='pt')?'🍼 ':'🍼 ') + a : '';
 
   const currentMonthList=flatList.filter(x=>x.year===it.year&&x.month===it.month);
   const pos=currentMonthList.findIndex(x=>x.name===it.name)+1;
@@ -646,4 +646,5 @@ window.init        = init;
 
 </body>
 </html>
+
 
