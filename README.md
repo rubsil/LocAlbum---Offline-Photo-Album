@@ -1,7 +1,7 @@
 # 📸 LOCAlbum - Offline Photo Album
 
 <p align="center">
-  <img src="https://i.imgur.com/NIZtRbw.png" alt="LOCAlbum Logo" width="200"/>
+  <img src="https://i.imgur.com/2r820LY.png" alt="LOCAlbum Logo" width="200"/>
 </p>
 
 
