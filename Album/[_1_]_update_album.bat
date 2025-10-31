@@ -14,7 +14,7 @@ set "ROOT=%~dp0"
 if "%ROOT:~-1%"=="\" set "ROOT=%ROOT:~0,-1%"
 
 :: === caminhos importantes ===
-set "PS1=%ROOT%\gerar_album.ps1"
+set "PS1=%ROOT%\[1].ps1"
 set "INI=%ROOT%\config.ini"
 
 :: === garantir favicon ===
@@ -166,3 +166,4 @@ if not "%ERR%"=="0" (
 )
 echo.
 pause
+
