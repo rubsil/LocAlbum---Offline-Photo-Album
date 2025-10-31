@@ -74,7 +74,6 @@ It works **completely offline**, directly from your local drive or USB stick.
 
 7. 🎨 **Escolhe o teu tema favorito** e guarda as tuas preferências.
 
----
 
 ### 🇬🇧 **Steps**
 
@@ -104,17 +103,17 @@ It works **completely offline**, directly from your local drive or USB stick.
 
 ## ⚙️ Atualizações / Updating the album
 
-🇵🇹 Sempre que adicionares novas fotos ou pastas de meses ou anos, **executa novamente o `[_1_]_update_album.bat`**.  
+### 🇵🇹 Sempre que adicionares novas fotos ou pastas de meses ou anos, **executa novamente o `[_1_]_update_album.bat`**.  
 O programa atualizará automaticamente o `Ver album.html` sem perder as tuas configurações.  
 
-🇬🇧 Every time you add new photos or folders of months or years, just **run `[_1_]_update_album.bat` again**.  
+### 🇬🇧 Every time you add new photos or folders of months or years, just **run `[_1_]_update_album.bat` again**.  
 The app will refresh the `View album.html` automatically, keeping all your settings intact.
 
 ---
 
 ## 🧹 Repor o Álbum / Reset the Album
 
-🇵🇹  
+### 🇵🇹  
 Se quiseres restaurar o LOCALBUM ao estado original (por exemplo, eliminar configurações antigas ou começar um novo álbum):  
 
 1. Vai à pasta **Album**.  
@@ -131,9 +130,7 @@ O script apaga apenas os ficheiros de configuração (`config.ini`, `Album.ini`)
 💡 Caso o antivírus apresente algum alerta, **podes ignorar com segurança** —  
 os ficheiros `.bat` são totalmente inofensivos e apenas automatizam tarefas locais.
 
----
-
-🇬🇧  
+### 🇬🇧  
 If you want to restore LOCALBUM to its original state (for example, to remove old settings or start a new album):  
 
 1. Go to the **Album** folder.  
@@ -151,9 +148,10 @@ The script deletes only configuration files (`config.ini`, `Album.ini`) and the 
 these `.bat` scripts are 100% safe and run only locally.
 
 ---
-🧩 Organizar fotos automaticamente / Auto organize photos
 
-🇵🇹
+## 🧩 Organizar fotos automaticamente / Auto organize photos
+
+### 🇵🇹
 Se tens milhares de fotos desorganizadas (por exemplo, todas juntas numa única pasta), o LOCAlbum inclui uma ferramenta que as organiza automaticamente por pastas Ano/Mês com base na data original da foto.
 
 Vai à pasta Album.
@@ -172,7 +170,8 @@ O programa criará automaticamente pastas por ano e mês, e moverá as fotos par
 __FICHEIROS SEM DATA - VERIFICAR E ORDENAR MANUALMENTE
 para que possas revê-las e organizá-las depois por ti mesmo.
 
-🇬🇧
+
+### 🇬🇧
 If you have thousands of unorganized photos (for example, all in one folder), LOCAlbum includes a tool that automatically organizes them by folders Year/Month based on each photo’s original date.
 
 Go to the Album folder.
@@ -191,7 +190,9 @@ The program will automatically create folders by year and month, and copy the ph
 __FILES WITHOUT DATE - CHECK AND SORT MANUALLY
 so you can review and organize them later by yourself.
 
-🖼️ Screenshots / Capturas de ecrã
+---
+
+## 🖼️ Screenshots / Capturas de ecrã
 LOADING....
 Em breve / Soon
 
@@ -240,7 +241,6 @@ funciona em **qualquer PC Windows**.
 - 📺 Também pode ser aberto em **Smart TVs** (com navegador compatível) ou em **macOS/Linux**,  
 bastando abrir o ficheiro `Ver album.html` (ou `View album.html`).
 
----
 
 ### 🇬🇧 **English**
 
