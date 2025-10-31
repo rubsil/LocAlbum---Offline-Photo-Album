@@ -62,16 +62,17 @@ It works **completely offline**, directly from your local drive or USB stick.
 
 2. 🖼️ **Coloca as tuas fotos e vídeos** dentro da pasta `Fotos/`, organizadas por pastas **Ano/Mês**  
    _(ex.: `2024/Janeiro/`)_.
+   > 💡 Se as tuas fotos estiverem todas misturadas numa só pasta, podes usar o [_3_]_organize_fotos.bat para as organizar automaticamente por ano e mês antes de criares o álbum.
 
-3. ▶️ **Executa o ficheiro** `[_1_]_update_album.bat` **pela primeira vez.**  
+4. ▶️ **Executa o ficheiro** `[_1_]_update_album.bat` **pela primeira vez.**  
    - Serás guiado por uma configuração rápida *(idioma, nome do álbum, data opcional de nascimento)*.
 
-4. 💾 O ficheiro `Ver album.html` será criado automaticamente **ao lado da pasta `Album/`.**
+5. 💾 O ficheiro `Ver album.html` será criado automaticamente **ao lado da pasta `Album/`.**
 
-5. 🌐 **Abre o ficheiro** `Ver album.html` **num navegador**  
+6. 🌐 **Abre o ficheiro** `Ver album.html` **num navegador**  
    _(Chrome, Edge, Firefox, etc.)_.
 
-6. 🎨 **Escolhe o teu tema favorito** e guarda as tuas preferências.
+7. 🎨 **Escolhe o teu tema favorito** e guarda as tuas preferências.
 
 ---
 
@@ -83,16 +84,17 @@ It works **completely offline**, directly from your local drive or USB stick.
 
 2. 🖼️ **Place your photos and videos** inside the `Fotos/` folder, organized by folders **Year/Month**  
    _(e.g., `2024/January/`)_.
+   > 💡 If your photos are all in one unorganized folder, you can use [_3_]_organize_fotos.bat to automatically sort them by year and month before creating your album.
 
-3. ▶️ **Run** the `[_1_]_update_album.bat` **for the first time.**  
+4. ▶️ **Run** the `[_1_]_update_album.bat` **for the first time.**  
    - You’ll go through a short setup *(language, album name, optional birthdate)*.
 
-4. 💾 The file `View album.html` (or `Ver album.html`) will be automatically created **next to the `Album/` folder.**
+5. 💾 The file `View album.html` (or `Ver album.html`) will be automatically created **next to the `Album/` folder.**
 
-5. 🌐 **Open the file** `View album.html` **in your browser**  
+6. 🌐 **Open the file** `View album.html` **in your browser**  
    _(Chrome, Edge, Firefox, etc.)_.
 
-6. 🎨 **Choose your preferred theme** and save your settings.
+7. 🎨 **Choose your preferred theme** and save your settings.
 
 ---
 
@@ -149,6 +151,51 @@ The script deletes only configuration files (`config.ini`, `Album.ini`) and the 
 these `.bat` scripts are 100% safe and run only locally.
 
 ---
+🧩 Organizar fotos automaticamente / Auto organize photos
+
+🇵🇹
+Se tens milhares de fotos desorganizadas (por exemplo, todas juntas numa única pasta), o LOCAlbum inclui uma ferramenta que as organiza automaticamente por pastas Ano/Mês com base na data original da foto.
+
+Vai à pasta Album.
+
+Executa o ficheiro [_3_]_organize_fotos.bat.
+
+Escolhe o idioma (Português ou English).
+
+Seleciona a pasta de origem (onde estão as fotos desorganizadas).
+
+Escolhe a pasta de destino (ex.: Album/Fotos/).
+
+O programa criará automaticamente pastas por ano e mês, e moverá as fotos para os locais corretos.
+
+📁 As fotos sem informação de data serão colocadas numa pasta especial:
+__FICHEIROS SEM DATA - VERIFICAR E ORDENAR MANUALMENTE
+para que possas revê-las e organizá-las depois por ti mesmo.
+
+🇬🇧
+If you have thousands of unorganized photos (for example, all in one folder), LOCAlbum includes a tool that automatically organizes them by folders Year/Month based on each photo’s original date.
+
+Go to the Album folder.
+
+Run [_3_]_organize_fotos.bat.
+
+Choose your language (Portuguese or English).
+
+Select the source folder (where your unorganized photos are).
+
+Select the destination folder (e.g., Album/Fotos/).
+
+The program will automatically create folders by year and month, and copy the photos to the correct locations.
+
+📁 Photos without date information will be placed in a special folder:
+__FILES WITHOUT DATE - CHECK AND SORT MANUALLY
+so you can review and organize them later by yourself.
+
+🖼️ Screenshots / Capturas de ecrã
+LOADING....
+Em breve / Soon
+
+---
 
 ## 🧠 Dicas e Cuidados / Tips & Notes
 
@@ -162,9 +209,11 @@ X:
       ├── Fotos
       ├── [_1_]_update_album.bat
       ├── [_2_]_reset_album.bat
-      ├── gerar_album.ps1 (oculto)
+      ├── [_3_]_organize_fotos.bat
       ├── template.html (oculto)
       ├── config.ini (oculto)
+      ├── z1.ps1 (oculto)
+      ├── z3.ps1 (oculto)
       └── (ficheiros gerados automaticamente))
 └──Ver album.html (aparece depois de correr o [_1_]_update_album.bat)
 ```
@@ -176,7 +225,8 @@ o programa continuará a funcionar sem problema.
   - `Fotos/` → onde colocas as tuas fotos (organizadas por pastas de anos e meses)
   - `template.html`
   - `config.ini`
-  - `gerar_album.ps1`
+  - `z1.ps1`
+  - `z3.ps1`
 
 - ⚙️ Os ficheiros `[_1_]_update_album.bat` e `[_2_]_reset_album.bat` **podem ser renomeados** se quiseres (ex.: “Atualizar Álbum.bat”, “Repor Álbum.bat”) sem afetar nada.
 
@@ -202,9 +252,11 @@ X:
       ├── Fotos
       ├── [_1_]_update_album.bat
       ├── [_2_]_reset_album.bat
-      ├── gerar_album.ps1 (hidden)
+      ├── [_3_]_organize_fotos.bat
       ├── template.html (hidden)
       ├── config.ini (hidden)
+      ├── z1.ps1 (hidden)
+      ├── z3.ps1 (hidden)
       └── (automatically generated files)
 └──View album.html (appears after run [_1_]_update_album.bat)
 ```
@@ -216,7 +268,7 @@ the program will continue to work normally.
   - `Fotos/` → where you place your photos (organized by folders of years and months)
   - `template.html`
   - `config.ini`
-  - `gerar_album.ps1`
+  - `z1.ps1`
 
 - ⚙️ The files `[_1_]_update_album.bat` and `[_2_]_reset_album.bat` **can be renamed** safely if you prefer friendlier names.
 
