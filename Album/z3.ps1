@@ -57,14 +57,56 @@ Get-ChildItem -Path $sourceFolder -Include *.jpg, *.jpeg, *.png -Recurse | ForEa
     $file = $_.FullName
     $name = $_.Name
     try {
+# === determinar data da foto ===
+$photoDate = $null
+$name = $_.Name
+
+# 1️⃣ tentar extrair a data a partir do nome do ficheiro
+$patterns = @(
+    '(\d{4})(\d{2})(\d{2})[_-](\d{2})(\d{2})(\d{2})',
+    '(\d{4})(\d{2})(\d{2})[_-]',
+    '(\d{8})[_-]',
+    '(\d{4})[-_](\d{2})[-_](\d{2})',
+    'PXL_(\d{4})(\d{2})(\d{2})_',
+    'IMG_(\d{4})(\d{2})(\d{2})',
+    'VID_(\d{4})(\d{2})(\d{2})',
+    'PHOTO_(\d{4})(\d{2})(\d{2})'
+)
+
+foreach ($pat in $patterns) {
+    if ($name -match $pat) {
+        try {
+            $y = [int]$matches[1]; $m = [int]$matches[2]; $d = [int]$matches[3]
+            $photoDate = Get-Date -Year $y -Month $m -Day $d
+            break
+        } catch { }
+    }
+}
+
+# 2️⃣ se não encontrou, tentar EXIF (DateTaken)
+if (-not $photoDate) {
+    try {
         $img = [System.Drawing.Image]::FromFile($file)
         $prop = $img.GetPropertyItem(36867) # DateTaken
         $dateTaken = [System.Text.Encoding]::ASCII.GetString($prop.Value).Trim([char]0)
         $img.Dispose()
 
         $dt = [datetime]::ParseExact($dateTaken, "yyyy:MM:dd HH:mm:ss", $null)
-        $year = $dt.Year
-        $month = $dt.ToString("MMMM", [System.Globalization.CultureInfo]::GetCultureInfo($lang))
+        $photoDate = $dt
+    } catch {
+        $photoDate = $null
+    }
+}
+
+# 3️⃣ fallback (sem EXIF e sem data no nome)
+if (-not $photoDate) {
+    $photoDate = $_.LastWriteTime
+}
+
+# criar estrutura de pastas ano/mês
+$year = $photoDate.Year
+$month = $photoDate.ToString("MMMM", [System.Globalization.CultureInfo]::GetCultureInfo($lang))
+
 
         $targetPath = Join-Path -Path $destFolder -ChildPath "$year\$month"
         if (!(Test-Path $targetPath)) { New-Item -ItemType Directory -Path $targetPath -Force | Out-Null }
@@ -94,4 +136,5 @@ Write-Host ""
 Write-Host "Pressiona qualquer tecla para sair... / Press any key to exit..."
 [System.Console]::ReadKey() | Out-Null
 exit
+
 
