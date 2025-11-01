@@ -1,0 +1,9 @@
+🇵🇹 Coloca aqui as tuas fotos, organizadas por pastas de ano e mês.
+Exemplo:
+2024/Janeiro/
+2024/Fevereiro/
+
+🇬🇧 Place your photos here, organized by year and month folders.
+Example:
+2024/January/
+2024/February/
