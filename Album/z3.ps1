@@ -33,10 +33,13 @@ if ($lang -eq "en-US") {
     $noDateFolderName = "__FICHEIROS SEM DATA - VERIFICAR E ORDENAR MANUALMENTE"
 }
 
-function Select-FolderDialog($description) {
+function Select-FolderDialog($description, $initialPath = $null) {
     $dialog = New-Object System.Windows.Forms.FolderBrowserDialog
     $dialog.Description = $description
     $dialog.ShowNewFolderButton = $true
+    if ($initialPath -and (Test-Path $initialPath)) {
+        $dialog.SelectedPath = (Resolve-Path $initialPath)
+    }
     if ($dialog.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
         return $dialog.SelectedPath
     } else {
@@ -51,7 +54,8 @@ Write-Host "-------------------------------------------"
 $sourceFolder = Select-FolderDialog $msg_select_source
 if (-not $sourceFolder) { Write-Host $msg_cancel; Pause; exit }
 
-$destFolder = Select-FolderDialog $msg_select_dest
+$defaultDest = Join-Path (Split-Path -Parent $MyInvocation.MyCommand.Path) "Fotos"
+$destFolder = Select-FolderDialog $msg_select_dest $defaultDest
 if (-not $destFolder) { Write-Host $msg_cancel; Pause; exit }
 Get-ChildItem -Path $sourceFolder -Include *.jpg, *.jpeg, *.png -Recurse | ForEach-Object {
     $file = $_.FullName
@@ -136,5 +140,6 @@ Write-Host ""
 Write-Host "Pressiona qualquer tecla para sair... / Press any key to exit..."
 [System.Console]::ReadKey() | Out-Null
 exit
+
 
 
