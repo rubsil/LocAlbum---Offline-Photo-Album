@@ -42,7 +42,7 @@ It works **completely offline**, directly from your local drive or USB stick.
 
 ---
 
-## 📂 Estrutura de pastas / Folder structure
+📂 Estrutura de pastas / Folder structure
 
 > ⚠️ **IMPORTANTE:** As pastas dos meses devem ser criadas em português ou inglês, sem acentos.  
 > (Exemplo: `Janeiro` ou `January`)
@@ -54,7 +54,7 @@ It works **completely offline**, directly from your local drive or USB stick.
 
 ## 🚀 Como usar / How to use
 
-### 🇵🇹 **Passos**
+🇵🇹 **Passos**
 
 1. 📦 **Descarrega o projeto** completo através do botão verde "Code → Download ZIP" no topo da página e extrai-o **para a raiz de um disco ou pen USB**  
    _(ex.: `C:\Album\` ou `E:\Album\`)_  
@@ -75,7 +75,7 @@ It works **completely offline**, directly from your local drive or USB stick.
 7. 🎨 **Escolhe o teu tema favorito** e guarda as tuas preferências.
 
 
-### 🇬🇧 **Steps**
+🇬🇧 **Steps**
 
 1. 📦 **Download the project** using the green "Code → Download ZIP" button at the top of the page and extract it **to the root of a drive or USB stick**  
    _(e.g., `C:\Album\` or `E:\Album\`)_.  
@@ -103,17 +103,17 @@ It works **completely offline**, directly from your local drive or USB stick.
 
 ## ⚙️ Atualizações / Updating the album
 
-### 🇵🇹 Sempre que adicionares novas fotos ou pastas de meses ou anos, **executa novamente o `[_1_]_update_album.bat`**.  
+🇵🇹 Sempre que adicionares novas fotos ou pastas de meses ou anos, **executa novamente o `[_1_]_update_album.bat`**.  
 O programa atualizará automaticamente o `Ver album.html` sem perder as tuas configurações.  
 
-### 🇬🇧 Every time you add new photos or folders of months or years, just **run `[_1_]_update_album.bat` again**.  
+🇬🇧 Every time you add new photos or folders of months or years, just **run `[_1_]_update_album.bat` again**.  
 The app will refresh the `View album.html` automatically, keeping all your settings intact.
 
 ---
 
 ## 🧹 Repor o Álbum / Reset the Album
 
-### 🇵🇹  
+🇵🇹  
 Se quiseres restaurar o LOCALBUM ao estado original (por exemplo, eliminar configurações antigas ou começar um novo álbum):  
 
 1. Vai à pasta **Album**.  
@@ -130,7 +130,7 @@ O script apaga apenas os ficheiros de configuração (`config.ini`, `Album.ini`)
 💡 Caso o antivírus apresente algum alerta, **podes ignorar com segurança** —  
 os ficheiros `.bat` são totalmente inofensivos e apenas automatizam tarefas locais.
 
-### 🇬🇧  
+🇬🇧  
 If you want to restore LOCALBUM to its original state (for example, to remove old settings or start a new album):  
 
 1. Go to the **Album** folder.  
@@ -151,7 +151,7 @@ these `.bat` scripts are 100% safe and run only locally.
 
 ## 🧩 Organizar fotos automaticamente / Auto organize photos
 
-### 🇵🇹
+🇵🇹
 Se tens milhares de fotos desorganizadas (por exemplo, todas juntas numa única pasta), o LOCAlbum inclui uma ferramenta que as organiza automaticamente por pastas Ano/Mês com base na data original da foto.
 
 Vai à pasta Album.
@@ -171,7 +171,7 @@ __FICHEIROS SEM DATA - VERIFICAR E ORDENAR MANUALMENTE
 para que possas revê-las e organizá-las depois por ti mesmo.
 
 
-### 🇬🇧
+🇬🇧
 If you have thousands of unorganized photos (for example, all in one folder), LOCAlbum includes a tool that automatically organizes them by folders Year/Month based on each photo’s original date.
 
 Go to the Album folder.
@@ -200,7 +200,7 @@ Em breve / Soon
 
 ## 🧠 Dicas e Cuidados / Tips & Notes
 
-### 🇵🇹 **Português**
+🇵🇹 **Português**
 
 - 📁 A **pasta principal** é aquela onde estão todos os ficheiros do LocAlbum — por exemplo:
 
@@ -242,7 +242,7 @@ funciona em **qualquer PC Windows**.
 bastando abrir o ficheiro `Ver album.html` (ou `View album.html`).
 
 
-### 🇬🇧 **English**
+🇬🇧 **English**
 
 - 📁 The **main folder** is the one containing all LocAlbum files — for example:
 
