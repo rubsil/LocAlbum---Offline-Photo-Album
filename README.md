@@ -200,6 +200,26 @@ X:
 
 ---
 
+### ⚠️ Nota sobre Antivírus / Antivirus Notice
+
+🇵🇹  
+Alguns antivírus ou o Microsoft Defender podem **mostrar um aviso falso** ao abrir o ficheiro `LOCALBUM - Manager.bat`.  
+Isto acontece porque o Windows reconhece scripts `.bat` como “automatizações do sistema”.  
+🔒 **O LOCALBUM é 100% seguro** — não se liga à Internet, não altera o sistema e não contém código malicioso.  
+
+> 💡 Podes verificar o conteúdo do ficheiro em qualquer editor de texto (como o Notepad) — é totalmente transparente e legível.  
+> Nenhuma informação é enviada para fora do teu computador.
+
+🇬🇧  
+Some antivirus programs or Microsoft Defender may **show a false alert** when opening the `LOCALBUM - Manager.bat` file.  
+This happens because Windows often flags `.bat` scripts as “system automation tools.”  
+🔒 **LOCALBUM is 100% safe** — it runs fully offline, does not modify your system, and contains no malicious code.  
+
+> 💡 You can open the file with any text editor (like Notepad) to check its contents — it’s completely transparent and human-readable.  
+> No information is ever sent outside your computer.
+
+---
+
 ## 💝 Apoia o projeto / Support the project
 
 Se este projeto te foi útil, considera apoiar o desenvolvimento.  
