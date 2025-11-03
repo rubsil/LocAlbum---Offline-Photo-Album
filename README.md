@@ -6,7 +6,7 @@
 
 ---
 
-## 🆕 v2025.11 — Unified Manager Edition (Single .BAT Version)
+## 🆕 v1.2 — Unified Manager Edition (Single .BAT Version)
 > ✅ Todas as funções num só ficheiro bilingue — **`LOCALBUM - Manager.bat`**  
 > 📁 Ficheiros técnicos ficam ocultos automaticamente após a primeira execução.
 
