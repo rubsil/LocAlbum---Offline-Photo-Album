@@ -120,7 +120,7 @@ It works **completely offline**, directly from your local drive or USB stick.
 ---
 
 ## 📁 Estrutura de Pastas / Folder Structure
-
+```
 X:
 └── Album
       ├── Fotos
@@ -131,7 +131,7 @@ X:
       ├── z1.ps1, z3.ps1 (ocultos)
       └── (ficheiros criados automaticamente)
 └── Ver album.html / View album.html
-
+```
 🪄 Após a primeira execução, **os ficheiros técnicos são ocultados automaticamente**,  
 restando apenas o **`LOCALBUM - Manager.bat`** visível — simples, limpo e pronto a usar.
 
@@ -142,7 +142,7 @@ restando apenas o **`LOCALBUM - Manager.bat`** visível — simples, limpo e pro
 ### 🇵🇹 **Português**
 
 - 📁 A **pasta principal** é aquela onde estão todos os ficheiros do LOCAlbum — por exemplo:
-
+```
 X:
 └── Album
       ├── Fotos
@@ -153,7 +153,7 @@ X:
       ├── z1.ps1, z3.ps1 (ocultos)
       └── (ficheiros criados automaticamente)
 └── Ver album.html (aparece após a primeira execução)
-
+```
 - 🚫 **Não alteres nem movas** as seguintes pastas/ficheiros:
   - `Fotos/`
   - `template.html`
@@ -170,7 +170,7 @@ X:
 ### 🇬🇧 **English**
 
 - 📁 The **main folder** is the one containing all LOCAlbum files — for example:
-
+```
 X:
 └── Album
       ├── Fotos
@@ -181,7 +181,7 @@ X:
       ├── z1.ps1, z3.ps1 (hidden)
       └── (automatically generated files)
 └── View album.html (appears after first run)
-
+```
 - 🚫 **Do not rename or move** the following folders/files:
   - `Fotos/`
   - `template.html`
