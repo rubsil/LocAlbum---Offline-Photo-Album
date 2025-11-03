@@ -4,6 +4,13 @@
   <img src="https://i.imgur.com/2r820LY.png" alt="LOCAlbum Logo" width="200"/>
 </p>
 
+---
+
+## 🆕 v2025.11 — Unified Manager Edition (Single .BAT Version)
+> ✅ Todas as funções num só ficheiro bilingue — **`LOCALBUM - Manager.bat`**  
+> 📁 Ficheiros técnicos ficam ocultos automaticamente após a primeira execução.
+
+---
 
 **🇵🇹 LOCAlbum** é uma aplicação leve e totalmente offline que transforma as tuas pastas de fotos num álbum moderno e interativo — com visualização por **anos e meses**, **slideshow automático**, e **temas personalizáveis**.  
 Funciona **sem internet**, diretamente a partir do teu disco local ou pen USB.
@@ -37,18 +44,8 @@ It works **completely offline**, directly from your local drive or USB stick.
 | ⏱️ **Automatic slideshow** with adjustable speed | ⏱️ **Slideshow automático** com velocidade ajustável |
 | 👶 Optional **age display** based on birthdate | 👶 Cálculo de idade opcional (a partir da data de nascimento) |
 | 💾 Works **completely offline** — no internet needed | 💾 Funciona **totalmente offline** — nada é enviado para a internet |
-| 🔄 One-click update (`[_1_]_update_album.bat`) | 🔄 Atualização rápida com 1 clique (`[_1_]_update_album.bat`) |
+| 🔄 Unified in one tool: **Manager.bat** | 🔄 Tudo num único ficheiro: **Manager.bat** |
 | 🌍 **Bilingual interface (PT/EN)** | 🌍 Interface **bilingue (PT/EN)** |
-
----
-
-📂 Estrutura de pastas / Folder structure
-
-> ⚠️ **IMPORTANTE:** As pastas dos meses devem ser criadas em português ou inglês, sem acentos.  
-> (Exemplo: `Janeiro` ou `January`)
-
-> ⚠️ **IMPORTANT:** Month folders should be created in Portuguese or English, without accents.  
-> (Example: `Janeiro` or `January`)
 
 ---
 
@@ -56,231 +53,150 @@ It works **completely offline**, directly from your local drive or USB stick.
 
 🇵🇹 **Passos**
 
-1. 📦 **Descarrega o projeto** completo através do botão verde "Code → Download ZIP" no topo da página e extrai-o **para a raiz de um disco ou pen USB**  
-   _(ex.: `C:\Album\` ou `E:\Album\`)_  
+1. 📦 **Descarrega o projeto completo** através do botão verde **“Code → Download ZIP”** no topo da página e extrai-o **para a raiz de um disco ou pen USB**  
+   _(ex.: `C:\Album\` ou `E:\Album\`)_.  
    > ⚠️ **Importante:** o projeto deve estar diretamente na raiz, **não dentro de subpastas**.
 
-2. 🖼️ **Coloca as tuas fotos e vídeos** dentro da pasta `Fotos/`, organizadas por pastas **Ano/Mês**  
-   _(ex.: `2024/Janeiro/`)_.
-   > 💡 Se as tuas fotos estiverem todas misturadas numa só pasta, podes usar o [_3_]_organize_fotos.bat para as organizar automaticamente por ano e mês antes de criares o álbum.
+2. ▶️ **Executa o ficheiro** `LOCALBUM - Manager.bat`.  
+   - Este é agora o **único ficheiro necessário**: todas as funções estão reunidas aqui.  
+   - Ao abrir, escolhe o idioma (**Português / English**).  
+   - O menu principal mostra quatro opções:
+     ```
+     [1] Organizar fotos automaticamente
+     [2] Atualizar / Criar álbum (HTML)
+     [3] Repor / Resetar o álbum
+     [i] Informações / Ajuda
+     [0] Sair
+     ```
+     > 💡 A opção `[i]` mostra explicações detalhadas sobre cada função.
 
-4. ▶️ **Executa o ficheiro** `[_1_]_update_album.bat` **pela primeira vez.**  
-   - Serás guiado por uma configuração rápida *(idioma, nome do álbum, data opcional de nascimento)*.
+3. 📁 **Organiza e cria o teu álbum**:
+   - **[1]** organiza automaticamente milhares de fotos por pastas **Ano/Mês** (sem duplicados).  
+   - **[2]** cria ou atualiza o álbum HTML (`Ver album.html` / `View album.html`).  
+   - **[3]** repõe o projeto ao estado original, sem apagar as tuas fotos.  
+   - **[i]** mostra ajuda e instruções.
 
-5. 💾 O ficheiro `Ver album.html` será criado automaticamente **ao lado da pasta `Album/`.**
+4. 💾 O ficheiro `Ver album.html` será criado automaticamente **ao lado da pasta `Album/`.**
 
-6. 🌐 **Abre o ficheiro** `Ver album.html` **num navegador**  
+5. 🌐 **Abre o ficheiro** `Ver album.html` (ou `View album.html`) **no navegador**  
    _(Chrome, Edge, Firefox, etc.)_.
 
-7. 🎨 **Escolhe o teu tema favorito** e guarda as tuas preferências.
+6. 🎨 **Escolhe o tema**, vê as fotos e guarda as tuas preferências.
 
+---
 
 🇬🇧 **Steps**
 
-1. 📦 **Download the project** using the green "Code → Download ZIP" button at the top of the page and extract it **to the root of a drive or USB stick**  
+1. 📦 **Download the full project** using the green **“Code → Download ZIP”** button at the top of this page and extract it **to the root of a drive or USB stick**  
    _(e.g., `C:\Album\` or `E:\Album\`)_.  
-   > ⚠️ **Important:** the project must be placed directly in the drive root, **not inside subfolders**.
+   > ⚠️ **Important:** the project must be placed directly in the drive root — **not inside subfolders**.
 
-2. 🖼️ **Place your photos and videos** inside the `Fotos/` folder, organized by folders **Year/Month**  
-   _(e.g., `2024/January/`)_.
-   > 💡 If your photos are all in one unorganized folder, you can use [_3_]_organize_fotos.bat to automatically sort them by year and month before creating your album.
+2. ▶️ **Run the file** `LOCALBUM - Manager.bat`.  
+   - This is now the **only file you need** — all functions are unified here.  
+   - When it opens, choose your language (**Portuguese / English**).  
+   - The main menu offers four options:
+     ```
+     [1] Auto-organize photos
+     [2] Update / Create album (HTML)
+     [3] Reset album
+     [i] Information / Help
+     [0] Exit
+     ```
+     > 💡 Option `[i]` displays detailed explanations about each feature.
 
-4. ▶️ **Run** the `[_1_]_update_album.bat` **for the first time.**  
-   - You’ll go through a short setup *(language, album name, optional birthdate)*.
+3. 📁 **Organize and generate your album**:
+   - **[1]** automatically sorts thousands of photos by **Year/Month** (ignores duplicates).  
+   - **[2]** creates or updates your HTML album (`View album.html` / `Ver album.html`).  
+   - **[3]** resets the project to its original state without deleting your photos.  
+   - **[i]** shows help and instructions.
 
-5. 💾 The file `View album.html` (or `Ver album.html`) will be automatically created **next to the `Album/` folder.**
+4. 💾 The file `View album.html` will be automatically created **next to the `Album/` folder.**
 
-6. 🌐 **Open the file** `View album.html` **in your browser**  
+5. 🌐 **Open the file** `View album.html` (or `Ver album.html`) **in your browser**  
    _(Chrome, Edge, Firefox, etc.)_.
 
-7. 🎨 **Choose your preferred theme** and save your settings.
+6. 🎨 **Pick your favorite theme**, browse your photos, and enjoy your offline album.
 
 ---
 
-💡 *Because your memories deserve a place — even without internet.*
+## 📁 Estrutura de Pastas / Folder Structure
 
----
+X:
+└── Album
+      ├── Fotos
+      ├── config (oculto)
+      ├── LOCALBUM - Manager.bat ← único ficheiro principal
+      ├── favicon.png (oculto)
+      ├── template.html (oculto)
+      ├── z1.ps1, z3.ps1 (ocultos)
+      └── (ficheiros criados automaticamente)
+└── Ver album.html / View album.html
 
-## ⚙️ Atualizações / Updating the album
-
-🇵🇹 Sempre que adicionares novas fotos ou pastas de meses ou anos, **executa novamente o `[_1_]_update_album.bat`**.  
-O programa atualizará automaticamente o `Ver album.html` sem perder as tuas configurações.  
-
-🇬🇧 Every time you add new photos or folders of months or years, just **run `[_1_]_update_album.bat` again**.  
-The app will refresh the `View album.html` automatically, keeping all your settings intact.
-
----
-
-## 🧹 Repor o Álbum / Reset the Album
-
-🇵🇹  
-Se quiseres restaurar o LOCALBUM ao estado original (por exemplo, eliminar configurações antigas ou começar um novo álbum):  
-
-1. Vai à pasta **Album**.  
-2. Executa o ficheiro **`[_2_]_reset_album.bat`**.  
-3. Escolhe o idioma (Português ou English).  
-4. Quando o processo terminar, o script perguntará:  
-   > “Queres criar um novo álbum agora?”  
-   - Responde **Sim (s)** para recriar imediatamente o álbum.  
-   - Ou **Não (n)** se quiseres fazê-lo mais tarde.  
-
-O script apaga apenas os ficheiros de configuração (`config.ini`, `Album.ini`) e o ficheiro HTML gerado (`Ver album.html` / `View album.html`) —  
-⚠️ **As tuas fotos e vídeos não são apagados.**
-
-💡 Caso o antivírus apresente algum alerta, **podes ignorar com segurança** —  
-os ficheiros `.bat` são totalmente inofensivos e apenas automatizam tarefas locais.
-
-🇬🇧  
-If you want to restore LOCALBUM to its original state (for example, to remove old settings or start a new album):  
-
-1. Go to the **Album** folder.  
-2. Run **`[_2_]_reset_album.bat`**.  
-3. Choose your language (Portuguese or English).  
-4. When the process ends, the script will ask:  
-   > “Do you want to rebuild the album now?”  
-   - Answer **Yes (y)** to rebuild immediately.  
-   - Or **No (n)** to do it manually later.  
-
-The script deletes only configuration files (`config.ini`, `Album.ini`) and the generated HTML (`View album.html` / `Ver album.html`).  
-⚠️ **Your photos and videos are never deleted.**
-
-💡 If your antivirus shows a warning, you can safely ignore it —  
-these `.bat` scripts are 100% safe and run only locally.
-
----
-
-## 🧩 Organizar fotos automaticamente / Auto organize photos
-
-🇵🇹
-Se tens milhares de fotos desorganizadas (por exemplo, todas juntas numa única pasta), o LOCAlbum inclui uma ferramenta que as organiza automaticamente por pastas Ano/Mês com base na data original da foto.
-
-Vai à pasta Album.
-
-Executa o ficheiro [_3_]_organize_fotos.bat.
-
-Escolhe o idioma (Português ou English).
-
-Seleciona a pasta de origem (onde estão as fotos desorganizadas).
-
-Escolhe a pasta de destino (ex.: Album/Fotos/).
-
-O programa criará automaticamente pastas por ano e mês, e moverá as fotos para os locais corretos.
-
-📁 As fotos sem informação de data serão colocadas numa pasta especial:
-__FICHEIROS SEM DATA - VERIFICAR E ORDENAR MANUALMENTE
-para que possas revê-las e organizá-las depois por ti mesmo.
-
-
-🇬🇧
-If you have thousands of unorganized photos (for example, all in one folder), LOCAlbum includes a tool that automatically organizes them by folders Year/Month based on each photo’s original date.
-
-Go to the Album folder.
-
-Run [_3_]_organize_fotos.bat.
-
-Choose your language (Portuguese or English).
-
-Select the source folder (where your unorganized photos are).
-
-Select the destination folder (e.g., Album/Fotos/).
-
-The program will automatically create folders by year and month, and copy the photos to the correct locations.
-
-📁 Photos without date information will be placed in a special folder:
-__FILES WITHOUT DATE - CHECK AND SORT MANUALLY
-so you can review and organize them later by yourself.
-
----
-
-## 🖼️ Screenshots / Capturas de ecrã
-LOADING....
-Em breve / Soon
+🪄 Após a primeira execução, **os ficheiros técnicos são ocultados automaticamente**,  
+restando apenas o **`LOCALBUM - Manager.bat`** visível — simples, limpo e pronto a usar.
 
 ---
 
 ## 🧠 Dicas e Cuidados / Tips & Notes
 
-🇵🇹 **Português**
+### 🇵🇹 **Português**
 
-- 📁 A **pasta principal** é aquela onde estão todos os ficheiros do LocAlbum — por exemplo:
+- 📁 A **pasta principal** é aquela onde estão todos os ficheiros do LOCAlbum — por exemplo:
 
-```
 X:
-└── Album (pasta principal)
+└── Album
       ├── Fotos
-      ├── [_1_]_update_album.bat
-      ├── [_2_]_reset_album.bat
-      ├── [_3_]_organize_fotos.bat
+      ├── LOCALBUM - Manager.bat
+      ├── favicon.png (oculto)
       ├── template.html (oculto)
       ├── config.ini (oculto)
-      ├── z1.ps1 (oculto)
-      ├── z3.ps1 (oculto)
-      └── (ficheiros gerados automaticamente))
-└──Ver album.html (aparece depois de correr o [_1_]_update_album.bat)
-```
+      ├── z1.ps1, z3.ps1 (ocultos)
+      └── (ficheiros criados automaticamente)
+└── Ver album.html (aparece após a primeira execução)
 
-Podes **renomear esta pasta principal** (ex.: `LOCAlbum`, `Memorias`, `FamiliaMartim`, etc.) —  
-o programa continuará a funcionar sem problema.
-
-- 🚫 **Não alteres os seguintes nomes**, pois são obrigatórios para o funcionamento correto:
-  - `Fotos/` → onde colocas as tuas fotos (organizadas por pastas de anos e meses)
+- 🚫 **Não alteres nem movas** as seguintes pastas/ficheiros:
+  - `Fotos/`
   - `template.html`
   - `config.ini`
-  - `z1.ps1`
-  - `z3.ps1`
+  - `z1.ps1`, `z3.ps1`
 
-- ⚙️ Os ficheiros `[_1_]_update_album.bat` e `[_2_]_reset_album.bat` **podem ser renomeados** se quiseres (ex.: “Atualizar Álbum.bat”, “Repor Álbum.bat”) sem afetar nada.
-
-- ⚙️ O ficheiro `config.ini` é criado automaticamente e deve permanecer oculto.
-
+- ⚙️ O ficheiro `config.ini` é criado automaticamente e deve permanecer oculto.  
+- 💾 Podes copiar o projeto completo (pasta `Album`) para uma **pen USB** ou **disco externo** —  
+  funciona em qualquer PC com **Windows**, e também em **Smart TVs / macOS / Linux**.  
 - 🌐 O álbum funciona **totalmente offline**, mas o navegador deve permitir abrir ficheiros locais (`file://`).
 
-- 💾 Podes copiar o projeto completo (a pasta principal) para uma pen USB ou disco externo —  
-funciona em **qualquer PC Windows**.
+---
 
-- 📺 Também pode ser aberto em **Smart TVs** (com navegador compatível) ou em **macOS/Linux**,  
-bastando abrir o ficheiro `Ver album.html` (ou `View album.html`).
+### 🇬🇧 **English**
 
+- 📁 The **main folder** is the one containing all LOCAlbum files — for example:
 
-🇬🇧 **English**
-
-- 📁 The **main folder** is the one containing all LocAlbum files — for example:
-
-```
 X:
-└── Album (main folder)
+└── Album
       ├── Fotos
-      ├── [_1_]_update_album.bat
-      ├── [_2_]_reset_album.bat
-      ├── [_3_]_organize_fotos.bat
+      ├── LOCALBUM - Manager.bat
+      ├── favicon.png (hidden)
       ├── template.html (hidden)
       ├── config.ini (hidden)
-      ├── z1.ps1 (hidden)
-      ├── z3.ps1 (hidden)
+      ├── z1.ps1, z3.ps1 (hidden)
       └── (automatically generated files)
-└──View album.html (appears after run [_1_]_update_album.bat)
-```
+└── View album.html (appears after first run)
 
-You can **rename this main folder** (e.g., `LocAlbum`, `Memories`, `FamilyAlbum`, etc.) —  
-the program will continue to work normally.
-
-- 🚫 **Do not rename or move** the following items — they are required:
-  - `Fotos/` → where you place your photos (organized by folders of years and months)
+- 🚫 **Do not rename or move** the following folders/files:
+  - `Fotos/`
   - `template.html`
   - `config.ini`
-  - `z1.ps1`
+  - `z1.ps1`, `z3.ps1`
 
-- ⚙️ The files `[_1_]_update_album.bat` and `[_2_]_reset_album.bat` **can be renamed** safely if you prefer friendlier names.
+- ⚙️ The `config.ini` file is generated automatically and should remain hidden.  
+- 💾 You can copy the whole project (the `Album` folder) to a **USB stick** or **external drive** —  
+  it works on any **Windows PC**, and also on **Smart TVs / macOS / Linux**.  
+- 🌐 The album works **entirely offline**, but your browser must allow opening local files (`file://`).
 
-- ⚙️ The `config.ini` file is generated automatically and should remain hidden.
+---
 
-- 🌐 Works **completely offline**, but your browser must allow local file access (`file://`).
-
-- 💾 You can copy the whole project (the main folder) to a USB stick or external drive —  
-it works on **any Windows PC**.
-
-- 📺 Also compatible with **Smart TVs** (with supported browsers) and **macOS/Linux**,  
-simply open the `View album.html` (or `Ver album.html`) file.
+## 🖼️ Screenshots / Capturas de ecrã
+*(em breve / coming soon)*
 
 ---
 
