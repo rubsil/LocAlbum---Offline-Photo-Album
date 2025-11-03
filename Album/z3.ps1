@@ -1,135 +1,172 @@
+# =================================================
+# LOCALBUM - Offline Photo Album - Organizer (2025.11)
+# =================================================
+
+param(
+    [string]$lang = ""
+)
+
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
-# Escolher idioma
-Write-Host "-------------------------------------------"
-Write-Host " LOCAlbum - Organizar Fotos Automaticamente"
-Write-Host "-------------------------------------------"
-Write-Host ""
-Write-Host "1. Portugues"
-Write-Host "2. English"
-$choice = Read-Host "Escolhe / Choose (1/2)"
+$root = Split-Path -Parent $MyInvocation.MyCommand.Path
+$iniPath = Join-Path $root "config.ini"
 
-if ($choice -eq "2") {
-    $lang = "en-US"
-    $msg_select_source = "Choose the folder with all your photos"
-    $msg_select_dest = "Choose destination folder (ex: LOCAlbum\Fotos)"
-    $msg_cancel = "No folder selected. Exiting..."
-    $msg_done = "Done! Your photos are now organized by year and month."
-    $msg_no_exif = "No EXIF date - skipped"
-    $msg_start = "Starting photo organization..."
-} else {
-    $lang = "pt-PT"
+# -------------------------------
+# Determinar idioma
+# -------------------------------
+if (-not $lang) { $lang = "pt" }
+
+if (Test-Path $iniPath) {
+    try {
+        $cfg = Get-Content $iniPath -Encoding UTF8 | Where-Object {$_ -match "="}
+        foreach ($line in $cfg) {
+            $kv = $line -split "=", 2
+            if ($kv[0].Trim().ToLower() -eq "language" -and -not $lang) {
+                $lang = $kv[1].Trim().ToLower()
+            }
+        }
+    } catch { }
+}
+
+# -------------------------------
+# Mensagens multilíngua
+# -------------------------------
+if ($lang -eq "en") {
+    $msg_select_source = "Select the folder containing your photos to organize"
+    $msg_select_dest   = "Select the destination folder (default: Album\Fotos)"
+    $msg_cancel        = "No folder selected. Exiting..."
+    $msg_done          = "[OK] Organization complete! Photos were grouped by year and month."
+    $msg_no_exif       = "No EXIF date - moved to manual folder"
+    $msg_start         = "[INFO] Starting photo organization..."
+    $noDateFolderName  = "__FILES_WITHOUT_DATE - CHECK_MANUALLY"
+    $ci = [System.Globalization.CultureInfo]::GetCultureInfo("en-GB")
+}
+else {
     $msg_select_source = "Escolhe a pasta com as fotos a organizar"
-    $msg_select_dest = "Escolhe a pasta de destino (ex: LOCAlbum\Fotos)"
-    $msg_cancel = "Nenhuma pasta selecionada. A sair..."
-    $msg_done = "Organizacao concluida! As fotos foram agrupadas por ano e mes."
-    $msg_no_exif = "Sem data EXIF - ignorada"
-    $msg_start = "A iniciar a organizacao de fotos..."
-}
-if ($lang -eq "en-US") {
-    $noDateFolderName = "__FILES WITHOUT DATE - CHECK AND SORT MANUALLY"
-} else {
-    $noDateFolderName = "__FICHEIROS SEM DATA - VERIFICAR E ORDENAR MANUALMENTE"
-}
-
-function Select-FolderDialog($description, $initialPath = $null) {
-    $dialog = New-Object System.Windows.Forms.FolderBrowserDialog
-    $dialog.Description = $description
-    $dialog.ShowNewFolderButton = $true
-    if ($initialPath -and (Test-Path $initialPath)) {
-        $dialog.SelectedPath = (Resolve-Path $initialPath)
-    }
-    if ($dialog.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
-        return $dialog.SelectedPath
-    } else {
-        return $null
-    }
+    $msg_select_dest   = "Escolhe a pasta de destino (por defeito: Album\Fotos)"
+    $msg_cancel        = "Nenhuma pasta selecionada. A sair..."
+    $msg_done          = "[OK] Organização concluída! As fotos foram agrupadas por ano e mês."
+    $msg_no_exif       = "Sem data EXIF - movido para pasta manual"
+    $msg_start         = "[INFO] A iniciar a organização de fotos..."
+    $noDateFolderName  = "__FICHEIROS_SEM_DATA - VERIFICAR_MANUALMENTE"
+    $ci = [System.Globalization.CultureInfo]::GetCultureInfo("pt-PT")
 }
 
 Write-Host ""
 Write-Host $msg_start
 Write-Host "-------------------------------------------"
 
-$sourceFolder = Select-FolderDialog $msg_select_source
-if (-not $sourceFolder) { Write-Host $msg_cancel; Pause; exit }
+# -------------------------------
+# Função: Escolher pasta (sempre no topo)
+# -------------------------------
+function Select-FolderDialog([string]$description,[string]$initialPath=$null){
+    $d = New-Object System.Windows.Forms.FolderBrowserDialog
+    $d.Description = $description
+    $d.ShowNewFolderButton = $true
+    if($initialPath -and (Test-Path $initialPath)){
+        try { $d.SelectedPath = (Resolve-Path $initialPath) } catch {}
+    }
 
-$defaultDest = Join-Path (Split-Path -Parent $MyInvocation.MyCommand.Path) "Fotos"
-$destFolder = Select-FolderDialog $msg_select_dest $defaultDest
-if (-not $destFolder) { Write-Host $msg_cancel; Pause; exit }
-Get-ChildItem -Path $sourceFolder -Include *.jpg, *.jpeg, *.png -Recurse | ForEach-Object {
-    $file = $_.FullName
-    $name = $_.Name
-    try {
-# === determinar data da foto ===
-$photoDate = $null
-$name = $_.Name
+    # Forçar a janela a aparecer no topo
+    $top = New-Object System.Windows.Forms.Form
+    $top.TopMost = $true
+    $top.ShowInTaskbar = $false
+    $top.StartPosition = "CenterScreen"
 
-# 1️⃣ tentar extrair a data a partir do nome do ficheiro
-$patterns = @(
-    '(\d{4})(\d{2})(\d{2})[_-](\d{2})(\d{2})(\d{2})',
-    '(\d{4})(\d{2})(\d{2})[_-]',
-    '(\d{8})[_-]',
-    '(\d{4})[-_](\d{2})[-_](\d{2})',
-    'PXL_(\d{4})(\d{2})(\d{2})_',
-    'IMG_(\d{4})(\d{2})(\d{2})',
-    'VID_(\d{4})(\d{2})(\d{2})',
-    'PHOTO_(\d{4})(\d{2})(\d{2})'
-)
+    $res = $d.ShowDialog($top)
+    $top.Dispose()
 
-foreach ($pat in $patterns) {
-    if ($name -match $pat) {
+    if($res -eq [System.Windows.Forms.DialogResult]::OK){
+        return $d.SelectedPath
+    } else {
+        return $null
+    }
+}
+
+# -------------------------------
+# Seleção de pastas
+# -------------------------------
+$src = Select-FolderDialog $msg_select_source
+if(-not $src){ Write-Host $msg_cancel; pause; exit }
+
+$defaultDest = Join-Path $root "Fotos"
+$dst = Select-FolderDialog $msg_select_dest $defaultDest
+if(-not $dst){ Write-Host $msg_cancel; pause; exit }
+
+# -------------------------------
+# Função: Obter data inteligente
+# -------------------------------
+function Get-DateSmart($f){
+    $n = $f.Name
+    $d = $null
+    $pats = @(
+        '(\d{4})(\d{2})(\d{2})[_-](\d{2})(\d{2})(\d{2})',
+        '(\d{4})(\d{2})(\d{2})[_-]',
+        '(\d{8})[_-]',
+        '(\d{4})[-_](\d{2})[-_](\d{2})',
+        'PXL_(\d{4})(\d{2})(\d{2})_',
+        'IMG_(\d{4})(\d{2})(\d{2})',
+        'VID_(\d{4})(\d{2})(\d{2})',
+        'PHOTO_(\d{4})(\d{2})(\d{2})'
+    )
+    foreach($p in $pats){
+        if($n -match $p){
+            try {
+                $y=[int]$matches[1];$m=[int]$matches[2];$day=[int]$matches[3]
+                $d=Get-Date -Year $y -Month $m -Day $day
+                break
+            } catch {}
+        }
+    }
+    if(-not $d){
         try {
-            $y = [int]$matches[1]; $m = [int]$matches[2]; $d = [int]$matches[3]
-            $photoDate = Get-Date -Year $y -Month $m -Day $d
-            break
-        } catch { }
-    }
-}
-
-# 2️⃣ se não encontrou, tentar EXIF (DateTaken)
-if (-not $photoDate) {
-    try {
-        $img = [System.Drawing.Image]::FromFile($file)
-        $prop = $img.GetPropertyItem(36867) # DateTaken
-        $dateTaken = [System.Text.Encoding]::ASCII.GetString($prop.Value).Trim([char]0)
-        $img.Dispose()
-
-        $dt = [datetime]::ParseExact($dateTaken, "yyyy:MM:dd HH:mm:ss", $null)
-        $photoDate = $dt
-    } catch {
-        $photoDate = $null
-    }
-}
-
-# 3️⃣ fallback (sem EXIF e sem data no nome)
-if (-not $photoDate) {
-    $photoDate = $_.LastWriteTime
-}
-
-# criar estrutura de pastas ano/mês
-$year = $photoDate.Year
-$month = $photoDate.ToString("MMMM", [System.Globalization.CultureInfo]::GetCultureInfo($lang))
-
-
-        $targetPath = Join-Path -Path $destFolder -ChildPath "$year\$month"
-        if (!(Test-Path $targetPath)) { New-Item -ItemType Directory -Path $targetPath -Force | Out-Null }
-
-        Copy-Item $file -Destination $targetPath -Force
-        Write-Host "[OK] $name -> $year\$month"
-    }
-    catch {
-        # Pasta para ficheiros sem data
-        $noDateFolder = Join-Path -Path $destFolder -ChildPath $noDateFolderName
-        if (!(Test-Path $noDateFolder)) {
-            New-Item -ItemType Directory -Path $noDateFolder -Force | Out-Null
+            $img=[System.Drawing.Image]::FromFile($f.FullName)
+            $prop=$img.GetPropertyItem(36867)
+            $dt=[System.Text.Encoding]::ASCII.GetString($prop.Value).Trim([char]0)
+            $img.Dispose()
+            $d=[datetime]::ParseExact($dt,"yyyy:MM:dd HH:mm:ss",$null)
+        } catch {
+            $d=$null
         }
+    }
+    if(-not $d){ $d=$f.LastWriteTime }
+    return $d
+}
 
-        # Copiar o ficheiro problemático para lá
-        if (Test-Path $file) {
-            Copy-Item $file -Destination $noDateFolder -Force
-            Write-Warning ("{0}: {1}" -f $msg_no_exif, $name)
+# -------------------------------
+# Processar ficheiros
+# -------------------------------
+$files = Get-ChildItem -Path $src -Include *.jpg,*.jpeg,*.png,*.gif,*.webp,*.mp4,*.mov,*.webm -Recurse
+
+foreach($f in $files){
+    $dt = Get-DateSmart $f
+    if(-not $dt){
+        $no = Join-Path $dst $noDateFolderName
+        if(!(Test-Path $no)){ New-Item -ItemType Directory -Path $no -Force | Out-Null }
+        $target = Join-Path $no $f.Name
+        if (-not (Test-Path $target)) {
+            Copy-Item $f.FullName -Destination $target
+            Write-Host "[WARN] $msg_no_exif : $($f.Name)"
         }
+        continue
+    }
+
+    $year = $dt.Year
+    $month = $dt.ToString("MMMM",$ci)
+    $tgt = Join-Path $dst "$year\$month"
+
+    if(!(Test-Path $tgt)){ New-Item -ItemType Directory -Path $tgt -Force | Out-Null }
+
+    $target = Join-Path $tgt $f.Name
+
+    # Agora IGNORA ficheiros duplicados (não cria _DUP)
+    if (-not (Test-Path $target)) {
+        Copy-Item $f.FullName -Destination $target
+        Write-Host "[OK] $($f.Name) -> $year\$month"
+    } else {
+        Write-Host "[SKIP] $($f.Name) (já existe)"
     }
 }
 
@@ -137,9 +174,5 @@ Write-Host ""
 Write-Host "-------------------------------------------"
 Write-Host $msg_done
 Write-Host ""
-Write-Host "Pressiona qualquer tecla para sair... / Press any key to exit..."
+Write-Host "Press any key to exit..."
 [System.Console]::ReadKey() | Out-Null
-exit
-
-
-
