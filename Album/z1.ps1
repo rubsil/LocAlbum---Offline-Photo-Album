@@ -41,11 +41,11 @@ if (Test-Path $iniPath) {
 # Pergunta idioma (modo numérico, como no .bat)
 Write-Host ""
 Write-Host "====================================================="
-Write-Host "🌍 Escolhe o idioma / Choose language:"
-Write-Host "[1] Português"
+Write-Host "Escolhe o idioma / Choose language:"
+Write-Host "[1] Portugues"
 Write-Host "[2] English"
 Write-Host "====================================================="
-$choice = Read-Host "Seleciona uma opção [1-2]"
+$choice = Read-Host "Seleciona uma opcao [1-2]"
 switch ($choice) {
     "2" { $lang = "en" }
     default { $lang = "pt" }
@@ -220,3 +220,4 @@ Write-Host "LOCALBUM gerou com sucesso em: $out"
 Write-Host ""
 Write-Host "Pressiona Enter para fechar..."
 pause > $null
+
