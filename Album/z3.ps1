@@ -96,21 +96,51 @@ $dst = Select-FolderDialog $msg_select_dest $defaultDest
 if(-not $dst){ Write-Host $msg_cancel; pause; exit }
 
 # -------------------------------
-# Função: Obter data inteligente
+# Função: Obter data inteligente (expandida)
 # -------------------------------
 function Get-DateSmart($f){
     $n = $f.Name
     $d = $null
+
+    # --- Padrões mais comuns de smartphones, câmeras e apps ---
     $pats = @(
+        # Formatos genéricos
         '(\d{4})(\d{2})(\d{2})[_-](\d{2})(\d{2})(\d{2})',
         '(\d{4})(\d{2})(\d{2})[_-]',
         '(\d{8})[_-]',
         '(\d{4})[-_](\d{2})[-_](\d{2})',
+
+        # Google Pixel / Android genérico
         'PXL_(\d{4})(\d{2})(\d{2})_',
         'IMG_(\d{4})(\d{2})(\d{2})',
         'VID_(\d{4})(\d{2})(\d{2})',
-        'PHOTO_(\d{4})(\d{2})(\d{2})'
+        'PHOTO_(\d{4})(\d{2})(\d{2})',
+
+        # Samsung (ex: 20230915_142233.jpg)
+        '(\d{4})(\d{2})(\d{2})_(\d{2})(\d{2})(\d{2})',
+
+        # iPhone / iOS (ex: IMG_E1234.JPG or IMG_1234.MOV)
+        'IMG_E?(\d{4})(\d{2})(\d{2})',
+
+        # WhatsApp (ex: IMG-20230915-WA0001.jpg / VID-20211225-WA0001.mp4)
+        '(?:IMG|VID)-(\d{4})(\d{2})(\d{2})-WA\d+',
+
+        # Telegram (ex: Telegram_2023-11-01_18-45-22.jpg)
+        'Telegram[_-](\d{4})[-_](\d{2})[-_](\d{2})',
+
+        # Facebook / Messenger (ex: FB_IMG_20230915_123456.jpg)
+        'FB_IMG_(\d{4})(\d{2})(\d{2})',
+
+        # Snapchat (ex: SNAP_(\d{4})(\d{2})(\d{2}))
+        'SNAP[_-](\d{4})(\d{2})(\d{2})',
+
+        # TikTok (ex: TikTok_(\d{4})(\d{2})(\d{2}))
+        'TikTok[_-](\d{4})(\d{2})(\d{2})',
+
+        # CapCut / YouCut / InShot etc.
+        '(?:CapCut|YouCut|InShot)[_-](\d{4})(\d{2})(\d{2})'
     )
+
     foreach($p in $pats){
         if($n -match $p){
             try {
@@ -120,6 +150,8 @@ function Get-DateSmart($f){
             } catch {}
         }
     }
+
+    # EXIF fallback
     if(-not $d){
         try {
             $img=[System.Drawing.Image]::FromFile($f.FullName)
@@ -131,7 +163,10 @@ function Get-DateSmart($f){
             $d=$null
         }
     }
+
+    # Último recurso: data de modificação
     if(-not $d){ $d=$f.LastWriteTime }
+
     return $d
 }
 
