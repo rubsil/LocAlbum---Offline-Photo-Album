@@ -166,7 +166,7 @@ foreach($f in $files){
         Copy-Item $f.FullName -Destination $target
         Write-Host "[OK] $($f.Name) -> $year\$month"
     } else {
-        Write-Host "[SKIP] $($f.Name) (já existe)"
+        Write-Host "[SKIP] $($f.Name) (ja existe)"
     }
 }
 
