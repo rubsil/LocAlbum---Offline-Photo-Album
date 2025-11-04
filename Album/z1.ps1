@@ -236,7 +236,7 @@ foreach ($p in $candidates) {
     $wrote = $true
     break
   } catch {
-    Write-Host "Sem permissões para escrever em: $p — a tentar outro local..."
+    Write-Host "Sem permissoes para escrever em: $p — a tentar outro local..."
   }
 }
 
@@ -244,12 +244,13 @@ Write-Host ""
 if ($wrote) {
   Write-Host "LOCALBUM gerou com sucesso em: $targetPath"
 } else {
-  Write-Host "Não foi possível gravar o HTML em nenhum dos locais candidatos."
-  Write-Host "Sugestões:"
+  Write-Host "Nao foi possivel gravar o HTML em nenhum dos locais candidatos."
+  Write-Host "Sugestoes:"
   Write-Host " - Executa o Manager como Administrador;"
   Write-Host " - Desativa temporariamente 'Controlled Folder Access';"
-  Write-Host " - Ou grava manualmente noutro caminho com permissões."
+  Write-Host " - Ou grava manualmente noutro caminho com permissoes."
   Write-Host ""
 }
 Write-Host "Pressiona Enter para fechar..."
 pause > $null
+
