@@ -110,16 +110,9 @@ $cfg['project_name'] = Sanitize $cfg['project_name'] 'LOCALBUM - Offline Photo A
 
 # Nome de saída (dependente do idioma)
 if ($cfg['language'] -eq 'en') { $outName = "View album.html" } else { $outName = "Ver album.html" }
+$out = Join-Path (Split-Path $root -Parent) $outName
 
-# candidatos: raiz do disco, pasta Album e Desktop
-$prefParent = Split-Path $root -Parent
-$candidates = @(
-  (Join-Path $prefParent $outName),
-  (Join-Path $root       $outName),
-  (Join-Path ([Environment]::GetFolderPath('Desktop')) $outName)
-)
-
-Write-Host "Gerando HTML (primeira tentativa) em: $($candidates[0])"
+Write-Host "Gerando HTML em: $out"
 Write-Host ""
 
 # -------------------------------
@@ -220,37 +213,11 @@ $favicon = "<link rel='icon' type='image/png' href='Album/favicon.png?v=$version
 # Injeta o favicon logo a seguir ao título do HTML
 $htmlFinal = $htmlFinal -replace '(<title>LOCAlbum - Offline Photo Album</title>)', "`$1`r`n  $favicon"
 
-# tenta gravar com fallback em 3 locais
-$wrote = $false
-$targetPath = $null
-foreach ($p in $candidates) {
-  try {
-    if (Test-Path $p) {
-      $fi = Get-Item $p -ErrorAction SilentlyContinue
-      if ($fi -and $fi.Attributes -band [IO.FileAttributes]::ReadOnly) {
-        $fi.IsReadOnly = $false
-      }
-    }
-    Set-Content -Path $p -Value $htmlFinal -Encoding UTF8
-    $targetPath = $p
-    $wrote = $true
-    break
-  } catch {
-    Write-Host "Sem permissoes para escrever em: $p — a tentar outro local..."
-  }
-}
+Set-Content -Path $out -Value $htmlFinal -Encoding UTF8
 
 Write-Host ""
-if ($wrote) {
-  Write-Host "LOCALBUM gerou com sucesso em: $targetPath"
-} else {
-  Write-Host "Nao foi possivel gravar o HTML em nenhum dos locais candidatos."
-  Write-Host "Sugestoes:"
-  Write-Host " - Executa o Manager como Administrador;"
-  Write-Host " - Desativa temporariamente 'Controlled Folder Access';"
-  Write-Host " - Ou grava manualmente noutro caminho com permissoes."
-  Write-Host ""
-}
+Write-Host "LOCALBUM gerou com sucesso em: $out"
+Write-Host ""
 Write-Host "Pressiona Enter para fechar..."
 pause > $null
 
