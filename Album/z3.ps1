@@ -19,7 +19,7 @@ if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administra
 
 # --- Garantir modo STA (necessário em Windows 11 para System.Drawing e Forms) ---
 if ([Threading.Thread]::CurrentThread.ApartmentState -ne 'STA') {
-    Write-Host "[INFO] Reiniciando o script em modo STA (necessário para W11)..."
+    Write-Host "[INFO] Reiniciando o script em modo STA (necessario para W11)..."
     powershell.exe -STA -ExecutionPolicy Bypass -File "$PSCommandPath" -lang "$lang"
     exit
 }
@@ -55,6 +55,7 @@ if ($lang -eq "en") {
     $msg_select_dest   = "Select the destination folder for your photos (default: Album\Fotos)"
     $msg_cancel        = "No folder selected. Exiting..."
     $msg_done          = "[OK] Organization complete! Photos were grouped by year and month folders."
+    $msg_reminder      = ">>> Remember to go back to the LOCALBUM Manager and run OPTION 2 to create or update your album."
     $msg_no_exif       = "No EXIF date - moved to manual folder"
     $msg_start         = "[INFO] Starting photo organization..."
     $noDateFolderName  = "__FILES_WITHOUT_DATE - CHECK_MANUALLY"
@@ -65,6 +66,7 @@ else {
     $msg_select_dest   = "Escolhe a pasta de destino (por defeito: Album\Fotos)"
     $msg_cancel        = "Nenhuma pasta selecionada. A sair..."
     $msg_done          = "[OK] Organizacao concluida! As fotos foram agrupadas por pastas de ano e mes."
+    $msg_reminder      = ">>> Nao te esquecas de voltar ao Gestor LOCALBUM e correr a OPCAO [2] para criar ou atualizar o album."
     $msg_no_exif       = "Sem data EXIF - movido para pasta manual"
     $msg_start         = "[INFO] A iniciar a organizacao das fotos..."
     $noDateFolderName  = "__FICHEIROS_SEM_DATA - VERIFICAR_MANUALMENTE"
@@ -120,34 +122,17 @@ function Get-DateSmart($f){
     $ext = [System.IO.Path]::GetExtension($n).ToLowerInvariant()
     $d   = $null
 
-    # --- Padrões mais comuns de smartphones, câmeras e apps ---
+    # --- Padrões comuns ---
     $pats = @(
-        # Formatos genéricos
         '(\d{4})(\d{2})(\d{2})[_-](\d{2})(\d{2})(\d{2})',
         '(\d{4})(\d{2})(\d{2})[_-]',
         '(\d{8})[_-]',
         '(\d{4})[-_](\d{2})[-_](\d{2})',
-
-        # Google Pixel / Android genérico
         'PXL_(\d{4})(\d{2})(\d{2})_',
         'MVIMG_(\d{4})(\d{2})(\d{2})',
         'IMG_(\d{4})(\d{2})(\d{2})',
         'VID_(\d{4})(\d{2})(\d{2})',
-        'PHOTO_(\d{4})(\d{2})(\d{2})',
-
-        # Samsung
-        '(\d{4})(\d{2})(\d{2})_(\d{2})(\d{2})(\d{2})',
-
-        # iPhone / iOS
-        'IMG_E?(\d{4})(\d{2})(\d{2})',
-
-        # WhatsApp / Telegram / Messenger / TikTok / etc.
-        '(?:IMG|VID)-(\d{4})(\d{2})(\d{2})-WA\d+',
-        'Telegram[_-](\d{4})[-_](\d{2})[-_](\d{2})',
-        'FB_IMG_(\d{4})(\d{2})(\d{2})',
-        'SNAP[_-](\d{4})(\d{2})(\d{2})',
-        'TikTok[_-](\d{4})(\d{2})(\d{2})',
-        '(?:CapCut|YouCut|InShot)[_-](\d{4})(\d{2})(\d{2})'
+        'PHOTO_(\d{4})(\d{2})(\d{2})'
     )
 
     foreach($p in $pats){
@@ -162,8 +147,8 @@ function Get-DateSmart($f){
 
     if ($d) { return $d }
 
-    # --- EXIF: DateTimeOriginal / Digitized / DateTime ---
-    $imageExts = @('.jpg','.jpeg','.png','.gif','.webp','.tif','.tiff','.bmp','.heic','.heif','.dng','.nef','.arw','.cr2','.raf','.orf')
+    # --- EXIF ---
+    $imageExts = @('.jpg','.jpeg','.png','.gif','.webp','.tif','.tiff')
     if ($imageExts -contains $ext) {
         try {
             $img  = [System.Drawing.Image]::FromFile($f.FullName)
@@ -180,18 +165,12 @@ function Get-DateSmart($f){
             }
             $img.Dispose()
         } catch { $d=$null }
-
         return $d
     }
 
-    # --- Vídeos: usar LastWriteTime como último recurso ---
-    $videoExts = @('.mp4','.mov','.webm','.3gp','.mkv')
-    if ($videoExts -contains $ext) {
-        if (-not $d) { $d = $f.LastWriteTime }
-        return $d
-    }
-
-    return $null
+    # --- Último recurso ---
+    if (-not $d) { $d = $f.LastWriteTime }
+    return $d
 }
 
 # -------------------------------
@@ -231,6 +210,7 @@ foreach($f in $files){
 Write-Host ""
 Write-Host "-------------------------------------------"
 Write-Host $msg_done
+Write-Host $msg_reminder
 Write-Host ""
 Write-Host "Press any key to exit..."
 [System.Console]::ReadKey() | Out-Null
