@@ -1,5 +1,5 @@
 # =================================================
-# LOCALBUM - Offline Photo Album - Organizer (2025.11)
+# LOCALBUM - Offline Photo Album - Organizer
 # =================================================
 
 param(
@@ -35,9 +35,9 @@ if (Test-Path $iniPath) {
 # -------------------------------
 if ($lang -eq "en") {
     $msg_select_source = "Select the folder containing your photos to organize"
-    $msg_select_dest   = "Select the destination folder (default: Album\Fotos)"
+    $msg_select_dest   = "Select the destination folder for your photos (default: Album\Fotos)"
     $msg_cancel        = "No folder selected. Exiting..."
-    $msg_done          = "[OK] Organization complete! Photos were grouped by year and month."
+    $msg_done          = "[OK] Organization complete! Photos were grouped by year and month folders."
     $msg_no_exif       = "No EXIF date - moved to manual folder"
     $msg_start         = "[INFO] Starting photo organization..."
     $noDateFolderName  = "__FILES_WITHOUT_DATE - CHECK_MANUALLY"
@@ -47,9 +47,9 @@ else {
     $msg_select_source = "Escolhe a pasta com as fotos a organizar"
     $msg_select_dest   = "Escolhe a pasta de destino (por defeito: Album\Fotos)"
     $msg_cancel        = "Nenhuma pasta selecionada. A sair..."
-    $msg_done          = "[OK] Organização concluída! As fotos foram agrupadas por ano e mês."
+    $msg_done          = "[OK] Organizacao concluida! As fotos foram agrupadas por pastas de ano e mes."
     $msg_no_exif       = "Sem data EXIF - movido para pasta manual"
-    $msg_start         = "[INFO] A iniciar a organização de fotos..."
+    $msg_start         = "[INFO] A iniciar a organizacao das fotos..."
     $noDateFolderName  = "__FICHEIROS_SEM_DATA - VERIFICAR_MANUALMENTE"
     $ci = [System.Globalization.CultureInfo]::GetCultureInfo("pt-PT")
 }
