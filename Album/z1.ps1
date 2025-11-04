@@ -33,7 +33,7 @@ if (Test-Path $iniPath) {
   }
 } else {
   Write-Host "Nenhum ficheiro config.ini foi encontrado."
-  Write-Host "Vamos criar um album novo com as tuas preferencias iniciais:"
+  Write-Host "Vamos criar um album novo com as tuas preferencias:"
   Write-Host ""
 
   $cfg = @{}
@@ -56,9 +56,9 @@ Write-Host ""
 
   if ($cfg['language'] -eq 'en') {
     Write-Host ""
-    Write-Host "Please enter two quick details for your new album:"
+    Write-Host "Please enter two quick details to create your new album:"
     Write-Host ""
-    $cfg['display_name'] = Read-Host "1/2 - Album name to show as title (ex: Ines Memories)"
+    $cfg['display_name'] = Read-Host "1/2 - Album name to show as Album title (ex: Ines Memories)"
     $cfg['birthdate']    = Read-Host "2/2 - Birthdate (OPTIONAL), ideal for albums with photos from birth onwards (YYYY-MM-DD)"
     $cfg['theme']        = "dark"
     $cfg['page_title']   = "LOCALBUM - Offline Photo Album"
@@ -70,10 +70,10 @@ Write-Host ""
   }
   else {
     Write-Host ""
-    Write-Host "Introduz 2 dados rapidos para o teu novo album:"
+    Write-Host "Introduz 2 dados rapidos para criar o teu novo album:"
     Write-Host ""
-    $cfg['display_name'] = Read-Host "1/2 - Nome do album a mostrar como titulo (ex: Memorias da Ines)"
-    $cfg['birthdate']    = Read-Host "2/2 - Data de nascimento (OPCIONAL), ideal para albuns com fotos desde a nascenca (AAAA-MM-DD)"
+    $cfg['display_name'] = Read-Host "1/2 - Nome do album para mostrar como titulo (ex: Memorias da Ines)"
+    $cfg['birthdate']    = Read-Host "2/2 - Data de nascimento (OPCIONAL), ideal para albuns com fotos desde a nascenca para mostrar a idade do bebe/crianca nas fotos (AAAA-MM-DD)"
     $cfg['theme']        = "dark"
     $cfg['page_title']   = "LOCALBUM - Offline Photo Album"
     $cfg['donate_url']   = "https://www.paypal.me/rubsil"
