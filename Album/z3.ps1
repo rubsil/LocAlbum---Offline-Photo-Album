@@ -96,11 +96,12 @@ $dst = Select-FolderDialog $msg_select_dest $defaultDest
 if(-not $dst){ Write-Host $msg_cancel; pause; exit }
 
 # -------------------------------
-# Função: Obter data inteligente (expandida)
+# Função: Obter data inteligente (corrigida)
 # -------------------------------
 function Get-DateSmart($f){
-    $n = $f.Name
-    $d = $null
+    $n   = $f.Name
+    $ext = [System.IO.Path]::GetExtension($n).ToLowerInvariant()
+    $d   = $null
 
     # --- Padrões mais comuns de smartphones, câmeras e apps ---
     $pats = @(
@@ -112,62 +113,69 @@ function Get-DateSmart($f){
 
         # Google Pixel / Android genérico
         'PXL_(\d{4})(\d{2})(\d{2})_',
+        'MVIMG_(\d{4})(\d{2})(\d{2})',
         'IMG_(\d{4})(\d{2})(\d{2})',
         'VID_(\d{4})(\d{2})(\d{2})',
         'PHOTO_(\d{4})(\d{2})(\d{2})',
 
-        # Samsung (ex: 20230915_142233.jpg)
+        # Samsung
         '(\d{4})(\d{2})(\d{2})_(\d{2})(\d{2})(\d{2})',
 
-        # iPhone / iOS (ex: IMG_E1234.JPG or IMG_1234.MOV)
+        # iPhone / iOS
         'IMG_E?(\d{4})(\d{2})(\d{2})',
 
-        # WhatsApp (ex: IMG-20230915-WA0001.jpg / VID-20211225-WA0001.mp4)
+        # WhatsApp / Telegram / Messenger / TikTok / etc.
         '(?:IMG|VID)-(\d{4})(\d{2})(\d{2})-WA\d+',
-
-        # Telegram (ex: Telegram_2023-11-01_18-45-22.jpg)
         'Telegram[_-](\d{4})[-_](\d{2})[-_](\d{2})',
-
-        # Facebook / Messenger (ex: FB_IMG_20230915_123456.jpg)
         'FB_IMG_(\d{4})(\d{2})(\d{2})',
-
-        # Snapchat (ex: SNAP_(\d{4})(\d{2})(\d{2}))
         'SNAP[_-](\d{4})(\d{2})(\d{2})',
-
-        # TikTok (ex: TikTok_(\d{4})(\d{2})(\d{2}))
         'TikTok[_-](\d{4})(\d{2})(\d{2})',
-
-        # CapCut / YouCut / InShot etc.
         '(?:CapCut|YouCut|InShot)[_-](\d{4})(\d{2})(\d{2})'
     )
 
     foreach($p in $pats){
         if($n -match $p){
             try {
-                $y=[int]$matches[1];$m=[int]$matches[2];$day=[int]$matches[3]
+                $y=[int]$matches[1]; $m=[int]$matches[2]; $day=[int]$matches[3]
                 $d=Get-Date -Year $y -Month $m -Day $day
                 break
             } catch {}
         }
     }
 
-    # EXIF fallback
-    if(-not $d){
+    if ($d) { return $d }
+
+    # --- EXIF: DateTimeOriginal / Digitized / DateTime ---
+    $imageExts = @('.jpg','.jpeg','.png','.gif','.webp','.tif','.tiff','.bmp','.heic','.heif','.dng','.nef','.arw','.cr2','.raf','.orf')
+    if ($imageExts -contains $ext) {
         try {
-            $img=[System.Drawing.Image]::FromFile($f.FullName)
-            $prop=$img.GetPropertyItem(36867)
-            $dt=[System.Text.Encoding]::ASCII.GetString($prop.Value).Trim([char]0)
+            $img  = [System.Drawing.Image]::FromFile($f.FullName)
+            $tags = @(36867, 36868, 306)
+            foreach ($tag in $tags) {
+                try {
+                    $prop = $img.GetPropertyItem($tag)
+                    if ($prop -ne $null) {
+                        $raw = [System.Text.Encoding]::ASCII.GetString($prop.Value).Trim([char]0)
+                        $d = [datetime]::ParseExact($raw, "yyyy:MM:dd HH:mm:ss", $null)
+                        break
+                    }
+                } catch {}
+            }
             $img.Dispose()
-            $d=[datetime]::ParseExact($dt,"yyyy:MM:dd HH:mm:ss",$null)
-        } catch {
-            $d=$null
-        }
+        } catch { $d=$null }
+
+        # Se não encontrou EXIF, devolve $null → pasta manual
+        return $d
     }
 
-    # Último recurso: data de modificação
-    if(-not $d){ $d=$f.LastWriteTime }
+    # --- Vídeos: usar LastWriteTime como último recurso ---
+    $videoExts = @('.mp4','.mov','.webm','.3gp','.mkv')
+    if ($videoExts -contains $ext) {
+        if (-not $d) { $d = $f.LastWriteTime }
+        return $d
+    }
 
-    return $d
+    return $null
 }
 
 # -------------------------------
