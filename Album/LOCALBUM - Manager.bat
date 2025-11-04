@@ -8,6 +8,15 @@ setlocal EnableDelayedExpansion EnableExtensions
 ::  Autor: Rúben Silva
 :: =====================================================
 
+:: --- Verificar privilégios de administrador ---
+net session >nul 2>&1
+if %errorLevel% NEQ 0 (
+    echo.
+    echo ⚠️  A executar novamente como Administrador...
+    powershell -Command "Start-Process '%~f0' -Verb RunAs"
+    exit /b
+)
+
 set "ROOT=%~dp0"
 if "%ROOT:~-1%"=="\" set "ROOT=%ROOT:~0,-1%"
 set "INI=%ROOT%\config.ini"
