@@ -238,8 +238,7 @@ if not exist "%ROOT%\z3.ps1" (
   pause
   if "%LANG%"=="pt" (goto MENU_PT) else (goto MENU_EN)
 )
-start "" "%PWSH%" -ExecutionPolicy Bypass -Command "[Console]::OutputEncoding = [System.Text.Encoding]::UTF8; & '%ROOT%\z3.ps1' -lang '%LANG%'"
-pause
+"%PWSH%" -ExecutionPolicy Bypass -Command "[Console]::OutputEncoding = [System.Text.Encoding]::UTF8; & '%ROOT%\z3.ps1' -lang '%LANG%'"
 if "%LANG%"=="pt" (goto MENU_PT) else (goto MENU_EN)
 
 :: =====================================================
@@ -258,8 +257,7 @@ if not exist "%ROOT%\z1.ps1" (
   pause
   if "%LANG%"=="pt" (goto MENU_PT) else (goto MENU_EN)
 )
-start "" "%PWSH%" -ExecutionPolicy Bypass -File "%ROOT%\z1.ps1"
-pause
+"%PWSH%" -ExecutionPolicy Bypass -File "%ROOT%\z1.ps1"
 if "%LANG%"=="pt" (goto MENU_PT) else (goto MENU_EN)
 
 :: =====================================================
