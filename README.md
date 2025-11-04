@@ -124,16 +124,18 @@ It works **completely offline**, directly from your local drive or USB stick.
 X:
 └── Album
       ├── Fotos
-      ├── config (oculto)
-      ├── LOCALBUM - Manager.bat ← único ficheiro principal
-      ├── favicon.png (oculto)
-      ├── template.html (oculto)
-      ├── z1.ps1, z3.ps1 (ocultos)
-      └── (ficheiros criados automaticamente)
+      ├── config (oculto / hidden)
+      ├── LOCALBUM - Manager.bat ← ficheiro principal / main file 
+      ├── favicon.png (oculto / hidden)
+      ├── template.html (oculto / hidden)
+      ├── z1.ps1, z3.ps1 (ocultos / hidden)
 └── Ver album.html / View album.html
 ```
-🪄 Após a primeira execução, **os ficheiros técnicos são ocultados automaticamente**,  
-restando apenas o **`LOCALBUM - Manager.bat`** visível — simples, limpo e pronto a usar.
+🪄 **🇵🇹 Após a primeira execução**, os ficheiros técnicos são **ocultados automaticamente**,  
+restando apenas o **`LOCALBUM - Manager.bat`** visível — simples, limpo e pronto a usar.  
+
+🪄 **🇬🇧 After the first run**, all technical files are **automatically hidden**,  
+leaving only the **`LOCALBUM - Manager.bat`** visible — clean, simple, and ready to use.
 
 ---
 
@@ -151,7 +153,6 @@ X:
       ├── template.html (oculto)
       ├── config.ini (oculto)
       ├── z1.ps1, z3.ps1 (ocultos)
-      └── (ficheiros criados automaticamente)
 └── Ver album.html (aparece após a primeira execução)
 ```
 - 🚫 **Não alteres nem movas** as seguintes pastas/ficheiros:
@@ -179,7 +180,6 @@ X:
       ├── template.html (hidden)
       ├── config.ini (hidden)
       ├── z1.ps1, z3.ps1 (hidden)
-      └── (automatically generated files)
 └── View album.html (appears after first run)
 ```
 - 🚫 **Do not rename or move** the following folders/files:
