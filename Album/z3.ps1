@@ -7,6 +7,23 @@ param(
 )
 
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$PSDefaultParameterValues['*:Encoding'] = 'utf8'
+
+# --- Auto-elevate to Administrator if needed ---
+$principal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+    Write-Host "[INFO] Reexecutando como Administrador..."
+    Start-Process powershell -Verb RunAs -ArgumentList "-ExecutionPolicy Bypass -File `"$PSCommandPath`" -lang `"$lang`""
+    exit
+}
+
+# --- Garantir modo STA (necessário em Windows 11 para System.Drawing e Forms) ---
+if ([Threading.Thread]::CurrentThread.ApartmentState -ne 'STA') {
+    Write-Host "[INFO] Reiniciando o script em modo STA (necessário para W11)..."
+    powershell.exe -STA -ExecutionPolicy Bypass -File "$PSCommandPath" -lang "$lang"
+    exit
+}
+
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
@@ -164,7 +181,6 @@ function Get-DateSmart($f){
             $img.Dispose()
         } catch { $d=$null }
 
-        # Se não encontrou EXIF, devolve $null → pasta manual
         return $d
     }
 
@@ -204,7 +220,6 @@ foreach($f in $files){
 
     $target = Join-Path $tgt $f.Name
 
-    # Agora IGNORA ficheiros duplicados (não cria _DUP)
     if (-not (Test-Path $target)) {
         Copy-Item $f.FullName -Destination $target
         Write-Host "[OK] $($f.Name) -> $year\$month"
