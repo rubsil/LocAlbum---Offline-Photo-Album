@@ -2,6 +2,22 @@
 # LOCAlbum - Offline Photo Album - Generator (2025)
 # =================================================
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$PSDefaultParameterValues['*:Encoding'] = 'utf8'
+
+# --- Auto-elevate to Administrator if needed ---
+$principal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+    Write-Host "[INFO] Reexecutando como Administrador..."
+    Start-Process powershell -Verb RunAs -ArgumentList "-ExecutionPolicy Bypass -File `"$PSCommandPath`" @args"
+    exit
+}
+
+# --- Garantir modo STA (necessário em Windows 11 para System.Drawing) ---
+if ([Threading.Thread]::CurrentThread.ApartmentState -ne 'STA') {
+    Write-Host "[INFO] Reiniciando o script em modo STA (necessário para W11)..."
+    powershell.exe -STA -ExecutionPolicy Bypass -File "$PSCommandPath" @args
+    exit
+}
 
 $root         = Split-Path -Parent $MyInvocation.MyCommand.Path
 $base         = Join-Path $root "Fotos"
@@ -38,21 +54,19 @@ if (Test-Path $iniPath) {
 
   $cfg = @{}
 
-# Pergunta idioma (modo numérico, como no .bat)
-Write-Host ""
-Write-Host "====================================================="
-Write-Host "Escolhe o idioma / Choose language:"
-Write-Host "[1] Portugues"
-Write-Host "[2] English"
-Write-Host "====================================================="
-$choice = Read-Host "Seleciona uma opcao [1-2]"
-switch ($choice) {
-    "2" { $lang = "en" }
-    default { $lang = "pt" }
-}
-$cfg['language'] = $lang
-Write-Host ""
-
+  Write-Host ""
+  Write-Host "====================================================="
+  Write-Host "Escolhe o idioma / Choose language:"
+  Write-Host "[1] Portugues"
+  Write-Host "[2] English"
+  Write-Host "====================================================="
+  $choice = Read-Host "Seleciona uma opcao [1-2]"
+  switch ($choice) {
+      "2" { $lang = "en" }
+      default { $lang = "pt" }
+  }
+  $cfg['language'] = $lang
+  Write-Host ""
 
   if ($cfg['language'] -eq 'en') {
     Write-Host ""
@@ -220,4 +234,3 @@ Write-Host "LOCALBUM gerou com sucesso em: $out"
 Write-Host ""
 Write-Host "Pressiona Enter para fechar..."
 pause > $null
-
