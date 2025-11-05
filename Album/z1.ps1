@@ -72,6 +72,46 @@ if (Test-Path $iniPath) {
     Write-Host ""
     Write-Host "Please enter two quick details to create your new album:"
     Write-Host ""
+
+    # Show example screenshot (help)
+    $screenshot = Join-Path $root "ajuda_album.png"
+    if (Test-Path $screenshot) {
+        # Mostrar screenshot explicativo numa janela controlada
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
+
+if (Test-Path $screenshot) {
+    try {
+        $form = New-Object System.Windows.Forms.Form
+        $form.Text = "Ajuda - LOCALBUM"
+        $form.StartPosition = "Manual"
+        $form.Left = [System.Windows.Forms.Screen]::PrimaryScreen.WorkingArea.Width - 840
+        $form.Top  = 100
+        $form.Width = 700
+        $form.Height = 600
+        $form.FormBorderStyle = 'FixedSingle'
+        $form.MaximizeBox = $false
+        $form.MinimizeBox = $false
+        $form.TopMost = $true
+
+        $pic = New-Object System.Windows.Forms.PictureBox
+        $pic.Image = [System.Drawing.Image]::FromFile($screenshot)
+        $pic.SizeMode = 'Zoom'
+        $pic.Dock = 'Fill'
+
+        $form.Controls.Add($pic)
+        $form.Add_Shown({$form.Activate()})
+        $null = $form.ShowDialog()
+    } catch {
+        # fallback caso haja erro, abre pelo método padrão
+        Start-Process $screenshot
+    }
+}
+        Write-Host ">>> An example image was opened to show where the title and age appear."
+        Write-Host "Close the image window and continue here."
+        Write-Host ""
+    }
+
     $cfg['display_name'] = Read-Host "1/2 - Album name to show as Album title (ex: Ines Memories)"
     $cfg['birthdate']    = Read-Host "2/2 - Birthdate (OPTIONAL), ideal for albums with photos from birth onwards (YYYY-MM-DD)"
     $cfg['theme']        = "dark"
@@ -86,6 +126,46 @@ if (Test-Path $iniPath) {
     Write-Host ""
     Write-Host "Introduz 2 dados rapidos para criar o teu novo album:"
     Write-Host ""
+
+    # Mostrar screenshot explicativo
+    $screenshot = Join-Path $root "ajuda_album.png"
+    if (Test-Path $screenshot) {
+        # Mostrar screenshot explicativo numa janela controlada
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
+
+if (Test-Path $screenshot) {
+    try {
+        $form = New-Object System.Windows.Forms.Form
+        $form.Text = "Ajuda - LOCALBUM"
+        $form.StartPosition = "Manual"
+        $form.Left = [System.Windows.Forms.Screen]::PrimaryScreen.WorkingArea.Width - 840
+        $form.Top  = 100
+        $form.Width = 700
+        $form.Height = 600
+        $form.FormBorderStyle = 'FixedSingle'
+        $form.MaximizeBox = $false
+        $form.MinimizeBox = $false
+        $form.TopMost = $true
+
+        $pic = New-Object System.Windows.Forms.PictureBox
+        $pic.Image = [System.Drawing.Image]::FromFile($screenshot)
+        $pic.SizeMode = 'Zoom'
+        $pic.Dock = 'Fill'
+
+        $form.Controls.Add($pic)
+        $form.Add_Shown({$form.Activate()})
+        $null = $form.ShowDialog()
+    } catch {
+        # fallback caso haja erro, abre pelo método padrão
+        Start-Process $screenshot
+    }
+}
+        Write-Host ">>> Uma imagem de exemplo foi aberta para mostrar onde o titulo e a idade aparecem."
+        Write-Host "Fecha a imagem e continua aqui."
+        Write-Host ""
+    }
+
     $cfg['display_name'] = Read-Host "1/2 - Nome do album para mostrar como titulo (ex: Memorias da Ines)"
     $cfg['birthdate']    = Read-Host "2/2 - Data de nascimento (OPCIONAL), ideal para albuns com fotos desde a nascenca para mostrar a idade do bebe/crianca nas fotos (AAAA-MM-DD)"
     $cfg['theme']        = "dark"
@@ -96,6 +176,7 @@ if (Test-Path $iniPath) {
     Write-Host ""
     Write-Host "Ficheiro config.ini criado com sucesso!"
   }
+
 
   # Gravar config.ini e ocultar
   $lines = @()
