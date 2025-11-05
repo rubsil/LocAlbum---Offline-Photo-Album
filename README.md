@@ -125,7 +125,8 @@ X:
 └── Album
       ├── Fotos
       ├── config (oculto / hidden)
-      ├── LOCALBUM - Manager.bat ← ficheiro principal / main file 
+      ├── LOCALBUM - Manager.bat ← ficheiro principal / main file
+      ├── ajuda_album.png (oculto / hidden) 
       ├── favicon.png (oculto / hidden)
       ├── template.html (oculto / hidden)
       ├── z1.ps1, z3.ps1 (ocultos / hidden)
@@ -149,6 +150,7 @@ X:
 └── Album
       ├── Fotos
       ├── LOCALBUM - Manager.bat
+      ├── ajuda_album.png (oculto / hidden)
       ├── favicon.png (oculto)
       ├── template.html (oculto)
       ├── config.ini (oculto)
@@ -176,6 +178,7 @@ X:
 └── Album
       ├── Fotos
       ├── LOCALBUM - Manager.bat
+      ├── ajuda_album.png (hidden)
       ├── favicon.png (hidden)
       ├── template.html (hidden)
       ├── config.ini (hidden)
