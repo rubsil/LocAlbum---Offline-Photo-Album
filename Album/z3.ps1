@@ -180,6 +180,30 @@ $files = Get-ChildItem -Path $src -Include *.jpg,*.jpeg,*.png,*.gif,*.webp,*.mp4
 
 foreach($f in $files){
     $dt = Get-DateSmart $f
+# --- Validar datas impossíveis ou ano futurista ---
+if ($dt) {
+    $now = Get-Date
+    if (
+        $dt.Year  -gt $now.Year  -or
+        $dt.Month -gt 12         -or
+        $dt.Day   -gt 31         -or
+        $dt -gt $now.AddYears(1) # margem de segurança adicional
+    ) {
+        # Enviar para a pasta especial já existente
+        $no = Join-Path $dst $noDateFolderName
+        if (!(Test-Path $no)) {
+            New-Item -ItemType Directory -Path $no -Force | Out-Null
+        }
+        $target = Join-Path $no $f.Name
+
+        if (-not (Test-Path $target)) {
+            Copy-Item $f.FullName -Destination $target
+            Write-Host "[WARN] Data inválida ($($dt)) → movido para: $noDateFolderName  ($($f.Name))"
+        }
+        continue
+    }
+}
+
     if(-not $dt){
         $no = Join-Path $dst $noDateFolderName
         if(!(Test-Path $no)){ New-Item -ItemType Directory -Path $no -Force | Out-Null }
