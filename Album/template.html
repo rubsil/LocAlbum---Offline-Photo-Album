@@ -184,21 +184,34 @@ body.show-arrows .arrow{opacity:1;pointer-events:auto}
   <div class="controls-row">
     <label style="display:flex;align-items:center;gap:6px">
       <span id="themeLbl">Tema</span>
-      <select id="theme" class="select">
-        <option value="dark">Escuro</option>
-        <option value="pink">Rosa</option>
-        <option value="sky">Azul Céu</option>
-      </select>
+<select id="theme" class="select">
+  <option value="dark">Escuro</option>
+  <option value="pink">Rosa</option>
+  <option value="sky">Azul Céu</option>
+  <option value="lavender">Lavanda</option>
+  <option value="ocean">Oceano</option>
+  <option value="sunset">Pôr-do-sol</option>
+  <option value="gold">Dourado</option>
+  <option value="lilac">Lilás</option>
+  <option value="peach">Pêssego</option>
+  <option value="neon">Neon Preto</option>
+</select>
     </label>
     <label style="display:flex;align-items:center;gap:6px">
       <span id="gradLbl">Gradiente</span>
       <select id="grad" class="select">
-        <option value="pink" selected>Rosa</option>
-        <option value="blue">Azul</option>
-        <option value="gold">Dourado</option>
-        <option value="lilac">Lilás</option>
-        <option value="aqua">Verde-Água</option>
-      </select>
+  <option value="pink">Rosa / Pink</option>
+  <option value="blue">Azul / Blue</option>
+  <option value="gold">Dourado / Gold</option>
+  <option value="lilac">Lilás / Lilac</option>
+  <option value="aqua">Verde-Água / Aqua</option>
+  <option value="ruby">Rubi / Ruby</option>
+  <option value="emerald">Esmeralda / Emerald</option>
+  <option value="sunrise">Nascer do Sol / Sunrise</option>
+  <option value="neon">Neon Verde / Neon</option>
+  <option value="silver">Prateado / Silver</option>
+</select>
+
     </label>
   </div>
 
@@ -276,10 +289,19 @@ document.title = CONFIG?.pageTitle || "Offline Photo Album";
 const BIRTHDATE = (CONFIG?.birthdate||"").trim();
 
 // themes
-const themes={
-  dark:{bg:"#0f1115",card:"#0b0d10",muted:"#9aa0a6",accent:"#9ab"},
-  pink:{bg:"#1a0b12",card:"#2a0f1c",muted:"#f7a7c0",accent:"#ffb6d9"},
-  sky :{bg:"#0d1b24",card:"#132634",muted:"#a3d0f4",accent:"#6cf"}
+const themes = {
+  dark:   { bg:"#0f1115", card:"#0b0d10", muted:"#9aa0a6", accent:"#9ab" },
+  pink:   { bg:"#1a0b12", card:"#2a0f1c", muted:"#f7a7c0", accent:"#ffb6d9" },
+  sky:    { bg:"#0d1b24", card:"#132634", muted:"#a3d0f4", accent:"#6cf" },
+
+  // ✅ novos temas:
+  lavender: { bg:"#1a1423", card:"#261b33", muted:"#d8c7ff", accent:"#b28dff" },
+  ocean:    { bg:"#082026", card:"#0d323a", muted:"#8ad3e4", accent:"#4ec2d6" },
+  sunset:   { bg:"#2b0e12", card:"#3d1418", muted:"#ffb8a8", accent:"#ff7e5f" },
+  gold:     { bg:"#1d1505", card:"#3a2a0a", muted:"#ffeb99", accent:"#ffcc33" },
+  lilac:    { bg:"#201425", card:"#301a38", muted:"#e5c9ff", accent:"#c48bff" },
+  peach:    { bg:"#2b1a15", card:"#3e241c", muted:"#ffd3b6", accent:"#ffab86" },
+  neon:     { bg:"#000000", card:"#0a0a0a", muted:"#8e8e8e", accent:"#39ff14" }
 };
 
 const yearsEl=document.getElementById('years'),
@@ -315,20 +337,30 @@ function saveThemePref(){
 // === gradiente animado dinâmico ===
 function applyGradient(name) {
   const headline = document.querySelector('.titulo-brilhante');
+
   const map = {
-    pink:  'linear-gradient(90deg,#fff,#ffd6e8,#fff)',
-    blue:  'linear-gradient(90deg,#fff,#aee3ff,#fff)',
-    gold:  'linear-gradient(90deg,#fff8dc,#ffd700,#fff8dc)',
-    lilac: 'linear-gradient(90deg,#fff,#d6c2ff,#fff)',
-    aqua:  'linear-gradient(90deg,#fff,#a9fff7,#fff)'
+    pink:    'linear-gradient(90deg,#fff,#ffd6e8,#fff)',
+    blue:    'linear-gradient(90deg,#fff,#aee3ff,#fff)',
+    gold:    'linear-gradient(90deg,#fff8dc,#ffd700,#fff8dc)',
+    lilac:   'linear-gradient(90deg,#fff,#d6c2ff,#fff)',
+    aqua:    'linear-gradient(90deg,#fff,#a9fff7,#fff)',
+
+    ruby:    'linear-gradient(90deg,#fff,#ff8a8a,#fff)',
+    emerald: 'linear-gradient(90deg,#fff,#9dffcf,#fff)',
+    sunrise: 'linear-gradient(90deg,#fff,#ffb48a,#fff)',
+    neon:    'linear-gradient(90deg,#fff,#b7ff8f,#fff)',
+    silver:  'linear-gradient(90deg,#fff,#d9d9d9,#fff)'
   };
+
   headline.style.background = map[name] || map.pink;
   headline.style.webkitBackgroundClip = 'text';
   headline.style.webkitTextFillColor = 'transparent';
   headline.style.backgroundSize = '200% auto';
   headline.style.animation = 'brilhoSuave 6s linear infinite';
+
   localStorage.setItem('album_gradient', name);
 }
+
 
 function setTexts(){
   const T=STR[Lang]||STR.pt;
@@ -550,8 +582,31 @@ function stopSS(){
 function toggleSS(){ timer?stopSS():startSS(); }
 
 document.getElementById('slideshow').onclick=toggleSS;
-speedSel.onchange=()=>{ if(timer){ stopSS(); startSS(); } };
-fsSpeed.onchange=()=>{ if(timer){ stopSS(); startSS(); } };
+// atualização imediata da velocidade do slideshow (normal OU fullscreen)
+function applyNewSpeed() {
+
+    // fora do fullscreen usa speedSel, dentro usa fsSpeed
+    if (document.fullscreenElement) {
+        slideMs = +fsSpeed.value || 4000;
+    } else {
+        slideMs = +speedSel.value || 4000;
+    }
+
+    // se slideshow estiver ativo, reinicia com o novo intervalo
+    if (timer) {
+        clearInterval(timer);
+        timer = setInterval(() => {
+            next();
+            resetBar();
+        }, slideMs);
+    }
+
+    resetBar();
+}
+
+// eventos de alteração
+speedSel.onchange = applyNewSpeed;
+fsSpeed.onchange  = applyNewSpeed;
 
 document.getElementById('fullscreen').onclick=()=>{
   if(!document.fullscreenElement) document.documentElement.requestFullscreen();
@@ -646,5 +701,4 @@ window.init        = init;
 
 </body>
 </html>
-
 
