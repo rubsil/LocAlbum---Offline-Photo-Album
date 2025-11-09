@@ -216,9 +216,20 @@ Write-Host ""
 $manifest = @{}
 if (-not (Test-Path $base)) { New-Item -ItemType Directory -Path $base | Out-Null }
 
+# Pastas a ignorar (PT e EN)
+$foldersToIgnore = @(
+    "__FICHEIROS_SEM_DATA - VERIFICAR_MANUALMENTE",
+    "__FILES_WITHOUT_DATE - CHECK_MANUALLY"
+)
+
 Get-ChildItem -Path $base -Directory | Sort-Object Name | ForEach-Object {
+
+    # Ignorar as pastas especiais de "sem data"
+    if ($foldersToIgnore -contains $_.Name) { return }
+
     $yearFolder = $_.Name
     if (-not $manifest.ContainsKey($yearFolder)) { $manifest[$yearFolder] = @{} }
+
 
     Get-ChildItem -Path $_.FullName -Directory | Sort-Object Name | ForEach-Object {
         $monthFolder = $_.Name
