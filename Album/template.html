@@ -5,89 +5,143 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>LOCAlbum - Offline Photo Album</title>
 <style>
-:root{
-  --bg:#0f1115; --card:#0b0d10; --muted:#9aa0a6; --accent:#9ab;
+:root{ --bg:#0f1115; --card:#0b0d10; --muted:#9aa0a6; --accent:#9ab; }
+
+html,body{
+  height:100%; margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;
+  color:#eee; background:var(--bg); transition:background .3s; overflow:hidden;
 }
-html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;
-  color:#eee;background:var(--bg);transition:background .3s;overflow:hidden}
-.container{max-width:1200px;margin:18px auto;padding:18px;height:calc(100% - 36px);box-sizing:border-box;display:flex;flex-direction:column}
-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
-header h1{margin:0;font-size:28px;letter-spacing:0.4px}
-.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-button{background:transparent;border:1px solid rgba(255,255,255,.12);padding:8px 12px;border-radius:10px;color:inherit;cursor:pointer;transition:.15s}
+
+.container{
+  max-width:1200px; margin:16px auto; padding:14px 18px;
+  height:calc(100% - 32px); box-sizing:border-box;
+  display:flex; flex-direction:column;
+}
+
+/* ---------- Header / Título + Controlo ---------- */
+header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:-28px;     /* antes -38px → sobe mas sem sobrepor */
+  margin-bottom:-4px;   /* antes -10px → reduz espaço negativo */
+}
+header h1{margin:-28px 0 0 0;font-size:30px;letter-spacing:0.4px}
+.titulo-brilhante{
+  font-size:42px; letter-spacing:.4px; line-height:1.1; display:inline-block; padding-bottom:2px;
+  background:linear-gradient(90deg,#fff,#ffd6e8,#fff);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-size:200% auto; animation:brilhoSuave 6s linear infinite;
+  text-shadow:0 0 8px rgba(255,182,217,.15)
+}
+@keyframes brilhoSuave{0%{background-position:200% center}100%{background-position:-200% center}}
+
+/* ========================= */
+/* REMOVER SUBTÍTULO         */
+/* ========================= */
+#subtitle {
+  display: none !important;
+}
+
+#subtitle{margin:2px 0 4px 0; font-size:12px; color:var(--muted)}
+
+/* Painel de controlos à direita (3 linhas) */
+.controls{
+  display:flex; flex-direction:column; align-items:flex-end; gap:6px; margin-left:auto; text-align:right;
+  background:rgba(255,255,255,0.03); padding:8px 10px; border-radius:10px; backdrop-filter:blur(6px)
+}
+.controls-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end;align-items:center}
+.controls-row+.controls-row{margin-top:4px}
+button{
+  background:transparent; border:1px solid rgba(255,255,255,.12);
+  padding:8px 12px; border-radius:10px; color:#fff; cursor:pointer; transition:.15s
+}
 button:hover{background:rgba(255,255,255,.06)}
-button.active{background:var(--accent);color:#071018;font-weight:700}
-nav#years,nav#months{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-main.viewer{flex:1;background:var(--card);border-radius:12px;padding:12px;display:grid;grid-template-columns:1fr 360px;gap:12px;position:relative;transition:background .3s;overflow:hidden}
-.stage{width:100%;height:100%;border-radius:8px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(0,0,0,.06),rgba(0,0,0,.02))}
-.stage img,.stage video{width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;display:block;border-radius:6px;opacity:0;transition:opacity .6s ease}
+button.active{background:var(--accent); color:#071018; font-weight:700}
+.select{background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:8px;padding:6px}
+#langToggle{user-select:none;display:flex;align-items:center;gap:4px;font-size:20px}
+
+/* ---------- Barra de filtros (sempre texto branco) ---------- */
+#filterBar{
+  display:flex;
+  gap:8px;
+  margin:-26px 0 4px 0;
+  align-items:center;
+}
+#filterBar button{
+  display:inline-flex; align-items:center; gap:6px; color:#fff;  /* <- texto sempre branco */
+}
+#filterBar button.active{ background:rgba(255,255,255,.18) }
+#filterBar button:hover{  background:rgba(255,255,255,.10) }
+
+/* ---------- Navegação por ano/mês ---------- */
+nav#years, nav#months{ display:flex; flex-wrap:wrap; gap:8px; }
+nav#years{
+  margin-top:0px;
+  margin-bottom:4px;
+}
+nav#months{
+  margin-top:0px;     /* antes -2px -> agora -6px */
+  margin-bottom:4px;
+}
+
+/* ---------- Área principal ---------- */
+main.viewer{
+  flex:1; background:var(--card); border-radius:12px; padding:12px;
+  display:grid; grid-template-columns:1fr 360px; gap:12px;
+  position:relative; transition:background .3s; overflow:hidden
+}
+.stage{
+  width:100%; height:100%; border-radius:8px; display:flex; align-items:center; justify-content:center;
+  position:relative; overflow:hidden; background:linear-gradient(180deg,rgba(0,0,0,.06),rgba(0,0,0,.02))
+}
+/* ✅ Sem corte: usa auto + máximos */
+.stage img,.stage video{
+  max-width:100%; max-height:100%; width:auto; height:auto;
+  object-fit:contain; display:block; border-radius:6px; opacity:0; transition:opacity .6s ease
+}
 .stage img.visible,.stage video.visible{opacity:1}
-:fullscreen .stage img,:fullscreen .stage video{width:100vw;height:100vh;max-width:100vw;max-height:100vh;object-fit:contain}
+
 .meta{position:absolute;left:12px;bottom:12px;background:rgba(0,0,0,.45);padding:6px 10px;border-radius:8px;font-size:13px;color:var(--muted);z-index:1001}
 .age{position:absolute;right:12px;bottom:12px;background:rgba(0,0,0,.45);padding:6px 10px;border-radius:8px;font-size:13px;color:#ffd;z-index:1001}
 .counter{position:absolute;left:12px;top:12px;background:rgba(0,0,0,.45);padding:6px 10px;border-radius:8px;font-size:13px;color:#fff;z-index:1001;display:none}
 .progress{position:absolute;left:0;top:0;height:3px;width:0;background:var(--accent);z-index:1002;transition:width linear}
-.thumbs{height:100%;overflow:auto;padding:6px;border-left:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;gap:8px}
-.thumb{display:flex;gap:8px;align-items:center;padding:6px;border-radius:8px;cursor:pointer;position:relative}
+
+/* Thumbs + data visível */
+.thumbs{
+  height:100%; overflow:auto; padding:6px;
+  border-left:1px solid rgba(255,255,255,.06);
+  display:flex; flex-direction:column; gap:8px
+}
+.thumb{display:flex;gap:10px;align-items:center;padding:6px;border-radius:8px;cursor:pointer;position:relative}
 .thumb:hover{background:rgba(255,255,255,.06)}
 .thumb.active{background:rgba(255,255,255,.12)}
-.thumb img,.thumb video{width:96px;height:68px;object-fit:cover;border-radius:6px}
-.thumb .date{font-size:12px;color:var(--muted)}
+.thumb img,.thumb video{width:96px;height:68px;object-fit:cover;border-radius:6px;flex:0 0 auto}
+.thumb .date{font-size:12px;color:var(--muted);white-space:nowrap}
 .videoIcon{position:absolute;left:6px;bottom:6px;font-size:18px;color:#fff;text-shadow:0 0 4px #000;background:rgba(0,0,0,.4);border-radius:4px;padding:2px 4px;pointer-events:none}
-.footer{margin-top:10px;color:var(--muted);font-size:13px;text-align:center}
-.fsHud{position:fixed;right:12px;bottom:12px;display:none;gap:8px;z-index:2147483646;align-items:center}
-.select{background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:8px;padding:6px}
-.titulo-brilhante {
-  font-size: 34px; /* o tamanho que estás a usar agora */
-  letter-spacing: 0.5px;
-  position: relative;
-  display: inline-block;
-  line-height: 1.25;
-  padding-bottom: 4px;
-  background: linear-gradient(90deg, #fff, #ffd6e8, #fff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-size: 200% auto;
-  animation: brilhoSuave 6s linear infinite;
-  text-shadow: 0 0 8px rgba(255, 182, 217, 0.15);
-}
-/* título principal mais destacado e aproximado do topo */
-header h1#headline {
-  font-size: 44px;       /* antes era ~28px */
-  margin-top: -13px;      /* sobe ligeiramente */
-  line-height: 1.1;
-}
 
-header {
-  margin-top: -20px;       /* aproxima o header do topo da página */
-}
-#subtitle {
-  margin-top: 15px;
-  font-size: 14px;
-}
+.footer{margin-top:8px;color:var(--muted);font-size:13px;text-align:center}
 
-@keyframes brilhoSuave {
-  0% { background-position: 200% center; }
-  100% { background-position: -200% center; }
-}
-#langToggle {
-  user-select: none;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 20px;
-}
-/* ajustar posição dos anos e meses */
-nav#years {
-  margin-top: 16px;         /* sobe ligeiramente sem cortar */
-  margin-bottom: 6px;       /* dá espaço antes dos meses */
-}
+/* ---------- Fullscreen: esconder UI (filtros, anos/meses, thumbs) ---------- */
+:fullscreen header,
+:fullscreen #filterBar,
+:fullscreen nav#years,
+:fullscreen nav#months,
+:fullscreen .thumbs{ display:none!important }
+:fullscreen main.viewer{ grid-template-columns:1fr }
 
-nav#months {
-  margin-top: 0;            /* alinha logo após os anos */
-  margin-bottom: 4px;       /* pequeno espaço extra visual */
+/* ---------- HUD Fullscreen (aparece ao mexer o rato) ---------- */
+.fsHud{
+  position:fixed; right:12px; bottom:12px; display:none; gap:8px; z-index:2147483646; align-items:center;
+  background:rgba(0,0,0,.45); border:1px solid rgba(255,255,255,.2); padding:8px 10px; border-radius:10px;
+  opacity:0; transition:opacity .25s;
 }
+.fsHud.show{ opacity:1; }
 
+/* ---------- Setas laterais ---------- */
 .arrow{position:fixed;top:50%;transform:translateY(-50%);font-size:42px;font-weight:400;color:rgba(255,255,255,.8);
   background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);width:56px;height:56px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2147483647;transition:all .25s ease;
@@ -96,64 +150,12 @@ nav#months {
 .arrow.left{left:28px}.arrow.right{right:28px}
 :fullscreen .arrow{display:flex;opacity:1;pointer-events:auto}
 body.show-arrows .arrow{opacity:1;pointer-events:auto}
-/* organização dos controlos (duas linhas) */
-/* painel de controlos com 3 linhas, tudo alinhado à direita */
-.controls {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 6px;
-  margin-left: auto;
-  text-align: right;
-}
 
-/* cada linha de controlos */
-.controls-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: flex-end;
-  align-items: center;
-}
-
-/* garante que tudo se alinha visualmente */
-.controls-row label,
-.controls-row select,
-.controls-row button,
-#langToggle {
-  vertical-align: middle;
-}
-
-/* pequeno ajuste nos tamanhos */
-.controls-row select {
-  min-width: 90px;
-}
-
-/* espaçamento extra entre linhas */
-.controls-row + .controls-row {
-  margin-top: 4px;
-}
-
-/* opcional: painel translúcido para destacar controlos */
-.controls {
-  background: rgba(255,255,255,0.03);
-  padding: 8px 10px;
-  border-radius: 10px;
-  backdrop-filter: blur(6px);
-}
-
-/* 👇 deixa este exatamente a seguir */
+/* ---------- Responsivo ---------- */
 @media(max-width:900px){
   main.viewer{grid-template-columns:1fr}
   .thumbs{order:2;border-left:none;border-top:1px solid rgba(255,255,255,.06);height:160px;display:flex;overflow-x:auto;flex-direction:row}
 }
-
-@media(max-width:900px){
-  main.viewer{grid-template-columns:1fr}
-  .thumbs{order:2;border-left:none;border-top:1px solid rgba(255,255,255,.06);height:160px;display:flex;overflow-x:auto;flex-direction:row}
-}
-:fullscreen header,:fullscreen nav#years,:fullscreen nav#months,:fullscreen .thumbs{display:none!important}
-:fullscreen main.viewer{grid-template-columns:1fr}
 </style>
 </head>
 <body>
@@ -161,70 +163,71 @@ body.show-arrows .arrow{opacity:1;pointer-events:auto}
   <header>
     <div>
       <h1 id="headline" class="titulo-brilhante">Memórias</h1>
-      <div id="subtitle" style="font-size:13px;color:var(--muted)"></div>
+      <div id="subtitle"></div>
     </div>
-<div class="controls">
 
-  <!-- linha 1 -->
-  <div class="controls-row">
-    <button id="fullscreen">Fullscreen</button>
-    <button id="slideshow">Iniciar slideshow</button>
-    <label style="display:flex;align-items:center;gap:6px">
-      <span id="speedLbl">Velocidade</span>
-      <select id="speed" class="select">
-        <option value="2000">2s</option>
-        <option value="4000" selected>4s</option>
-        <option value="8000">8s</option>
-        <option value="15000">15s</option>
-      </select>
-    </label>
-  </div>
-
-  <!-- linha 2 -->
-  <div class="controls-row">
-    <label style="display:flex;align-items:center;gap:6px">
-      <span id="themeLbl">Tema</span>
-<select id="theme" class="select">
-  <option value="dark">Escuro</option>
-  <option value="pink">Rosa</option>
-  <option value="sky">Azul Céu</option>
-  <option value="lavender">Lavanda</option>
-  <option value="ocean">Oceano</option>
-  <option value="sunset">Pôr-do-sol</option>
-  <option value="gold">Dourado</option>
-  <option value="lilac">Lilás</option>
-  <option value="peach">Pêssego</option>
-  <option value="neon">Neon Preto</option>
-</select>
-    </label>
-    <label style="display:flex;align-items:center;gap:6px">
-      <span id="gradLbl">Gradiente</span>
-      <select id="grad" class="select">
-  <option value="pink">Rosa / Pink</option>
-  <option value="blue">Azul / Blue</option>
-  <option value="gold">Dourado / Gold</option>
-  <option value="lilac">Lilás / Lilac</option>
-  <option value="aqua">Verde-Água / Aqua</option>
-  <option value="ruby">Rubi / Ruby</option>
-  <option value="emerald">Esmeralda / Emerald</option>
-  <option value="sunrise">Nascer do Sol / Sunrise</option>
-  <option value="neon">Neon Verde / Neon</option>
-  <option value="silver">Prateado / Silver</option>
-</select>
-
-    </label>
-  </div>
-
-  <!-- linha 3 -->
-  <div class="controls-row">
-    <div id="langToggle" style="cursor:pointer;font-size:20px;line-height:1.2">🇵🇹 / 🇬🇧</div>
-    <button id="saveTheme" title="Guardar todas as preferências">💾</button>
-  </div>
-
-</div>
-
-
+    <div class="controls">
+      <!-- linha 1 -->
+      <div class="controls-row">
+        <button id="fullscreen">Fullscreen (F)</button>
+        <button id="slideshow">Iniciar slideshow (space)</button>
+        <label style="display:flex;align-items:center;gap:6px">
+          <span id="speedLbl">Velocidade</span>
+          <select id="speed" class="select">
+            <option value="2000">2s</option>
+            <option value="4000" selected>4s</option>
+            <option value="8000">8s</option>
+            <option value="15000">15s</option>
+          </select>
+        </label>
+      </div>
+      <!-- linha 2 -->
+      <div class="controls-row">
+        <label style="display:flex;align-items:center;gap:6px">
+          <span id="themeLbl">Tema</span>
+          <select id="theme" class="select">
+            <option value="dark">Escuro</option>
+            <option value="pink">Rosa</option>
+            <option value="sky">Azul Céu</option>
+            <option value="lavender">Lavanda</option>
+            <option value="ocean">Oceano</option>
+            <option value="sunset">Pôr-do-sol</option>
+            <option value="gold">Dourado</option>
+            <option value="lilac">Lilás</option>
+            <option value="peach">Pêssego</option>
+            <option value="neon">Neon Preto</option>
+          </select>
+        </label>
+        <label style="display:flex;align-items:center;gap:6px">
+          <span id="gradLbl">Gradiente</span>
+          <select id="grad" class="select">
+            <option value="pink">Rosa / Pink</option>
+            <option value="blue">Azul / Blue</option>
+            <option value="gold">Dourado / Gold</option>
+            <option value="lilac">Lilás / Lilac</option>
+            <option value="aqua">Verde-Água / Aqua</option>
+            <option value="ruby">Rubi / Ruby</option>
+            <option value="emerald">Esmeralda / Emerald</option>
+            <option value="sunrise">Nascer do Sol / Sunrise</option>
+            <option value="neon">Neon Verde / Neon</option>
+            <option value="silver">Prateado / Silver</option>
+          </select>
+        </label>
+      </div>
+      <!-- linha 3 -->
+      <div class="controls-row">
+        <div id="langToggle" style="cursor:pointer;font-size:20px;line-height:1.2">🇵🇹 / 🇬🇧</div>
+        <button id="saveTheme" title="Guardar todas as preferências">💾</button>
+      </div>
+    </div>
   </header>
+
+  <!-- Filtros ficam acima dos anos (mais espaço para a foto) -->
+  <div id="filterBar">
+    <button id="fltAll"   class="active">📁 Tudo</button>
+    <button id="fltPhotos">📷 Fotos</button>
+    <button id="fltVideos">🎬 Vídeos</button>
+  </div>
 
   <nav id="years"></nav>
   <nav id="months"></nav>
@@ -243,6 +246,7 @@ body.show-arrows .arrow{opacity:1;pointer-events:auto}
   <div class="footer" id="footerLine"></div>
 </div>
 
+<!-- HUD do fullscreen (só quando em F11) -->
 <div class="fsHud" id="fsHud">
   <button id="fsToggle">Iniciar slideshow</button>
   <label style="display:flex;align-items:center;gap:6px">
@@ -257,229 +261,286 @@ body.show-arrows .arrow{opacity:1;pointer-events:auto}
   <button id="fsExit">Sair</button>
 </div>
 
-<div class="arrow left" id="arrowLeft">‹</div>
+<!-- Setas -->
+<div class="arrow left"  id="arrowLeft">‹</div>
 <div class="arrow right" id="arrowRight">›</div>
 
 <script>
-
+/* Estas duas linhas são substituídas pelo z1.ps1 */
 <!--CONFIG-->
 <!--MANIFEST-->
 
-// === i18n ===
+// ===== I18N =====
 const STR = {
   pt:{
     choose:"👋 Escolhe um ano e mês para começar.",
-    speed:"Velocidade", theme:"Tema",
-    start:"Iniciar slideshow (space)", stop:"Parar slideshow (space)",
-    exit:"Sair", years:"Anos", months:"Meses",
-    by:"Feito por", donate:"Doações",
-    project:"Projeto", fs:"Fullscreen (F)"
+    speed:"Velocidade",
+    theme:"Tema",
+    gradient:"Gradiente",
+    start:"Iniciar slideshow (space)",
+    stop:"Parar slideshow (space)",
+    exit:"Sair",
+    fullscreen:"Fullscreen (F)",
+    all:"📁 Tudo",
+    photos:"📷 Fotos",
+    videos:"🎬 Vídeos",
+    by:"Feito por",
+    donate:"Doações",
+    project:"Projeto"
   },
+
   en:{
     choose:"👋 Pick a year and month to begin.",
-    speed:"Speed", theme:"Theme",
-    start:"Start slideshow (space)", stop:"Stop slideshow (space)",
-    exit:"Exit", years:"Years", months:"Months",
-    by:"Made by", donate:"Donations",
-    project:"Project", fs:"Fullscreen (F)"
+    speed:"Speed",
+    theme:"Theme",
+    gradient:"Gradient",
+    start:"Start slideshow (space)",
+    stop:"Stop slideshow (space)",
+    exit:"Exit",
+    fullscreen:"Fullscreen (F)",
+    all:"📁 All",
+    photos:"📷 Photos",
+    videos:"🎬 Videos",
+    by:"Made by",
+    donate:"Donations",
+    project:"Project"
   }
 };
 
-document.title = CONFIG?.pageTitle || "Offline Photo Album";
-const BIRTHDATE = (CONFIG?.birthdate||"").trim();
 
-// themes
+document.title = (typeof CONFIG!=='undefined' && CONFIG.pageTitle) ? CONFIG.pageTitle : "Offline Photo Album";
+const BIRTHDATE = (typeof CONFIG!=='undefined' && CONFIG.birthdate ? CONFIG.birthdate : "").trim();
+
+// ===== Themes =====
 const themes = {
-  dark:   { bg:"#0f1115", card:"#0b0d10", muted:"#9aa0a6", accent:"#9ab" },
-  pink:   { bg:"#1a0b12", card:"#2a0f1c", muted:"#f7a7c0", accent:"#ffb6d9" },
-  sky:    { bg:"#0d1b24", card:"#132634", muted:"#a3d0f4", accent:"#6cf" },
-
-  // ✅ novos temas:
-  lavender: { bg:"#1a1423", card:"#261b33", muted:"#d8c7ff", accent:"#b28dff" },
-  ocean:    { bg:"#082026", card:"#0d323a", muted:"#8ad3e4", accent:"#4ec2d6" },
-  sunset:   { bg:"#2b0e12", card:"#3d1418", muted:"#ffb8a8", accent:"#ff7e5f" },
-  gold:     { bg:"#1d1505", card:"#3a2a0a", muted:"#ffeb99", accent:"#ffcc33" },
-  lilac:    { bg:"#201425", card:"#301a38", muted:"#e5c9ff", accent:"#c48bff" },
-  peach:    { bg:"#2b1a15", card:"#3e241c", muted:"#ffd3b6", accent:"#ffab86" },
-  neon:     { bg:"#000000", card:"#0a0a0a", muted:"#8e8e8e", accent:"#39ff14" }
+  dark:{bg:"#0f1115",card:"#0b0d10",muted:"#9aa0a6",accent:"#9ab"},
+  pink:{bg:"#1a0b12",card:"#2a0f1c",muted:"#f7a7c0",accent:"#ffb6d9"},
+  sky :{bg:"#0d1b24",card:"#132634",muted:"#a3d0f4",accent:"#6cf"},
+  lavender:{bg:"#1a1423",card:"#261b33",muted:"#d8c7ff",accent:"#b28dff"},
+  ocean   :{bg:"#082026",card:"#0d323a",muted:"#8ad3e4",accent:"#4ec2d6"},
+  sunset  :{bg:"#2b0e12",card:"#3d1418",muted:"#ffb8a8",accent:"#ff7e5f"},
+  gold    :{bg:"#1d1505",card:"#3a2a0a",muted:"#ffeb99",accent:"#ffcc33"},
+  lilac   :{bg:"#201425",card:"#301a38",muted:"#e5c9ff",accent:"#c48bff"},
+  peach   :{bg:"#2b1a15",card:"#3e241c",muted:"#ffd3b6",accent:"#ffab86"},
+  neon    :{bg:"#000000",card:"#0a0a0a",muted:"#8e8e8e",accent:"#39ff14"}
 };
 
-const yearsEl=document.getElementById('years'),
-      monthsEl=document.getElementById('months'),
-      thumbsEl=document.getElementById('thumbs'),
-      stage=document.getElementById('stage'),
-      metaEl=document.getElementById('meta'),
-      ageEl=document.getElementById('age'),
-      bar=document.getElementById('bar'),
-      counterEl=document.getElementById('counter'),
-      ph=document.getElementById('ph'),
-      speedSel=document.getElementById('speed'),
-      fsSpeed=document.getElementById('fsSpeed'),
-      fsHud=document.getElementById('fsHud'),
-      fsToggle=document.getElementById('fsToggle'),
-      themeSel=document.getElementById('theme'),
-      saveTheme=document.getElementById('saveTheme'),
-      grad=document.getElementById('grad'),
-      langToggle=document.getElementById('langToggle');
+const yearsEl = document.getElementById('years');
+const monthsEl= document.getElementById('months');
+const thumbsEl= document.getElementById('thumbs');
+const stage   = document.getElementById('stage');
+const metaEl  = document.getElementById('meta');
+const ageEl   = document.getElementById('age');
+const bar     = document.getElementById('bar');
+const counterEl = document.getElementById('counter');
+const ph      = document.getElementById('ph');
 
-let flatList=[],curIdx=0,timer=null,slideMs=+speedSel.value;
-let Lang = (localStorage.getItem('album_lang')||CONFIG.language||'pt');
+const speedSel= document.getElementById('speed');
+const fsSpeed = document.getElementById('fsSpeed');
+const fsHud   = document.getElementById('fsHud');
+const fsToggle= document.getElementById('fsToggle');
+const themeSel= document.getElementById('theme');
+const saveTheme= document.getElementById('saveTheme');
+const grad    = document.getElementById('grad');
+const langToggle=document.getElementById('langToggle');
+
+const fltAll=document.getElementById('fltAll');
+const fltPhotos=document.getElementById('fltPhotos');
+const fltVideos=document.getElementById('fltVideos');
+
+let flatList = [], curIdx = 0, timer = null, slideMs = +speedSel.value;
+let currentYear=null, currentMonth=null;
+let Lang = localStorage.getItem('album_lang') || (typeof CONFIG!=='undefined' ? (CONFIG.language||'pt') : 'pt');
 
 function applyTheme(name){
   const t = themes[name] || themes.dark;
   for(const k in t) document.documentElement.style.setProperty(`--${k}`, t[k]);
   themeSel.value = name;
 }
-function saveThemePref(){
-  localStorage.setItem('album_theme', themeSel.value);
-}
+function saveThemePref(){ localStorage.setItem('album_theme', themeSel.value); }
 
-// === gradiente animado dinâmico ===
-function applyGradient(name) {
-  const headline = document.querySelector('.titulo-brilhante');
-
-  const map = {
-    pink:    'linear-gradient(90deg,#fff,#ffd6e8,#fff)',
-    blue:    'linear-gradient(90deg,#fff,#aee3ff,#fff)',
-    gold:    'linear-gradient(90deg,#fff8dc,#ffd700,#fff8dc)',
-    lilac:   'linear-gradient(90deg,#fff,#d6c2ff,#fff)',
-    aqua:    'linear-gradient(90deg,#fff,#a9fff7,#fff)',
-
-    ruby:    'linear-gradient(90deg,#fff,#ff8a8a,#fff)',
-    emerald: 'linear-gradient(90deg,#fff,#9dffcf,#fff)',
-    sunrise: 'linear-gradient(90deg,#fff,#ffb48a,#fff)',
-    neon:    'linear-gradient(90deg,#fff,#b7ff8f,#fff)',
-    silver:  'linear-gradient(90deg,#fff,#d9d9d9,#fff)'
+/* Gradiente do título */
+function applyGradient(name){
+  const headline=document.querySelector('.titulo-brilhante');
+  const map={
+    pink:'linear-gradient(90deg,#fff,#ffd6e8,#fff)',
+    blue:'linear-gradient(90deg,#fff,#aee3ff,#fff)',
+    gold:'linear-gradient(90deg,#fff8dc,#ffd700,#fff8dc)',
+    lilac:'linear-gradient(90deg,#fff,#d6c2ff,#fff)',
+    aqua:'linear-gradient(90deg,#fff,#a9fff7,#fff)',
+    ruby:'linear-gradient(90deg,#fff,#ff8a8a,#fff)',
+    emerald:'linear-gradient(90deg,#fff,#9dffcf,#fff)',
+    sunrise:'linear-gradient(90deg,#fff,#ffb48a,#fff)',
+    neon:'linear-gradient(90deg,#fff,#b7ff8f,#fff)',
+    silver:'linear-gradient(90deg,#fff,#d9d9d9,#fff)'
   };
-
-  headline.style.background = map[name] || map.pink;
-  headline.style.webkitBackgroundClip = 'text';
-  headline.style.webkitTextFillColor = 'transparent';
-  headline.style.backgroundSize = '200% auto';
-  headline.style.animation = 'brilhoSuave 6s linear infinite';
-
+  if(headline){
+    headline.style.background = map[name] || map.pink;
+    headline.style.webkitBackgroundClip='text';
+    headline.style.webkitTextFillColor='transparent';
+    headline.style.backgroundSize='200% auto';
+    headline.style.animation='brilhoSuave 6s linear infinite';
+  }
   localStorage.setItem('album_gradient', name);
 }
 
-
 function setTexts(){
-  const T=STR[Lang]||STR.pt;
-  document.getElementById('speedLbl').textContent=T.speed;
-  document.getElementById('fsSpeedLbl').textContent=T.speed;
-  document.getElementById('themeLbl').textContent=T.theme;
-  document.getElementById('fullscreen').textContent=T.fs;
-  document.getElementById('slideshow').textContent=timer?T.stop:T.start;
-  fsToggle.textContent=timer?T.stop:T.start;
-  ph.textContent=T.choose;
+  const T = STR[Lang] || STR.pt;
 
-const by = `${T.by} ${CONFIG.author} • ${CONFIG.projectName}` +
-           (CONFIG.donateURL? ` • ${T.donate}: ${CONFIG.donateURL}` : '');
-  document.getElementById('footerLine').textContent=by;
+  document.getElementById('speedLbl').textContent = T.speed;
+  document.getElementById('fsSpeedLbl').textContent = T.speed;
+  document.getElementById('themeLbl').textContent = T.theme;
+  document.getElementById('gradLbl').textContent  = T.gradient;
+
+  document.getElementById('fullscreen').textContent = T.fullscreen;
+  document.getElementById('slideshow').textContent = timer ? T.stop : T.start;
+  fsToggle.textContent = timer ? T.stop : T.start;
+
+  // --- filtros traduzidos ---
+  document.getElementById('fltAll').textContent    = T.all;
+  document.getElementById('fltPhotos').textContent = T.photos;
+  document.getElementById('fltVideos').textContent = T.videos;
+
+  ph.textContent = T.choose;
+
+  const by = `${T.by} ${(CONFIG&&CONFIG.author)||'Ruben Silva'} • ${(CONFIG&&CONFIG.projectName)||'LOCALBUM'}`
+             + ((CONFIG&&CONFIG.donateURL)?` • ${T.donate}: ${CONFIG.donateURL}`:'');
+
+  document.getElementById('footerLine').textContent = by;
 }
 
-function monthOrder(a, b) {
-  const meses = [
-    // Português
-    "janeiro","fevereiro","marco","abril","maio","junho",
-    "julho","agosto","setembro","outubro","novembro","dezembro",
-    // Inglês
-    "january","february","march","april","may","june",
-    "july","august","september","october","november","december"
-  ];
-
-  // Normaliza (remove acentos e põe em minúsculas)
-  const norm = s => s.toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
-
-  const ai = meses.indexOf(norm(a));
-  const bi = meses.indexOf(norm(b));
-
-  if (ai !== -1 && bi !== -1) return ai - bi; // ambos reconhecidos
-  if (ai !== -1) return -1;                   // só A reconhecido
-  if (bi !== -1) return 1;                    // só B reconhecido
-  return a.localeCompare(b, "pt", { numeric: true });
+/* Ordenação de meses (PT/EN, sem acentos) */
+function monthOrder(a,b){
+  const meses=["janeiro","fevereiro","marco","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro",
+               "january","february","march","april","may","june","july","august","september","october","november","december"];
+  const norm=s=>s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+  const ai=meses.indexOf(norm(a)), bi=meses.indexOf(norm(b));
+  if(ai!==-1 && bi!==-1) return ai-bi;
+  if(ai!==-1) return -1; if(bi!==-1) return 1;
+  return a.localeCompare(b,"pt",{numeric:true});
 }
-
 function fmtDate(iso){
-  const p=iso.split('-'); const d=new Date(p[0],p[1]-1,p[2]);
-  return isNaN(d)? iso : d.toLocaleDateString(Lang==='pt'?'pt-PT':'en-GB',{day:'2-digit',month:'long',year:'numeric'});
+  const p = iso.split('-');
+  const d = new Date(p[0], p[1]-1, p[2]);
+
+  if(isNaN(d)) return iso;
+
+  if(Lang === 'pt'){
+    return d.toLocaleDateString("pt-PT", {
+      day:"2-digit",
+      month:"long",
+      year:"numeric"
+    });
+  }
+
+  // inglês britânico
+  return d.toLocaleDateString("en-GB", {
+    day:"2-digit",
+    month:"long",
+    year:"numeric"
+  });
 }
+
 function ageStr(iso){
   if(!BIRTHDATE) return '';
-  const p=iso.split('-'); const d=new Date(p[0],p[1]-1,p[2]);
-  if(isNaN(d))return'';
-  const bd = new Date(BIRTHDATE);
-  if(isNaN(bd)) return '';
-  if(d<bd) return '';
-  let y=d.getFullYear()-bd.getFullYear();
-  let m=d.getMonth()-bd.getMonth();
-  if(d.getDate()<bd.getDate()) m--;
-  if(m<0){ y--; m+=12; }
-  if(y===0 && m===0){
-    const diffDays = Math.floor((d - bd)/86400000);
-    return (Lang==='pt') ? `${diffDays} dia${diffDays!==1?'s':''}` : `${diffDays} day${diffDays!==1?'s':''}`;
+  const p=iso.split('-'); 
+  const d=new Date(p[0],p[1]-1,p[2]); 
+  if(isNaN(d)) return '';
+  const bd=new Date(BIRTHDATE); 
+  if(isNaN(bd) || d<bd) return '';
+
+  let y = d.getFullYear() - bd.getFullYear();
+  let m = d.getMonth() - bd.getMonth();
+  if(d.getDate() < bd.getDate()) m--;
+  if(m < 0){ y--; m += 12; }
+
+  if(Lang === 'pt'){
+    if(y===0 && m===0){
+      const days = Math.floor((d-bd)/86400000);
+      return `${days} dia${days!==1?'s':''}`;
+    }
+    if(y===0) return `${m} mês${m!==1?'es':''}`;
+    if(m===0) return `${y} ano${y!==1?'s':''}`;
+    return `${y} ano${y!==1?'s':''} e ${m} mês${m!==1?'es':''}`;
   }
-  if(y===0) return (Lang==='pt') ? (m===1?'1 mês':`${m} meses`) : (m===1?'1 month':`${m} months`);
-  if(m===0) return (Lang==='pt') ? `${y} ano${y!==1?'s':''}` : `${y} year${y!==1?'s':''}`;
-  if(m===1) return (Lang==='pt') ? `${y} ano${y!==1?'s':''} e 1 mês` : `${y} year${y!==1?'s':''} and 1 month`;
-  return (Lang==='pt') ? `${y} ano${y!==1?'s':''} e ${m} meses` : `${y} year${y!==1?'s':''} and ${m} months`;
+
+  // Inglês
+  if(y===0 && m===0){
+    const days = Math.floor((d-bd)/86400000);
+    return `${days} day${days!==1?'s':''}`;
+  }
+  if(y===0) return `${m} month${m!==1?'s':''}`;
+  if(m===0) return `${y} year${y!==1?'s':''}`;
+  return `${y} year${y!==1?'s':''} and ${m} month${m!==1?'s':''}`;
 }
 
+
+/* Manifest -> lista plana */
 function buildFlat(){
   flatList=[];
+  if(typeof manifest==='undefined'){ return; }
   Object.keys(manifest).sort((a,b)=>a-b).forEach(y=>{
     Object.keys(manifest[y]).sort(monthOrder).forEach(m=>{
       manifest[y][m].slice().sort((a,b)=>new Date(a.date)-new Date(b.date)).forEach(it=>{
-        flatList.push({
-          year:y, month:m, name:it.name, date:it.date,
-          src: it.path
-        });
+        flatList.push({year:y,month:m,name:it.name,date:it.date,src:it.path});
       });
     });
   });
 }
 
-
+/* Render anos/meses */
 function renderYears(){
   yearsEl.innerHTML='';
   Object.keys(manifest).sort((a,b)=>a-b).forEach(y=>{
-    const btn=document.createElement('button');
-    btn.textContent=y;
+    const btn=document.createElement('button'); btn.textContent=y;
     btn.onclick=()=>{
-      document.querySelectorAll('#years button').forEach(b=>b.classList.remove('active'));
+      currentYear=y;
+      yearsEl.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
       btn.classList.add('active'); renderMonths(y);
     };
     yearsEl.appendChild(btn);
   });
 }
-
-function capitalizeFirst(str) {
-  if (!str) return '';
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
+function capitalizeFirst(s){return s? s.charAt(0).toUpperCase()+s.slice(1):'';}
 function renderMonths(y){
   monthsEl.innerHTML='';
   const months=Object.keys(manifest[y]).sort(monthOrder);
-
-  // Put "Ecografias" first if present
-  const idxEco = months.findIndex(m=>m.toLowerCase()==='ecografias');
+  const idxEco=months.findIndex(m=>m.toLowerCase()==='ecografias');
   if(idxEco!==-1){ months.splice(idxEco,1); months.unshift('Ecografias'); }
-
   months.forEach(m=>{
-    const btn=document.createElement('button'); btn.textContent = capitalizeFirst(m);
+    const btn=document.createElement('button'); btn.textContent=capitalizeFirst(m);
     btn.onclick=()=>{
-      document.querySelectorAll('#months button').forEach(b=>b.classList.remove('active'));
+      currentMonth=m;
+      monthsEl.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
       btn.classList.add('active'); renderThumbs(y,m);
     };
     monthsEl.appendChild(btn);
   });
 }
 
+/* --------- Filtros --------- */
+let currentFilter="all";
+function setFilter(f){
+  currentFilter=f;
+  [fltAll,fltPhotos,fltVideos].forEach(b=>b.classList.remove('active'));
+  ({all:fltAll,photos:fltPhotos,videos:fltVideos}[f]).classList.add('active');
+  if(currentYear && currentMonth) renderThumbs(currentYear,currentMonth);
+}
+fltAll.onclick   = ()=>setFilter("all");
+fltPhotos.onclick= ()=>setFilter("photos");
+fltVideos.onclick= ()=>setFilter("videos");
+
+/* Thumbs */
 function renderThumbs(y,m){
   thumbsEl.innerHTML='';
-  const list=manifest[y][m].slice().sort((a,b)=>new Date(a.date)-new Date(b.date));
+  let list=manifest[y][m].slice().sort((a,b)=>new Date(a.date)-new Date(b.date));
+  list=list.filter(it=>{
+    const ext=it.name.split('.').pop().toLowerCase();
+    const isVid=['mp4','mov','webm'].includes(ext);
+    if(currentFilter==="photos") return !isVid;
+    if(currentFilter==="videos") return isVid;
+    return true;
+  });
   if(m.toLowerCase()==='ecografias'){
     let currentDateGroup='';
     list.forEach(it=>{
@@ -501,21 +562,17 @@ function addThumbCard(y,m,it){
   const card=document.createElement('div'); card.className='thumb';
   const ext=it.name.split('.').pop().toLowerCase();
   const el=['mp4','mov','webm'].includes(ext)?document.createElement('video'):document.createElement('img');
-  el.src = it.path;
-  if(el.tagName==='IMG') el.loading='lazy';
-  if(el.tagName==='VIDEO') el.muted=true;
+  el.src=it.path; if(el.tagName==='IMG') el.loading='lazy'; if(el.tagName==='VIDEO') el.muted=true;
   card.appendChild(el);
-  if(el.tagName==='VIDEO'){const icon=document.createElement('div');icon.className='videoIcon';icon.textContent='🎬';card.appendChild(icon);}
+  if(el.tagName==='VIDEO'){ const icon=document.createElement('div'); icon.className='videoIcon'; icon.textContent='🎬'; card.appendChild(icon); }
   const d=document.createElement('div'); d.className='date'; d.textContent=fmtDate(it.date); card.appendChild(d);
-  card.onclick=()=>{
-    const idx=flatList.findIndex(x=>x.year===y&&x.month===m&&x.name===it.name);
-    if(idx>-1) show(idx);
-  };
+  card.onclick=()=>{ const idx=flatList.findIndex(x=>x.year===y&&x.month===m&&x.name===it.name); if(idx>-1) show(idx); };
   thumbsEl.appendChild(card);
 }
 
+/* --------- Viewer --------- */
 function show(i){
-  if(flatList.length===0) return;
+  if(!flatList.length) return;
   if(i<0) i=flatList.length-1; if(i>=flatList.length) i=0; curIdx=i;
   const it=flatList[i];
 
@@ -524,181 +581,149 @@ function show(i){
 
   const ext=it.name.split('.').pop().toLowerCase();
   const el=['mp4','mov','webm'].includes(ext)?document.createElement('video'):document.createElement('img');
-  el.src = it.src;
-
-  if (el.tagName === 'VIDEO') {
-    el.controls = true; el.playsInline = true; el.preload = "metadata"; el.muted = false; el.autoplay = true;
-    const wasRunning = !!timer; if (wasRunning) stopSS();
-    el.oncanplay = ()=>{ el.controls = true; };
-    el.onended = ()=>{ if (wasRunning) startSS(); };
+  el.src=it.src;
+  if(el.tagName==='VIDEO'){
+    const wasRunning=!!timer; if(wasRunning) stopSS();
+    el.controls=true; el.playsInline=true; el.preload="metadata"; el.muted=false; el.autoplay=true;
+    el.onended=()=>{ if(wasRunning) startSS(); };
   }
-
   el.onload=()=>el.classList.add('visible');
   el.onloadeddata=()=>el.classList.add('visible');
-
   stage.appendChild(el);
-  metaEl.style.display='block'; metaEl.textContent=fmtDate(it.date);
 
-  const a = ageStr(it.date);
-  ageEl.style.display = a ? 'block':'none';
-  ageEl.textContent = a ? ((Lang==='pt')?'🍼 ':'🍼 ') + a : '';
+  metaEl.style.display='block'; metaEl.textContent=fmtDate(it.date);
+  const a=ageStr(it.date); ageEl.style.display=a?'block':'none'; ageEl.textContent=a?('🍼 '+a):'';
 
   const currentMonthList=flatList.filter(x=>x.year===it.year&&x.month===it.month);
   const pos=currentMonthList.findIndex(x=>x.name===it.name)+1;
-  counterEl.style.display='block';
-  counterEl.textContent=`${pos}/${currentMonthList.length}`;
+  counterEl.style.display='block'; counterEl.textContent=`${pos}/${currentMonthList.length}`;
 
   [...document.querySelectorAll('.thumb')].forEach(t=>t.classList.remove('active'));
-  const tsel=[...document.querySelectorAll('.thumb img,.thumb video')]
-      .find(e=>decodeURIComponent(e.src).endsWith(`/${it.name}`));
+  const tsel=[...document.querySelectorAll('.thumb img,.thumb video')].find(e=>decodeURIComponent(e.src).endsWith(`/${it.name}`));
   if(tsel) tsel.parentElement.classList.add('active');
+
+  // Preload vizinhos
+  const preload=(idx)=>{
+    const it2=flatList[(idx+flatList.length)%flatList.length]; if(!it2) return;
+    const e=it2.name.split('.').pop().toLowerCase(); const src=it2.src;
+    if(['mp4','mov','webm'].includes(e)){ const v=document.createElement('video'); v.src=src; v.preload="metadata"; }
+    else { const img=new Image(); img.src=src; }
+  };
+  preload(i+1); preload(i-1);
+
+  // Guardar último estado
+  localStorage.setItem('album_last_year', it.year);
+  localStorage.setItem('album_last_month', it.month);
+  localStorage.setItem('album_last_name', it.name);
 
   resetBar();
 }
-
-function next(){show(curIdx+1);} function prev(){show(curIdx-1);}
-function resetBar(){
-  bar.style.transition='none'; bar.style.width='0%'; void bar.offsetWidth;
-  if(timer){ bar.style.transition=`width ${slideMs}ms linear`; setTimeout(()=>bar.style.width='100%',20); }
-}
+function next(){show(curIdx+1)} function prev(){show(curIdx-1)}
+function resetBar(){ bar.style.transition='none'; bar.style.width='0%'; void bar.offsetWidth; if(timer){ bar.style.transition=`width ${slideMs}ms linear`; setTimeout(()=>bar.style.width='100%',20); } }
 function startSS(){
   if(timer) return;
-  slideMs=+speedSel.value||+fsSpeed.value||4000;
+  slideMs = document.fullscreenElement ? (+fsSpeed.value||4000) : (+speedSel.value||4000);
   timer=setInterval(()=>{ next(); resetBar(); }, slideMs);
   const T=STR[Lang]||STR.pt;
   document.getElementById('slideshow').classList.add('active');
-  document.getElementById('slideshow').textContent=T.stop;
-  fsToggle.textContent=T.stop;
-  resetBar();
+  document.getElementById('slideshow').textContent=T.stop; fsToggle.textContent=T.stop; resetBar();
 }
 function stopSS(){
-  if(!timer) return;
-  clearInterval(timer); timer=null; bar.style.width='0%';
+  if(!timer) return; clearInterval(timer); timer=null; bar.style.width='0%';
   const T=STR[Lang]||STR.pt;
   document.getElementById('slideshow').classList.remove('active');
-  document.getElementById('slideshow').textContent=T.start;
-  fsToggle.textContent=T.start;
+  document.getElementById('slideshow').textContent=T.start; fsToggle.textContent=T.start;
 }
 function toggleSS(){ timer?stopSS():startSS(); }
-
 document.getElementById('slideshow').onclick=toggleSS;
-// atualização imediata da velocidade do slideshow (normal OU fullscreen)
-function applyNewSpeed() {
 
-    // fora do fullscreen usa speedSel, dentro usa fsSpeed
-    if (document.fullscreenElement) {
-        slideMs = +fsSpeed.value || 4000;
-    } else {
-        slideMs = +speedSel.value || 4000;
-    }
-
-    // se slideshow estiver ativo, reinicia com o novo intervalo
-    if (timer) {
-        clearInterval(timer);
-        timer = setInterval(() => {
-            next();
-            resetBar();
-        }, slideMs);
-    }
-
-    resetBar();
+/* Velocidade dinâmica (normal e fullscreen) */
+function applyNewSpeed(){
+  slideMs = document.fullscreenElement ? (+fsSpeed.value||4000) : (+speedSel.value||4000);
+  if(timer){ clearInterval(timer); timer=setInterval(()=>{ next(); resetBar(); }, slideMs); }
+  resetBar();
 }
+speedSel.onchange=applyNewSpeed; fsSpeed.onchange=applyNewSpeed;
 
-// eventos de alteração
-speedSel.onchange = applyNewSpeed;
-fsSpeed.onchange  = applyNewSpeed;
-
+/* Fullscreen + HUD que aparece quando mexe o rato */
 document.getElementById('fullscreen').onclick=()=>{
   if(!document.fullscreenElement) document.documentElement.requestFullscreen();
   else document.exitFullscreen();
 };
-document.addEventListener('fullscreenchange',()=>{ fsHud.style.display=document.fullscreenElement?'flex':'none'; });
+let hudTimer=null;
+function showHud(){
+  if(!document.fullscreenElement) return;
+  fsHud.classList.add('show'); clearTimeout(hudTimer);
+  hudTimer=setTimeout(()=>fsHud.classList.remove('show'), 1500);
+}
+document.addEventListener('fullscreenchange',()=>{
+  const on = !!document.fullscreenElement;
+  fsHud.style.display = on ? 'flex' : 'none';
+  if(on) showHud();
+});
+document.addEventListener('mousemove',()=>{ document.body.classList.add('show-arrows'); showHud(); });
 document.getElementById('fsExit').onclick=()=>{ if(document.fullscreenElement) document.exitFullscreen(); };
 fsToggle.onclick=toggleSS;
+
+/* Navegação teclas + setas visíveis */
 document.getElementById('arrowLeft').onclick=prev;
 document.getElementById('arrowRight').onclick=next;
-
-document.addEventListener('keydown',e=>{
-  if(e.key==='ArrowRight') next();
-  else if(e.key==='ArrowLeft') prev();
-  else if(e.key===' '){ e.preventDefault(); toggleSS(); }
-  else if(e.key.toLowerCase()==='f'){
-    if(!document.fullscreenElement) document.documentElement.requestFullscreen();
-    else document.exitFullscreen();
-  }
-});
-
-// show arrows on move
-let arrowTimer;
+let arrowTimer; 
 document.addEventListener('mousemove',()=>{
   document.body.classList.add('show-arrows');
   clearTimeout(arrowTimer);
   arrowTimer=setTimeout(()=>{document.body.classList.remove('show-arrows');},1800);
 });
 document.addEventListener('keydown',e=>{
-  if(['ArrowLeft','ArrowRight'].includes(e.key)){
-    document.body.classList.add('show-arrows');
-    clearTimeout(arrowTimer);
-    arrowTimer=setTimeout(()=>{document.body.classList.remove('show-arrows');},1800);
-  }
+  if(e.key==='ArrowRight') next();
+  else if(e.key==='ArrowLeft') prev();
+  else if(e.key===' '){ e.preventDefault(); toggleSS(); }
+  else if(e.key.toLowerCase()==='f'){ if(!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); }
+  if(['ArrowLeft','ArrowRight'].includes(e.key)){ document.body.classList.add('show-arrows'); showHud(); }
 });
 
-// === inicialização ===
-function init() {
-  // headline/subtitle
-  document.getElementById('headline').textContent = CONFIG.displayName || 'Memórias';
-  document.getElementById('subtitle').textContent = CONFIG.projectName || 'Offline Photo Album';
+/* ===== Inicialização ===== */
+function init(){
+  const name = (typeof CONFIG!=='undefined' && CONFIG.displayName) ? CONFIG.displayName : 'Memórias';
+  const proj = (typeof CONFIG!=='undefined' && CONFIG.projectName) ? CONFIG.projectName : 'Offline Photo Album';
+  document.getElementById('headline').textContent = name;
+  document.getElementById('subtitle').textContent = proj;
 
-  // tema do localStorage ou do config
-  applyTheme(localStorage.getItem('album_theme') || CONFIG.theme || 'dark');
-  themeSel.onchange = (e) => applyTheme(e.target.value);
+  applyTheme(localStorage.getItem('album_theme') || (CONFIG&&CONFIG.theme) || 'dark');
+  themeSel.onchange=e=>applyTheme(e.target.value);
 
-  // aplicar gradiente escolhido ou padrão
   applyGradient(localStorage.getItem('album_gradient') || 'pink');
-  grad.onchange = (e) => applyGradient(e.target.value);
+  grad.onchange=e=>applyGradient(e.target.value);
 
-  // guardar tema/preferências
-  saveTheme.onclick = () => { 
-    saveThemePref(); 
-    saveTheme.textContent = '✅'; 
-    setTimeout(() => saveTheme.textContent = '💾', 900); 
-  };
+  saveTheme.onclick=()=>{ saveThemePref(); saveTheme.textContent='✅'; setTimeout(()=>saveTheme.textContent='💾',900); };
 
-  // --- alternar idioma com bandeiras ---
-  langToggle.onclick = () => {
-    Lang = (Lang === 'pt' ? 'en' : 'pt');
-    localStorage.setItem('album_lang', Lang);
-    langToggle.textContent = (Lang === 'pt') ? '🇵🇹 / 🇬🇧' : '🇬🇧 / 🇵🇹';
-    langToggle.title = (Lang === 'pt') ? 'Mudar para inglês' : 'Switch to Portuguese';
-    setTexts();
-  };
+  langToggle.onclick=()=>{ Lang=(Lang==='pt'?'en':'pt'); localStorage.setItem('album_lang',Lang);
+    langToggle.textContent=(Lang==='pt')?'🇵🇹 / 🇬🇧':'🇬🇧 / 🇵🇹'; langToggle.title=(Lang==='pt')?'Mudar para inglês':'Switch to Portuguese'; setTexts(); };
+  langToggle.textContent=(Lang==='pt')?'🇵🇹 / 🇬🇧':'🇬🇧 / 🇵🇹';
+  langToggle.title=(Lang==='pt')?'Mudar para inglês':'Switch to Portuguese';
 
-  // inicializar com bandeira e título corretos
-  langToggle.textContent = (Lang === 'pt') ? '🇵🇹 / 🇬🇧' : '🇬🇧 / 🇵🇹';
-  langToggle.title = (Lang === 'pt') ? 'Mudar para inglês' : 'Switch to Portuguese';
-
-  // textos
   setTexts();
 
-  // build principal
-  if (typeof manifest === 'undefined') {
-    stage.innerHTML = '<div style="color:#bbb">Erro: manifest não encontrado.</div>';
-    return;
+  if(typeof manifest==='undefined'){ stage.innerHTML='<div style="color:#bbb">Erro: manifest não encontrado.</div>'; return; }
+
+  buildFlat(); renderYears();
+
+  // Restaurar último estado
+  const ly=localStorage.getItem('album_last_year');
+  const lm=localStorage.getItem('album_last_month');
+  const ln=localStorage.getItem('album_last_name');
+  if(ly && lm && manifest[ly] && manifest[ly][lm]){
+    [...yearsEl.querySelectorAll("button")].find(b=>b.textContent==ly)?.click();
+    setTimeout(()=>{
+      [...monthsEl.querySelectorAll("button")].find(b=>b.textContent.toLowerCase()==lm.toLowerCase())?.click();
+      setTimeout(()=>{ const idx=flatList.findIndex(x=>x.name==ln); if(idx>=0) show(idx); },80);
+    },80);
   }
-
-  buildFlat(); 
-  renderYears();
 }
-
-// executa assim que carrega
 init();
 
-// Expor ao global para poderes chamar no console
-window.renderYears = renderYears;
-window.buildFlat   = buildFlat;
-window.init        = init;
+// Expor no global
+window.renderYears=renderYears; window.buildFlat=buildFlat; window.init=init;
 </script>
-
 </body>
 </html>
-
