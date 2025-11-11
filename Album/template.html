@@ -26,8 +26,8 @@ header{
   justify-content:space-between;
   flex-wrap:wrap;
   gap:10px;
-  margin-top:-28px;     /* antes -38px → sobe mas sem sobrepor */
-  margin-bottom:-4px;   /* antes -10px → reduz espaço negativo */
+  margin-top:-28px;     /* como pediste */
+  margin-bottom:-4px;
 }
 header h1{margin:-28px 0 0 0;font-size:30px;letter-spacing:0.4px}
 .titulo-brilhante{
@@ -42,11 +42,7 @@ header h1{margin:-28px 0 0 0;font-size:30px;letter-spacing:0.4px}
 /* ========================= */
 /* REMOVER SUBTÍTULO         */
 /* ========================= */
-#subtitle {
-  display: none !important;
-}
-
-#subtitle{margin:2px 0 4px 0; font-size:12px; color:var(--muted)}
+#subtitle { display: none !important; }
 
 /* Painel de controlos à direita (3 linhas) */
 .controls{
@@ -68,11 +64,11 @@ button.active{background:var(--accent); color:#071018; font-weight:700}
 #filterBar{
   display:flex;
   gap:8px;
-  margin:-26px 0 4px 0;
+  margin:-26px 0 4px 0; /* como pediste */
   align-items:center;
 }
 #filterBar button{
-  display:inline-flex; align-items:center; gap:6px; color:#fff;  /* <- texto sempre branco */
+  display:inline-flex; align-items:center; gap:6px; color:#fff;  /* texto sempre branco */
 }
 #filterBar button.active{ background:rgba(255,255,255,.18) }
 #filterBar button:hover{  background:rgba(255,255,255,.10) }
@@ -80,11 +76,11 @@ button.active{background:var(--accent); color:#071018; font-weight:700}
 /* ---------- Navegação por ano/mês ---------- */
 nav#years, nav#months{ display:flex; flex-wrap:wrap; gap:8px; }
 nav#years{
-  margin-top:0px;
+  margin-top:0px;       /* como pediste */
   margin-bottom:4px;
 }
 nav#months{
-  margin-top:0px;     /* antes -2px -> agora -6px */
+  margin-top:0px;       /* como pediste */
   margin-bottom:4px;
 }
 
@@ -288,7 +284,6 @@ const STR = {
     donate:"Doações",
     project:"Projeto"
   },
-
   en:{
     choose:"👋 Pick a year and month to begin.",
     speed:"Speed",
@@ -306,7 +301,6 @@ const STR = {
     project:"Project"
   }
 };
-
 
 document.title = (typeof CONFIG!=='undefined' && CONFIG.pageTitle) ? CONFIG.pageTitle : "Offline Photo Album";
 const BIRTHDATE = (typeof CONFIG!=='undefined' && CONFIG.birthdate ? CONFIG.birthdate : "").trim();
@@ -352,6 +346,7 @@ let flatList = [], curIdx = 0, timer = null, slideMs = +speedSel.value;
 let currentYear=null, currentMonth=null;
 let Lang = localStorage.getItem('album_lang') || (typeof CONFIG!=='undefined' ? (CONFIG.language||'pt') : 'pt');
 
+/* Helpers */
 function applyTheme(name){
   const t = themes[name] || themes.dark;
   for(const k in t) document.documentElement.style.setProperty(`--${k}`, t[k]);
@@ -384,6 +379,7 @@ function applyGradient(name){
   localStorage.setItem('album_gradient', name);
 }
 
+/* Traduções dinâmicas */
 function setTexts(){
   const T = STR[Lang] || STR.pt;
 
@@ -396,7 +392,7 @@ function setTexts(){
   document.getElementById('slideshow').textContent = timer ? T.stop : T.start;
   fsToggle.textContent = timer ? T.stop : T.start;
 
-  // --- filtros traduzidos ---
+  // filtros traduzidos
   document.getElementById('fltAll').textContent    = T.all;
   document.getElementById('fltPhotos').textContent = T.photos;
   document.getElementById('fltVideos').textContent = T.videos;
@@ -419,10 +415,11 @@ function monthOrder(a,b){
   if(ai!==-1) return -1; if(bi!==-1) return 1;
   return a.localeCompare(b,"pt",{numeric:true});
 }
+
+/* Formatação de datas (pt-PT / en-GB) */
 function fmtDate(iso){
   const p = iso.split('-');
   const d = new Date(p[0], p[1]-1, p[2]);
-
   if(isNaN(d)) return iso;
 
   if(Lang === 'pt'){
@@ -432,8 +429,6 @@ function fmtDate(iso){
       year:"numeric"
     });
   }
-
-  // inglês britânico
   return d.toLocaleDateString("en-GB", {
     day:"2-digit",
     month:"long",
@@ -441,6 +436,7 @@ function fmtDate(iso){
   });
 }
 
+/* Idade */
 function ageStr(iso){
   if(!BIRTHDATE) return '';
   const p=iso.split('-'); 
@@ -454,17 +450,23 @@ function ageStr(iso){
   if(d.getDate() < bd.getDate()) m--;
   if(m < 0){ y--; m += 12; }
 
-  if(Lang === 'pt'){
-    if(y===0 && m===0){
-      const days = Math.floor((d-bd)/86400000);
-      return `${days} dia${days!==1?'s':''}`;
-    }
-    if(y===0) return `${m} mês${m!==1?'es':''}`;
-    if(m===0) return `${y} ano${y!==1?'s':''}`;
-    return `${y} ano${y!==1?'s':''} e ${m} mês${m!==1?'es':''}`;
+if (Lang === 'pt') {
+  if (y === 0 && m === 0) {
+    const days = Math.floor((d - bd) / 86400000);
+    return `${days} dia${days !== 1 ? 's' : ''}`;
   }
 
-  // Inglês
+  if (y === 0) {
+    return `${m} ${m === 1 ? 'mês' : 'meses'}`;
+  }
+
+  if (m === 0) {
+    return `${y} ano${y !== 1 ? 's' : ''}`;
+  }
+
+  return `${y} ano${y !== 1 ? 's' : ''} e ${m} ${m === 1 ? 'mês' : 'meses'}`;
+}
+
   if(y===0 && m===0){
     const days = Math.floor((d-bd)/86400000);
     return `${days} day${days!==1?'s':''}`;
@@ -474,8 +476,16 @@ function ageStr(iso){
   return `${y} year${y!==1?'s':''} and ${m} month${m!==1?'s':''}`;
 }
 
+/* match filtro (por extensão) */
+function matchFilterByName(name){
+  const ext = name.split('.').pop().toLowerCase();
+  const isVid = ['mp4','mov','webm'].includes(ext);
+  if(currentFilter==="photos") return !isVid;
+  if(currentFilter==="videos") return isVid;
+  return true; // all
+}
 
-/* Manifest -> lista plana */
+/* Manifest -> lista plana (global) */
 function buildFlat(){
   flatList=[];
   if(typeof manifest==='undefined'){ return; }
@@ -488,10 +498,23 @@ function buildFlat(){
   });
 }
 
-/* Render anos/meses */
+/* --------- Renderização com filtro inteligente (A1) --------- */
+/* Devolve lista de anos válidos conforme filtro */
+function getFilteredYears(){
+  const out = [];
+  Object.keys(manifest).sort((a,b)=>a-b).forEach(y=>{
+    const months = Object.keys(manifest[y]);
+    const has = months.some(m => manifest[y][m].some(it => matchFilterByName(it.name)));
+    if(has) out.push(y);
+  });
+  return out;
+}
+
+/* Render anos */
 function renderYears(){
   yearsEl.innerHTML='';
-  Object.keys(manifest).sort((a,b)=>a-b).forEach(y=>{
+  const years = getFilteredYears();
+  years.forEach(y=>{
     const btn=document.createElement('button'); btn.textContent=y;
     btn.onclick=()=>{
       currentYear=y;
@@ -500,15 +523,34 @@ function renderYears(){
     };
     yearsEl.appendChild(btn);
   });
+
+  // se o ano atual deixou de ser válido, limpa meses/thumbs
+  if(currentYear && !years.includes(currentYear)){
+    currentYear=null; currentMonth=null;
+    monthsEl.innerHTML=''; thumbsEl.innerHTML='';
+  }
 }
-function capitalizeFirst(s){return s? s.charAt(0).toUpperCase()+s.slice(1):'';}
+
+/* Meses filtrados por ano */
+function getFilteredMonths(y){
+  const out=[];
+  const allMonths = Object.keys(manifest[y]||{}).sort(monthOrder);
+  allMonths.forEach(m=>{
+    const has = (manifest[y][m]||[]).some(it => matchFilterByName(it.name));
+    if(has) out.push(m);
+  });
+  // manter 'Ecografias' em primeiro, se existir
+  const idxEco = out.findIndex(mm=>mm.toLowerCase()==='ecografias');
+  if(idxEco>-1){ out.splice(idxEco,1); out.unshift('Ecografias'); }
+  return out;
+}
+
+/* Render meses */
 function renderMonths(y){
   monthsEl.innerHTML='';
-  const months=Object.keys(manifest[y]).sort(monthOrder);
-  const idxEco=months.findIndex(m=>m.toLowerCase()==='ecografias');
-  if(idxEco!==-1){ months.splice(idxEco,1); months.unshift('Ecografias'); }
+  const months=getFilteredMonths(y);
   months.forEach(m=>{
-    const btn=document.createElement('button'); btn.textContent=capitalizeFirst(m);
+    const btn=document.createElement('button'); btn.textContent=m.charAt(0).toUpperCase()+m.slice(1);
     btn.onclick=()=>{
       currentMonth=m;
       monthsEl.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
@@ -516,31 +558,35 @@ function renderMonths(y){
     };
     monthsEl.appendChild(btn);
   });
+
+  // se o mês atual deixou de ser válido com o filtro, limpa thumbs
+  if(currentMonth && !months.includes(currentMonth)){
+    currentMonth=null; thumbsEl.innerHTML='';
+  }
 }
 
-/* --------- Filtros --------- */
+/* --------- Filtros UI --------- */
 let currentFilter="all";
 function setFilter(f){
   currentFilter=f;
   [fltAll,fltPhotos,fltVideos].forEach(b=>b.classList.remove('active'));
   ({all:fltAll,photos:fltPhotos,videos:fltVideos}[f]).classList.add('active');
-  if(currentYear && currentMonth) renderThumbs(currentYear,currentMonth);
+
+  // Ao mudar filtro: re-renderiza anos e meses conforme disponibilidade
+  renderYears();
+  if(currentYear){ renderMonths(currentYear); }
+  if(currentYear && currentMonth){ renderThumbs(currentYear,currentMonth); }
 }
 fltAll.onclick   = ()=>setFilter("all");
 fltPhotos.onclick= ()=>setFilter("photos");
 fltVideos.onclick= ()=>setFilter("videos");
 
-/* Thumbs */
+/* --------- Thumbs (respeita filtro) --------- */
 function renderThumbs(y,m){
   thumbsEl.innerHTML='';
-  let list=manifest[y][m].slice().sort((a,b)=>new Date(a.date)-new Date(b.date));
-  list=list.filter(it=>{
-    const ext=it.name.split('.').pop().toLowerCase();
-    const isVid=['mp4','mov','webm'].includes(ext);
-    if(currentFilter==="photos") return !isVid;
-    if(currentFilter==="videos") return isVid;
-    return true;
-  });
+  let list=(manifest[y][m]||[]).slice().sort((a,b)=>new Date(a.date)-new Date(b.date));
+  list=list.filter(it=>matchFilterByName(it.name));
+
   if(m.toLowerCase()==='ecografias'){
     let currentDateGroup='';
     list.forEach(it=>{
@@ -566,8 +612,17 @@ function addThumbCard(y,m,it){
   card.appendChild(el);
   if(el.tagName==='VIDEO'){ const icon=document.createElement('div'); icon.className='videoIcon'; icon.textContent='🎬'; card.appendChild(icon); }
   const d=document.createElement('div'); d.className='date'; d.textContent=fmtDate(it.date); card.appendChild(d);
-  card.onclick=()=>{ const idx=flatList.findIndex(x=>x.year===y&&x.month===m&&x.name===it.name); if(idx>-1) show(idx); };
+  card.onclick=()=>{ 
+    // encontra índice global na flatList
+    const idx=flatList.findIndex(x=>x.year===y&&x.month===m&&x.name===it.name);
+    if(idx>-1) show(idx); 
+  };
   thumbsEl.appendChild(card);
+}
+
+/* Lista do mês atual respeitando o filtro (para slideshow/next/prev) */
+function monthListFiltered(y,m){
+  return flatList.filter(x=>x.year===y && x.month===m && matchFilterByName(x.name));
 }
 
 /* --------- Viewer --------- */
@@ -575,6 +630,23 @@ function show(i){
   if(!flatList.length) return;
   if(i<0) i=flatList.length-1; if(i>=flatList.length) i=0; curIdx=i;
   const it=flatList[i];
+
+  // Se o item não passa no filtro atual, tenta avançar para o próximo válido do mês
+  if(!matchFilterByName(it.name)){
+    const ml = monthListFiltered(it.year,it.month);
+    if(ml.length){
+      const idx = flatList.findIndex(x=>x.year===ml[0].year && x.month===ml[0].month && x.name===ml[0].name);
+      if(idx>-1){ curIdx=idx; return show(idx); }
+    }
+    return; // nada para mostrar
+  }
+
+  // Ajusta ano/mês selecionados na UI (se vier de "restauro")
+  if(currentYear!==it.year){ currentYear=it.year; renderYears(); }
+  if(currentMonth!==it.month){ 
+    currentMonth=it.month; 
+    renderMonths(currentYear); 
+  }
 
   stage.querySelectorAll('img,video').forEach(n=>n.remove());
   if(ph) ph.style.display='none';
@@ -594,22 +666,26 @@ function show(i){
   metaEl.style.display='block'; metaEl.textContent=fmtDate(it.date);
   const a=ageStr(it.date); ageEl.style.display=a?'block':'none'; ageEl.textContent=a?('🍼 '+a):'';
 
-  const currentMonthList=flatList.filter(x=>x.year===it.year&&x.month===it.month);
+  const currentMonthList = monthListFiltered(it.year,it.month);
   const pos=currentMonthList.findIndex(x=>x.name===it.name)+1;
-  counterEl.style.display='block'; counterEl.textContent=`${pos}/${currentMonthList.length}`;
+  counterEl.style.display='block'; counterEl.textContent = currentMonthList.length ? `${pos}/${currentMonthList.length}` : '';
 
   [...document.querySelectorAll('.thumb')].forEach(t=>t.classList.remove('active'));
   const tsel=[...document.querySelectorAll('.thumb img,.thumb video')].find(e=>decodeURIComponent(e.src).endsWith(`/${it.name}`));
   if(tsel) tsel.parentElement.classList.add('active');
 
-  // Preload vizinhos
-  const preload=(idx)=>{
-    const it2=flatList[(idx+flatList.length)%flatList.length]; if(!it2) return;
-    const e=it2.name.split('.').pop().toLowerCase(); const src=it2.src;
-    if(['mp4','mov','webm'].includes(e)){ const v=document.createElement('video'); v.src=src; v.preload="metadata"; }
-    else { const img=new Image(); img.src=src; }
+  // Preload vizinhos (do mês filtrado)
+  const preloadByItem=(item)=>{
+    if(!item) return;
+    const ext=item.name.split('.').pop().toLowerCase();
+    if(['mp4','mov','webm'].includes(ext)){ const v=document.createElement('video'); v.src=item.src; v.preload="metadata"; }
+    else { const img=new Image(); img.src=item.src; }
   };
-  preload(i+1); preload(i-1);
+  if(currentMonthList.length){
+    const pIdx = currentMonthList.findIndex(x=>x.name===it.name);
+    preloadByItem(currentMonthList[(pIdx+1)%currentMonthList.length]);
+    preloadByItem(currentMonthList[(pIdx-1+currentMonthList.length)%currentMonthList.length]);
+  }
 
   // Guardar último estado
   localStorage.setItem('album_last_year', it.year);
@@ -618,7 +694,27 @@ function show(i){
 
   resetBar();
 }
-function next(){show(curIdx+1)} function prev(){show(curIdx-1)}
+
+/* next/prev respeitam filtro E mês atual */
+function next(){
+  const it = flatList[curIdx]; if(!it) return;
+  const list = monthListFiltered(it.year,it.month);
+  if(!list.length) return;
+  const pos = list.findIndex(x=>x.name===it.name);
+  const nxt = list[(pos+1)%list.length];
+  const idx = flatList.findIndex(x=>x.year===nxt.year&&x.month===nxt.month&&x.name===nxt.name);
+  if(idx>-1) show(idx);
+}
+function prev(){
+  const it = flatList[curIdx]; if(!it) return;
+  const list = monthListFiltered(it.year,it.month);
+  if(!list.length) return;
+  const pos = list.findIndex(x=>x.name===it.name);
+  const prv = list[(pos-1+list.length)%list.length];
+  const idx = flatList.findIndex(x=>x.year===prv.year&&x.month===prv.month&&x.name===prv.name);
+  if(idx>-1) show(idx);
+}
+
 function resetBar(){ bar.style.transition='none'; bar.style.width='0%'; void bar.offsetWidth; if(timer){ bar.style.transition=`width ${slideMs}ms linear`; setTimeout(()=>bar.style.width='100%',20); } }
 function startSS(){
   if(timer) return;
@@ -697,8 +793,18 @@ function init(){
 
   saveTheme.onclick=()=>{ saveThemePref(); saveTheme.textContent='✅'; setTimeout(()=>saveTheme.textContent='💾',900); };
 
-  langToggle.onclick=()=>{ Lang=(Lang==='pt'?'en':'pt'); localStorage.setItem('album_lang',Lang);
-    langToggle.textContent=(Lang==='pt')?'🇵🇹 / 🇬🇧':'🇬🇧 / 🇵🇹'; langToggle.title=(Lang==='pt')?'Mudar para inglês':'Switch to Portuguese'; setTexts(); };
+  langToggle.onclick=()=>{ 
+    Lang=(Lang==='pt'?'en':'pt'); 
+    localStorage.setItem('album_lang',Lang);
+    langToggle.textContent=(Lang==='pt')?'🇵🇹 / 🇬🇧':'🇬🇧 / 🇵🇹'; 
+    langToggle.title=(Lang==='pt')?'Mudar para inglês':'Switch to Portuguese'; 
+    setTexts(); 
+
+    // Re-render para aplicar traduções e manter filtro
+    renderYears();
+    if(currentYear) renderMonths(currentYear);
+    if(currentYear && currentMonth) renderThumbs(currentYear,currentMonth);
+  };
   langToggle.textContent=(Lang==='pt')?'🇵🇹 / 🇬🇧':'🇬🇧 / 🇵🇹';
   langToggle.title=(Lang==='pt')?'Mudar para inglês':'Switch to Portuguese';
 
@@ -706,17 +812,22 @@ function init(){
 
   if(typeof manifest==='undefined'){ stage.innerHTML='<div style="color:#bbb">Erro: manifest não encontrado.</div>'; return; }
 
-  buildFlat(); renderYears();
+  buildFlat(); 
+  renderYears();
 
   // Restaurar último estado
   const ly=localStorage.getItem('album_last_year');
   const lm=localStorage.getItem('album_last_month');
   const ln=localStorage.getItem('album_last_name');
   if(ly && lm && manifest[ly] && manifest[ly][lm]){
+    // garantir que ano/mês existem com filtro ATUAL
+    currentFilter="all"; // no restauro inicial, mostrar tudo para garantir visibilidade
+    [fltAll,fltPhotos,fltVideos].forEach(b=>b.classList.remove('active')); fltAll.classList.add('active');
+    renderYears();
     [...yearsEl.querySelectorAll("button")].find(b=>b.textContent==ly)?.click();
     setTimeout(()=>{
       [...monthsEl.querySelectorAll("button")].find(b=>b.textContent.toLowerCase()==lm.toLowerCase())?.click();
-      setTimeout(()=>{ const idx=flatList.findIndex(x=>x.name==ln); if(idx>=0) show(idx); },80);
+      setTimeout(()=>{ const idx=flatList.findIndex(x=>x.name==ln && x.year==ly && x.month==lm); if(idx>=0) show(idx); },80);
     },80);
   }
 }
