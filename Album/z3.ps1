@@ -295,12 +295,3 @@ Write-Host $msg_reminder
 Write-Host ""
 Write-Host "Press any key to exit..."
 [System.Console]::ReadKey() | Out-Null
-
-
-Write-Host ""
-Write-Host "-------------------------------------------"
-Write-Host $msg_done
-Write-Host $msg_reminder
-Write-Host ""
-Write-Host "Press any key to exit..."
-[System.Console]::ReadKey() | Out-Null
