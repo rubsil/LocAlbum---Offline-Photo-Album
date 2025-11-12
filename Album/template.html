@@ -41,23 +41,60 @@ html,body{
 }
 
 /* ---------- Header / Título + Controlo ---------- */
-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-top:-28px;     /* como pediste */
-  margin-bottom:-4px;
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;          /* 👈 impede que o título salte de linha */
+  gap: 10px;
+  margin-top: -28px;
+  margin-bottom: -4px;
+  overflow: hidden;           /* 👈 necessário para o ellipsis funcionar */
 }
+.controls {
+  flex: 0 0 auto;          /* mantém largura natural, sem encolher */
+  min-width: 320px;        /* 👈 ajusta se quiseres mais ou menos espaço */
+}
+
 header h1{margin:-28px 0 0 0;font-size:30px;letter-spacing:0.4px}
-.titulo-brilhante{
-  font-size:42px; letter-spacing:.4px; line-height:1.1; display:inline-block; padding-bottom:2px;
-  background:linear-gradient(90deg,#fff,#ffd6e8,#fff);
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-  background-size:200% auto; animation:brilhoSuave 6s linear infinite;
-  text-shadow:0 0 8px rgba(255,182,217,.15)
+
+.titulo-brilhante {
+  font-size: 42px;
+  letter-spacing: 0.4px;
+  line-height: 1.1;
+  display: block;               /* 👈 de inline-block → block, permite truncar */
+  padding-bottom: 2px;
+  background: linear-gradient(90deg, #fff, #ffd6e8, #fff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% auto;
+  animation: brilhoSuave 6s linear infinite;
+  text-shadow: 0 0 8px rgba(255,182,217,.15);
+  overflow: hidden;             /* 👈 ajuda o ellipsis */
+  text-overflow: ellipsis;      /* 👈 ativa o corte */
+  white-space: nowrap;          /* 👈 mantém tudo numa linha */
+  max-width: 100%;              /* 👈 respeita o espaço disponível */
 }
+
+
+/* --- Truncamento automático e adaptativo do título --- */
+header > div:first-child {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+header h1#headline {
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: help;
+  display: block;           /* 👈 Força comportamento de bloco dentro do flex */
+  max-width: 100%;          /* garante que respeita a caixa flex */
+}
+
+
 @keyframes brilhoSuave{0%{background-position:200% center}100%{background-position:-200% center}}
 
 /* ========================= */
@@ -873,6 +910,9 @@ function init(){
   const proj = (typeof CONFIG!=='undefined' && CONFIG.projectName) ? CONFIG.projectName : 'Offline Photo Album';
   document.getElementById('headline').textContent = name;
   document.getElementById('subtitle').textContent = proj;
+// Mostra o título completo como tooltip ao passar o rato
+document.getElementById('headline').title = name;
+
 
   applyTheme(localStorage.getItem('album_theme') || (CONFIG&&CONFIG.theme) || 'dark');
   themeSel.onchange=e=>applyTheme(e.target.value);
