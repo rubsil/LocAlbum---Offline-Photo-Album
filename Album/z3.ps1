@@ -122,18 +122,45 @@ function Get-DateSmart($f){
     $ext = [System.IO.Path]::GetExtension($n).ToLowerInvariant()
     $d   = $null
 
-    # --- Padrões comuns ---
-    $pats = @(
-        '(\d{4})(\d{2})(\d{2})[_-](\d{2})(\d{2})(\d{2})',
-        '(\d{4})(\d{2})(\d{2})[_-]',
-        '(\d{8})[_-]',
-        '(\d{4})[-_](\d{2})[-_](\d{2})',
-        'PXL_(\d{4})(\d{2})(\d{2})_',
-        'MVIMG_(\d{4})(\d{2})(\d{2})',
-        'IMG_(\d{4})(\d{2})(\d{2})',
-        'VID_(\d{4})(\d{2})(\d{2})',
-        'PHOTO_(\d{4})(\d{2})(\d{2})'
-    )
+    # --- 1) Detecção por nome do ficheiro ---
+$pats = @(
+    '(\d{4})(\d{2})(\d{2})[_-](\d{2})(\d{2})(\d{2})',
+    '(\d{4})(\d{2})(\d{2})[_-]',
+    '(\d{8})[_-]',
+    '(\d{4})[-_](\d{2})[-_](\d{2})',
+
+    # Padrões Google / Pixel
+    'PXL_(\d{4})(\d{2})(\d{2})_',
+    'IMG_(\d{4})(\d{2})(\d{2})',
+    'MVIMG_(\d{4})(\d{2})(\d{2})',
+
+    # Samsung
+    'Screenshot_(\d{4})(\d{2})(\d{2})',
+    'VID_(\d{4})(\d{2})(\d{2})_WA',
+    '202\d(\d{2})(\d{2})_(\d{6})',
+
+    # iPhone
+    'IMG_(\d{4})(\d{2})(\d{2})_(\d{6})',
+    'IMG-(\d{4})(\d{2})(\d{2})-WA',
+
+    # GoPro
+    'GOPR(\d{4})(\d{2})(\d{2})',
+    'GH(\d{4})(\d{2})(\d{2})',
+
+    # Canon / Nikon
+    'DSC_(\d{4})(\d{2})(\d{2})',
+    'DSC(\d{4})(\d{2})(\d{2})',
+
+    # Sony
+    'DSC\d+_(\d{4})(\d{2})(\d{2})',
+
+    # Huawei
+    'IMG_(\d{4})(\d{2})(\d{2})_(?:\d{6})',
+
+    # Outros genéricos
+    '(\d{4})(\d{2})(\d{2})'
+)
+
 
     foreach($p in $pats){
         if($n -match $p){
@@ -147,36 +174,41 @@ function Get-DateSmart($f){
 
     if ($d) { return $d }
 
-    # --- EXIF ---
-    $imageExts = @('.jpg','.jpeg','.png','.gif','.webp','.tif','.tiff')
+    # --- 2) EXIF (melhorado, mais tags, mais seguro) ---
+    $imageExts = @('.jpg','.jpeg','.png','.gif','.webp','.tif','.tiff','.heic','.heif')
     if ($imageExts -contains $ext) {
         try {
             $img  = [System.Drawing.Image]::FromFile($f.FullName)
-            $tags = @(36867, 36868, 306)
+            $tags = @(36867, 36868, 306)   # DateOriginal / DateDigitized / ModifyDate
+
             foreach ($tag in $tags) {
                 try {
                     $prop = $img.GetPropertyItem($tag)
                     if ($prop -ne $null) {
                         $raw = [System.Text.Encoding]::ASCII.GetString($prop.Value).Trim([char]0)
-                        $d = [datetime]::ParseExact($raw, "yyyy:MM:dd HH:mm:ss", $null)
-                        break
+                        if ($raw -match "(\d{4}):(\d{2}):(\d{2})"){
+                            $d = [datetime]::ParseExact($raw, "yyyy:MM:dd HH:mm:ss", $null)
+                            break
+                        }
                     }
                 } catch {}
             }
             $img.Dispose()
         } catch { $d=$null }
-        return $d
+
+        if ($d) { return $d }
     }
 
-    # --- Último recurso ---
-    if (-not $d) { $d = $f.LastWriteTime }
-    return $d
+    # --- 3) Fallback: LastWriteTime ---
+    return $f.LastWriteTime
 }
 
 # -------------------------------
 # Processar ficheiros
 # -------------------------------
-$files = Get-ChildItem -Path $src -Include *.jpg,*.jpeg,*.png,*.gif,*.webp,*.mp4,*.mov,*.webm -Recurse
+$files = Get-ChildItem -Path $src -Include *.jpg,*.jpeg,*.png,*.gif,*.webp,*.tif,*.tiff,*.heic,*.heif,
+        *.mp4,*.mov,*.webm,*.mkv,*.avi,*.mts,*.m2ts,*.3gp,*.hevc -Recurse
+
 
 foreach($f in $files){
     $dt = Get-DateSmart $f
@@ -216,20 +248,52 @@ if ($dt) {
     }
 
     $year = $dt.Year
-    $month = $dt.ToString("MMMM",$ci)
+    $month = $dt.ToString("MMMM", $ci)
     $tgt = Join-Path $dst "$year\$month"
 
-    if(!(Test-Path $tgt)){ New-Item -ItemType Directory -Path $tgt -Force | Out-Null }
+    if (!(Test-Path $tgt)) {
+        New-Item -ItemType Directory -Path $tgt -Force | Out-Null
+    }
 
     $target = Join-Path $tgt $f.Name
 
+    # --- Cópia com verificação inteligente por hash ---
     if (-not (Test-Path $target)) {
         Copy-Item $f.FullName -Destination $target
         Write-Host "[OK] $($f.Name) -> $year\$month"
-    } else {
-        Write-Host "[SKIP] $($f.Name) (ja existe)"
+    }
+    else {
+        # Se já existir um ficheiro com o mesmo nome, comparar hash
+        try {
+            $hash1 = (Get-FileHash -Algorithm SHA1 -Path $f.FullName).Hash
+            $hash2 = (Get-FileHash -Algorithm SHA1 -Path $target).Hash
+            if ($hash1 -eq $hash2) {
+                Write-Host "[SKIP] $($f.Name) (duplicado exato - mesmo conteúdo)"
+            }
+            else {
+                # Ficheiro diferente → criar versão renomeada
+                $baseName = [System.IO.Path]::GetFileNameWithoutExtension($f.Name)
+                $ext = [System.IO.Path]::GetExtension($f.Name)
+                $newName = "${baseName}_DUP$ext"
+                $newTarget = Join-Path $tgt $newName
+                Copy-Item $f.FullName -Destination $newTarget
+                Write-Host "[COPIADO] $($f.Name) (diferente, guardado como $newName)"
+            }
+        }
+        catch {
+            Write-Host "[ERRO] Falha ao comparar hash de $($f.Name): $_"
+        }
     }
 }
+
+Write-Host ""
+Write-Host "-------------------------------------------"
+Write-Host $msg_done
+Write-Host $msg_reminder
+Write-Host ""
+Write-Host "Press any key to exit..."
+[System.Console]::ReadKey() | Out-Null
+
 
 Write-Host ""
 Write-Host "-------------------------------------------"
