@@ -19,6 +19,27 @@ html,body{
   display:flex; flex-direction:column;
 }
 
+/* --- Transição suave entre fotos --- */
+.stage img,
+.stage video {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 6px;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.stage img.visible,
+.stage video.visible {
+  opacity: 1;
+}
+
 /* ---------- Header / Título + Controlo ---------- */
 header{
   display:flex;
@@ -107,11 +128,18 @@ main.viewer{
 .progress{position:absolute;left:0;top:0;height:3px;width:0;background:var(--accent);z-index:1002;transition:width linear}
 
 /* Thumbs + data visível */
-.thumbs{
-  height:100%; overflow:auto; padding:6px;
-  border-left:1px solid rgba(255,255,255,.06);
-  display:flex; flex-direction:column; gap:8px
+.thumbs {
+  position: relative;
+  height: 100%;
+  overflow-y: auto;              /* 👈 apenas scroll vertical */
+  overflow-x: hidden;            /* 👈 impede scroll lateral */
+  padding: 6px;
+  border-left: 1px solid rgba(255,255,255,.06);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
+
 .thumb{display:flex;gap:10px;align-items:center;padding:6px;border-radius:8px;cursor:pointer;position:relative}
 .thumb:hover{background:rgba(255,255,255,.06)}
 .thumb.active{background:rgba(255,255,255,.12)}
@@ -152,6 +180,40 @@ body.show-arrows .arrow{opacity:1;pointer-events:auto}
   main.viewer{grid-template-columns:1fr}
   .thumbs{order:2;border-left:none;border-top:1px solid rgba(255,255,255,.06);height:160px;display:flex;overflow-x:auto;flex-direction:row}
 }
+
+/* --- Separador visível entre dias --- */
+.thumbs {
+  position: relative;
+}
+
+.day-separator {
+  position: relative;
+  width: 100%;
+  height: 0;
+  margin: 1px 0;
+}
+
+.day-separator::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--accent) 75%, transparent) 15%,
+    color-mix(in srgb, var(--accent) 75%, transparent) 85%,
+    transparent 100%
+  );
+  opacity: clamp(0.4, calc(0.8 - (var(--bg-luminance, 0.2) * 0.5)), 0.85);
+  pointer-events: none;
+  border-radius: 1px;
+  transition: opacity 0.3s ease;
+}
+
+
 </style>
 </head>
 <body>
@@ -602,8 +664,29 @@ function renderThumbs(y,m){
     });
     return;
   }
-  list.forEach(it=>addThumbCard(y,m,it));
+
+// Modo normal: separador discreto entre dias diferentes
+let currentDate = '';
+let firstItem = true;
+
+list.forEach(it => {
+  // verifica se o dia mudou
+  if (it.date !== currentDate) {
+    // evita adicionar separador antes do primeiro item
+    if (!firstItem) {
+      const sep = document.createElement('div');
+      sep.className = 'day-separator';
+      thumbsEl.appendChild(sep);
+    }
+    currentDate = it.date;
+  }
+
+  addThumbCard(y, m, it);
+  firstItem = false;
+});
+
 }
+
 function addThumbCard(y,m,it){
   const card=document.createElement('div'); card.className='thumb';
   const ext=it.name.split('.').pop().toLowerCase();
@@ -671,8 +754,14 @@ function show(i){
   counterEl.style.display='block'; counterEl.textContent = currentMonthList.length ? `${pos}/${currentMonthList.length}` : '';
 
   [...document.querySelectorAll('.thumb')].forEach(t=>t.classList.remove('active'));
-  const tsel=[...document.querySelectorAll('.thumb img,.thumb video')].find(e=>decodeURIComponent(e.src).endsWith(`/${it.name}`));
-  if(tsel) tsel.parentElement.classList.add('active');
+const tsel=[...document.querySelectorAll('.thumb img,.thumb video')].find(e=>decodeURIComponent(e.src).endsWith(`/${it.name}`));
+if(tsel) {
+  const parent = tsel.parentElement;
+  parent.classList.add('active');
+  // Faz scroll suave até à miniatura visível
+  parent.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+}
+
 
   // Preload vizinhos (do mês filtrado)
   const preloadByItem=(item)=>{
