@@ -174,30 +174,32 @@ $pats = @(
 
     if ($d) { return $d }
 
-    # --- 2) EXIF (melhorado, mais tags, mais seguro) ---
-    $imageExts = @('.jpg','.jpeg','.png','.gif','.webp','.tif','.tiff','.heic','.heif')
+    # --- 2) EXIF (melhorado, compatível com mais formatos e tags) ---
+    $imageExts = @('.jpg','.jpeg','.png','.gif','.webp','.tif','.tiff','.heic','.heif','.bmp','.jfif')
     if ($imageExts -contains $ext) {
         try {
             $img  = [System.Drawing.Image]::FromFile($f.FullName)
-            $tags = @(36867, 36868, 306)   # DateOriginal / DateDigitized / ModifyDate
-
+            $tags = @(36867, 36868, 306, 9003, 9004)   # DateTimeOriginal / Digitized / Modify / SubSecOriginal / SubSecModify
             foreach ($tag in $tags) {
                 try {
                     $prop = $img.GetPropertyItem($tag)
                     if ($prop -ne $null) {
                         $raw = [System.Text.Encoding]::ASCII.GetString($prop.Value).Trim([char]0)
-                        if ($raw -match "(\d{4}):(\d{2}):(\d{2})"){
-                            $d = [datetime]::ParseExact($raw, "yyyy:MM:dd HH:mm:ss", $null)
+                        # Normalizar formato: yyyy:MM:dd HH:mm:ss → yyyy-MM-dd HH:mm:ss
+                        $raw = $raw -replace ":", "-", 2
+                        if ($raw -match "^\d{4}[-.]\d{2}[-.]\d{2}") {
+                            $d = [datetime]::ParseExact($raw, "yyyy-MM-dd HH:mm:ss", $null)
                             break
                         }
                     }
                 } catch {}
             }
             $img.Dispose()
-        } catch { $d=$null }
+        } catch { $d = $null }
 
         if ($d) { return $d }
     }
+
 
     # --- 3) Fallback: LastWriteTime ---
     return $f.LastWriteTime
