@@ -56,7 +56,7 @@ if ($lang -eq "en") {
     $msg_cancel        = "No folder selected. Exiting..."
     $msg_done          = "[OK] Organization complete! Photos were grouped by year and month folders."
     $msg_reminder      = ">>> Remember to go back to the LOCALBUM Manager and run OPTION 2 to create or update your album."
-    $msg_no_exif       = "No EXIF date - moved to manual folder"
+    $msg_no_exif       = "No EXIF or valid date - moved to manual folder"
     $msg_start         = "[INFO] Starting photo organization..."
     $noDateFolderName  = "__FILES_WITHOUT_DATE - CHECK_MANUALLY"
     $ci = [System.Globalization.CultureInfo]::GetCultureInfo("en-GB")
@@ -67,7 +67,7 @@ else {
     $msg_cancel        = "Nenhuma pasta selecionada. A sair..."
     $msg_done          = "[OK] Organizacao concluida! As fotos foram agrupadas por pastas de ano e mes."
     $msg_reminder      = ">>> Nao te esquecas de voltar ao Gestor LOCALBUM e correr a OPCAO [2] para criar ou atualizar o album."
-    $msg_no_exif       = "Sem data EXIF - movido para pasta manual"
+    $msg_no_exif       = "Sem data (nome/EXIF) - movido para pasta manual"
     $msg_start         = "[INFO] A iniciar a organizacao das fotos..."
     $noDateFolderName  = "__FICHEIROS_SEM_DATA - VERIFICAR_MANUALMENTE"
     $ci = [System.Globalization.CultureInfo]::GetCultureInfo("pt-PT")
@@ -88,7 +88,6 @@ function Select-FolderDialog([string]$description,[string]$initialPath=$null){
         try { $d.SelectedPath = (Resolve-Path $initialPath) } catch {}
     }
 
-    # Forçar a janela a aparecer no topo
     $top = New-Object System.Windows.Forms.Form
     $top.TopMost = $true
     $top.ShowInTaskbar = $false
@@ -115,94 +114,58 @@ $dst = Select-FolderDialog $msg_select_dest $defaultDest
 if(-not $dst){ Write-Host $msg_cancel; pause; exit }
 
 # -------------------------------
-# Função: Obter data inteligente (corrigida)
+# Função: Obter data inteligente
 # -------------------------------
 function Get-DateSmart($f){
     $n   = $f.Name
     $ext = [System.IO.Path]::GetExtension($n).ToLowerInvariant()
     $d   = $null
 
-    # --- 1) Detecção por nome do ficheiro ---
-$pats = @(
-    '(\d{4})(\d{2})(\d{2})[_-](\d{2})(\d{2})(\d{2})',
-    '(\d{4})(\d{2})(\d{2})[_-]',
-    '(\d{8})[_-]',
-    '(\d{4})[-_](\d{2})[-_](\d{2})',
-
-    # Padrões Google / Pixel
-    'PXL_(\d{4})(\d{2})(\d{2})_',
-    'IMG_(\d{4})(\d{2})(\d{2})',
-    'MVIMG_(\d{4})(\d{2})(\d{2})',
-
-    # Samsung
-    'Screenshot_(\d{4})(\d{2})(\d{2})',
-    'VID_(\d{4})(\d{2})(\d{2})_WA',
-    '202\d(\d{2})(\d{2})_(\d{6})',
-
-    # iPhone
-    'IMG_(\d{4})(\d{2})(\d{2})_(\d{6})',
-    'IMG-(\d{4})(\d{2})(\d{2})-WA',
-
-    # GoPro
-    'GOPR(\d{4})(\d{2})(\d{2})',
-    'GH(\d{4})(\d{2})(\d{2})',
-
-    # Canon / Nikon
-    'DSC_(\d{4})(\d{2})(\d{2})',
-    'DSC(\d{4})(\d{2})(\d{2})',
-
-    # Sony
-    'DSC\d+_(\d{4})(\d{2})(\d{2})',
-
-    # Huawei
-    'IMG_(\d{4})(\d{2})(\d{2})_(?:\d{6})',
-
-    # Outros genéricos
-    '(\d{4})(\d{2})(\d{2})'
-)
-
+    # 1️⃣ Detecção por nome do ficheiro
+    $pats = @(
+        '(\d{4})(\d{2})(\d{2})[_-](\d{2})(\d{2})(\d{2})',
+        '(\d{4})(\d{2})(\d{2})[_-]',
+        '(\d{8})[_-]',
+        '(\d{4})[-_](\d{2})[-_](\d{2})',
+        'PXL_(\d{4})(\d{2})(\d{2})_',
+        'IMG_(\d{4})(\d{2})(\d{2})',
+        'MVIMG_(\d{4})(\d{2})(\d{2})',
+        'Screenshot_(\d{4})(\d{2})(\d{2})',
+        'VID_(\d{4})(\d{2})(\d{2})_WA',
+        '202\d(\d{2})(\d{2})_(\d{6})',
+        'IMG_(\d{4})(\d{2})(\d{2})_(\d{6})',
+        'IMG-(\d{4})(\d{2})(\d{2})-WA',
+        'GOPR(\d{4})(\d{2})(\d{2})',
+        'GH(\d{4})(\d{2})(\d{2})',
+        'DSC_(\d{4})(\d{2})(\d{2})',
+        'DSC(\d{4})(\d{2})(\d{2})',
+        'DSC\d+_(\d{4})(\d{2})(\d{2})',
+        'IMG_(\d{4})(\d{2})(\d{2})_(?:\d{6})',
+        '(\d{4})(\d{2})(\d{2})'
+    )
 
     foreach($p in $pats){
         if($n -match $p){
             try {
                 $y=[int]$matches[1]; $m=[int]$matches[2]; $day=[int]$matches[3]
-                $d=Get-Date -Year $y -Month $m -Day $day
-                break
+                return (Get-Date -Year $y -Month $m -Day $day)
             } catch {}
         }
     }
 
-    if ($d) { return $d }
-
-    # --- 2) EXIF (melhorado, compatível com mais formatos e tags) ---
+    # 2️⃣ EXIF via exiftool (DateTimeOriginal / CreateDate)
     $imageExts = @('.jpg','.jpeg','.png','.gif','.webp','.tif','.tiff','.heic','.heif','.bmp','.jfif')
     if ($imageExts -contains $ext) {
         try {
-            $img  = [System.Drawing.Image]::FromFile($f.FullName)
-            $tags = @(36867, 36868, 306, 9003, 9004)   # DateTimeOriginal / Digitized / Modify / SubSecOriginal / SubSecModify
-            foreach ($tag in $tags) {
-                try {
-                    $prop = $img.GetPropertyItem($tag)
-                    if ($prop -ne $null) {
-                        $raw = [System.Text.Encoding]::ASCII.GetString($prop.Value).Trim([char]0)
-                        # Normalizar formato: yyyy:MM:dd HH:mm:ss → yyyy-MM-dd HH:mm:ss
-                        $raw = $raw -replace ":", "-", 2
-                        if ($raw -match "^\d{4}[-.]\d{2}[-.]\d{2}") {
-                            $d = [datetime]::ParseExact($raw, "yyyy-MM-dd HH:mm:ss", $null)
-                            break
-                        }
-                    }
-                } catch {}
+            $exifDate = & exiftool -DateTimeOriginal -CreateDate -s -s -s $f.FullName | Select-Object -First 1
+            if ($exifDate) {
+                return [datetime]::ParseExact($exifDate, "yyyy:MM:dd HH:mm:ss", $null)
             }
-            $img.Dispose()
-        } catch { $d = $null }
-
-        if ($d) { return $d }
+        } catch {}
     }
 
-
-    # --- 3) Fallback: LastWriteTime ---
-    return $f.LastWriteTime
+    # 3️⃣ Sem data válida
+    return $null
 }
 
 # -------------------------------
@@ -211,36 +174,12 @@ $pats = @(
 $files = Get-ChildItem -Path $src -Include *.jpg,*.jpeg,*.png,*.gif,*.webp,*.tif,*.tiff,*.heic,*.heif,
         *.mp4,*.mov,*.webm,*.mkv,*.avi,*.mts,*.m2ts,*.3gp,*.hevc -Recurse
 
-
 foreach($f in $files){
     $dt = Get-DateSmart $f
-# --- Validar datas impossíveis ou ano futurista ---
-if ($dt) {
-    $now = Get-Date
-    if (
-        $dt.Year  -gt $now.Year  -or
-        $dt.Month -gt 12         -or
-        $dt.Day   -gt 31         -or
-        $dt -gt $now.AddYears(1) # margem de segurança adicional
-    ) {
-        # Enviar para a pasta especial já existente
-        $no = Join-Path $dst $noDateFolderName
-        if (!(Test-Path $no)) {
-            New-Item -ItemType Directory -Path $no -Force | Out-Null
-        }
-        $target = Join-Path $no $f.Name
 
-        if (-not (Test-Path $target)) {
-            Copy-Item $f.FullName -Destination $target
-            Write-Host "[WARN] Data inválida ($($dt)) → movido para: $noDateFolderName  ($($f.Name))"
-        }
-        continue
-    }
-}
-
-    if(-not $dt){
+    if (-not $dt) {
         $no = Join-Path $dst $noDateFolderName
-        if(!(Test-Path $no)){ New-Item -ItemType Directory -Path $no -Force | Out-Null }
+        if (!(Test-Path $no)) { New-Item -ItemType Directory -Path $no -Force | Out-Null }
         $target = Join-Path $no $f.Name
         if (-not (Test-Path $target)) {
             Copy-Item $f.FullName -Destination $target
@@ -249,43 +188,57 @@ if ($dt) {
         continue
     }
 
-    $year = $dt.Year
-    $month = $dt.ToString("MMMM", $ci)
-    $tgt = Join-Path $dst "$year\$month"
-
-    if (!(Test-Path $tgt)) {
-        New-Item -ItemType Directory -Path $tgt -Force | Out-Null
+    $now = Get-Date
+    if ($dt -gt $now.AddYears(1) -or $dt.Year -lt 1970) {
+        $no = Join-Path $dst $noDateFolderName
+        if (!(Test-Path $no)) { New-Item -ItemType Directory -Path $no -Force | Out-Null }
+        $target = Join-Path $no $f.Name
+        if (-not (Test-Path $target)) {
+            Copy-Item $f.FullName -Destination $target
+            Write-Host "[WARN] Data invalida ($($dt)) → movido para: $noDateFolderName ($($f.Name))"
+        }
+        continue
     }
+
+    $year  = $dt.Year
+    $month = $dt.ToString("MMMM", $ci)
+    $tgt   = Join-Path $dst "$year\$month"
+    if (!(Test-Path $tgt)) { New-Item -ItemType Directory -Path $tgt -Force | Out-Null }
 
     $target = Join-Path $tgt $f.Name
 
-    # --- Cópia com verificação inteligente por hash ---
     if (-not (Test-Path $target)) {
         Copy-Item $f.FullName -Destination $target
         Write-Host "[OK] $($f.Name) -> $year\$month"
     }
-    else {
-        # Se já existir um ficheiro com o mesmo nome, comparar hash
-        try {
-            $hash1 = (Get-FileHash -Algorithm SHA1 -Path $f.FullName).Hash
-            $hash2 = (Get-FileHash -Algorithm SHA1 -Path $target).Hash
-            if ($hash1 -eq $hash2) {
-                Write-Host "[SKIP] $($f.Name) (duplicado exato - mesmo conteúdo)"
-            }
-            else {
-                # Ficheiro diferente → criar versão renomeada
-                $baseName = [System.IO.Path]::GetFileNameWithoutExtension($f.Name)
-                $ext = [System.IO.Path]::GetExtension($f.Name)
-                $newName = "${baseName}_DUP$ext"
-                $newTarget = Join-Path $tgt $newName
-                Copy-Item $f.FullName -Destination $newTarget
-                Write-Host "[COPIADO] $($f.Name) (diferente, guardado como $newName)"
-            }
+else {
+    try {
+        $hash1 = (Get-FileHash -Algorithm SHA1 -Path $f.FullName).Hash
+        $hash2 = (Get-FileHash -Algorithm SHA1 -Path $target).Hash
+
+        if ($hash1 -eq $hash2) {
+            Write-Host "[SKIP] $($f.Name) (duplicado exato - mesmo conteudo)"
         }
-        catch {
-            Write-Host "[ERRO] Falha ao comparar hash de $($f.Name): $_"
+        else {
+            $baseName = [System.IO.Path]::GetFileNameWithoutExtension($f.Name)
+            $ext = [System.IO.Path]::GetExtension($f.Name)
+            $newName = "${baseName}_DUP$ext"
+            $newTarget = Join-Path $tgt $newName
+
+            # ✅ Proteção anti-loop — se o DUP já existir, ignora
+            if (Test-Path $newTarget) {
+                Write-Host "[SKIP] $($f.Name) (ja existe versao _DUP anterior)"
+                continue
+            }
+
+            Copy-Item $f.FullName -Destination $newTarget
+            Write-Host "[COPIADO] $($f.Name) (conteudo diferente, guardado como $newName)"
         }
     }
+    catch {
+        Write-Host "[ERRO] Falha ao comparar hash de $($f.Name): $_"
+    }
+}
 }
 
 Write-Host ""
