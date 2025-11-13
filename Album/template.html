@@ -575,14 +575,24 @@ if (Lang === 'pt') {
   return `${y} year${y!==1?'s':''} and ${m} month${m!==1?'s':''}`;
 }
 
+
+// --- Extensões de vídeo alinhadas com z3.ps1 ---
+const VIDEO_EXTS = [
+    "mp4", "mov", "webm", "mkv", "avi", "mts", "m2ts", "3gp", "hevc"
+];
+
+
 /* match filtro (por extensão) */
-function matchFilterByName(name){
-  const ext = name.split('.').pop().toLowerCase();
-  const isVid = ['mp4','mov','webm'].includes(ext);
-  if(currentFilter==="photos") return !isVid;
-  if(currentFilter==="videos") return isVid;
-  return true; // all
+function matchFilterByName(name, filter = currentFilter) {
+    const ext = name.split('.').pop().toLowerCase();
+
+    if (filter === "all") return true;
+    if (filter === "photos") return !VIDEO_EXTS.includes(ext);
+    if (filter === "videos") return VIDEO_EXTS.includes(ext);
+
+    return true;
 }
+
 
 /* Manifest -> lista plana (global) */
 function buildFlat(){
@@ -602,67 +612,102 @@ function buildFlat(){
 function getFilteredYears(){
   const out = [];
   Object.keys(manifest).sort((a,b)=>a-b).forEach(y=>{
-    const months = Object.keys(manifest[y]);
-    const has = months.some(m => manifest[y][m].some(it => matchFilterByName(it.name)));
+    const has = Object.keys(manifest[y]).some(m =>
+      manifest[y][m].some(it => matchFilterByName(it.name, currentFilter))
+    );
     if(has) out.push(y);
   });
   return out;
 }
 
+
 /* Render anos */
 function renderYears(){
   yearsEl.innerHTML='';
-  const years = getFilteredYears();
-  years.forEach(y=>{
-    const btn=document.createElement('button'); btn.textContent=y;
-    btn.onclick=()=>{
-      currentYear=y;
-      yearsEl.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active'); renderMonths(y);
-    };
+  const validYears = getFilteredYears();  // anos com conteúdo no filtro atual
+  const allYears   = Object.keys(manifest).sort((a,b)=>a-b);
+
+  allYears.forEach(y=>{
+    const btn=document.createElement('button');
+    btn.textContent=y;
+
+    const has = validYears.includes(y);
+    if(!has){
+      btn.disabled = true;
+      btn.style.opacity = "0.35";
+      btn.style.cursor = "not-allowed";
+    } else {
+      btn.onclick=()=>{
+        currentYear=y;
+        yearsEl.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        renderMonths(y);
+      };
+    }
+
     yearsEl.appendChild(btn);
   });
 
-  // se o ano atual deixou de ser válido, limpa meses/thumbs
-  if(currentYear && !years.includes(currentYear)){
+  // se o ano atual deixar de existir ou ficar inválido → reset
+  if(currentYear && !validYears.includes(currentYear)){
     currentYear=null; currentMonth=null;
     monthsEl.innerHTML=''; thumbsEl.innerHTML='';
   }
 }
 
+
 /* Meses filtrados por ano */
 function getFilteredMonths(y){
-  const out=[];
-  const allMonths = Object.keys(manifest[y]||{}).sort(monthOrder);
+  const out = [];
+  const allMonths = Object.keys(manifest[y] || {}).sort(monthOrder);
+
   allMonths.forEach(m=>{
-    const has = (manifest[y][m]||[]).some(it => matchFilterByName(it.name));
+    const has = (manifest[y][m] || []).some(it =>
+      matchFilterByName(it.name, currentFilter)
+    );
     if(has) out.push(m);
   });
-  // manter 'Ecografias' em primeiro, se existir
+
+  // manter 'Ecografias' em primeiro
   const idxEco = out.findIndex(mm=>mm.toLowerCase()==='ecografias');
   if(idxEco>-1){ out.splice(idxEco,1); out.unshift('Ecografias'); }
+
   return out;
 }
+
 
 /* Render meses */
 function renderMonths(y){
   monthsEl.innerHTML='';
-  const months=getFilteredMonths(y);
-  months.forEach(m=>{
-    const btn=document.createElement('button'); btn.textContent=m.charAt(0).toUpperCase()+m.slice(1);
-    btn.onclick=()=>{
-      currentMonth=m;
-      monthsEl.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active'); renderThumbs(y,m);
-    };
+  const validMonths = getFilteredMonths(y); // meses com conteúdo filtrado
+  const allMonths   = Object.keys(manifest[y] || {}).sort(monthOrder);
+
+  allMonths.forEach(m=>{
+    const btn=document.createElement('button');
+    btn.textContent = m.charAt(0).toUpperCase() + m.slice(1);
+
+    const has = validMonths.includes(m);
+    if(!has){
+      btn.disabled = true;
+      btn.style.opacity = "0.35";
+      btn.style.cursor = "not-allowed";
+    } else {
+      btn.onclick=()=>{
+        currentMonth=m;
+        monthsEl.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        renderThumbs(y,m);
+      };
+    }
+
     monthsEl.appendChild(btn);
   });
 
-  // se o mês atual deixou de ser válido com o filtro, limpa thumbs
-  if(currentMonth && !months.includes(currentMonth)){
+  if(currentMonth && !validMonths.includes(currentMonth)){
     currentMonth=null; thumbsEl.innerHTML='';
   }
 }
+
 
 /* --------- Filtros UI --------- */
 let currentFilter="all";
@@ -684,7 +729,7 @@ fltVideos.onclick= ()=>setFilter("videos");
 function renderThumbs(y,m){
   thumbsEl.innerHTML='';
   let list=(manifest[y][m]||[]).slice().sort((a,b)=>new Date(a.date)-new Date(b.date));
-  list=list.filter(it=>matchFilterByName(it.name));
+  list = list.filter(it => matchFilterByName(it.name, currentFilter));
 
   if(m.toLowerCase()==='ecografias'){
     let currentDateGroup='';
@@ -724,25 +769,61 @@ list.forEach(it => {
 
 }
 
-function addThumbCard(y,m,it){
-  const card=document.createElement('div'); card.className='thumb';
-  const ext=it.name.split('.').pop().toLowerCase();
-  const el=['mp4','mov','webm'].includes(ext)?document.createElement('video'):document.createElement('img');
-  el.src=it.path; if(el.tagName==='IMG') el.loading='lazy'; if(el.tagName==='VIDEO') el.muted=true;
-  card.appendChild(el);
-  if(el.tagName==='VIDEO'){ const icon=document.createElement('div'); icon.className='videoIcon'; icon.textContent='🎬'; card.appendChild(icon); }
-  const d=document.createElement('div'); d.className='date'; d.textContent=fmtDate(it.date); card.appendChild(d);
-  card.onclick=()=>{ 
-    // encontra índice global na flatList
-    const idx=flatList.findIndex(x=>x.year===y&&x.month===m&&x.name===it.name);
-    if(idx>-1) show(idx); 
-  };
-  thumbsEl.appendChild(card);
+function addThumbCard(y, m, it) {
+    const card = document.createElement('div');
+    card.className = 'thumb';
+
+    const ext = it.name.split('.').pop().toLowerCase();
+    const isVideo = VIDEO_EXTS.includes(ext);
+
+    const el = isVideo
+        ? document.createElement('video')
+        : document.createElement('img');
+
+    el.src = it.path;
+
+    if (el.tagName === 'IMG') {
+        el.loading = 'lazy';
+        el.decoding = 'async';
+    } else if (el.tagName === 'VIDEO') {
+        el.muted = true;
+    }
+
+    card.appendChild(el);
+
+    if (isVideo) {
+        const icon = document.createElement('div');
+        icon.className = 'videoIcon';
+        icon.textContent = '🎬';
+        card.appendChild(icon);
+    }
+
+    const d = document.createElement('div');
+    d.className = 'date';
+    d.textContent = fmtDate(it.date);
+    card.appendChild(d);
+
+    card.onclick = () => {
+        const idx = flatList.findIndex(x =>
+            x.year === y &&
+            x.month === m &&
+            x.name === it.name
+        );
+        if (idx > -1) show(idx);
+    };
+
+    thumbsEl.appendChild(card);
 }
+
+
 
 /* Lista do mês atual respeitando o filtro (para slideshow/next/prev) */
 function monthListFiltered(y,m){
-  return flatList.filter(x=>x.year===y && x.month===m && matchFilterByName(x.name));
+  return flatList.filter(x =>
+      x.year === y &&
+      x.month === m &&
+      matchFilterByName(x.name, currentFilter)
+  );
 }
 
 /* --------- Viewer --------- */
@@ -772,7 +853,8 @@ function show(i){
   if(ph) ph.style.display='none';
 
   const ext=it.name.split('.').pop().toLowerCase();
-  const el=['mp4','mov','webm'].includes(ext)?document.createElement('video'):document.createElement('img');
+  const isVideo = VIDEO_EXTS.includes(ext);
+  const el = isVideo ? document.createElement('video') : document.createElement('img');
   el.src=it.src;
   if(el.tagName==='VIDEO'){
     const wasRunning=!!timer; if(wasRunning) stopSS();
@@ -804,7 +886,7 @@ if(tsel) {
   const preloadByItem=(item)=>{
     if(!item) return;
     const ext=item.name.split('.').pop().toLowerCase();
-    if(['mp4','mov','webm'].includes(ext)){ const v=document.createElement('video'); v.src=item.src; v.preload="metadata"; }
+    if (VIDEO_EXTS.includes(ext)) {const v=document.createElement('video'); v.src=item.src; v.preload="metadata"; }
     else { const img=new Image(); img.src=item.src; }
   };
   if(currentMonthList.length){
