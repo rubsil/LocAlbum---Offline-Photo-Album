@@ -265,7 +265,7 @@ foreach($f in $files){
         $target = Join-Path $no $f.Name
         if (-not (Test-Path $target)) {
             Copy-Item $f.FullName -Destination $target
-            Write-Host "[WARN] Data invalida ($($dt)) → movido para: $noDateFolderName ($($f.Name))"
+            Write-Host "[WARN] Data invalida ($($dt)) -> movido para: $noDateFolderName ($($f.Name))"
         }
         continue
     }
@@ -279,7 +279,7 @@ foreach($f in $files){
 
     if (-not (Test-Path $target)) {
 Copy-Item $f.FullName -Destination $target
-        Write-Host "[✓ OK] $($f.Name) → $year\$month" -ForegroundColor Green
+        Write-Host "[OK] $($f.Name) -> $year\$month" -ForegroundColor Green
         # Descongelar pasta de destino
         $frozenFlag = Join-Path $tgt "_frozen.flag"
         if (Test-Path $frozenFlag) { Remove-Item $frozenFlag -Force }
